@@ -1,0 +1,116 @@
+# ==== Unity Core Ignored Folders (case-insensitive) ====
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]serSettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# ==== Generated when using PlasticSCM / Collaborate ====
+[Cc]ache/
+
+# ==== Burst / DOTS Caches ====
+[Bb]urstCache/
+*.burst
+
+# ==== IDE / Editor Config ==== 
+# Rider / IntelliJ
+.idea/
+*.sln.iml
+
+# Visual Studio
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.vcxproj*
+*.pidb
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# VSCode workspace settings (keep only if team wants to share)
+.vscode/
+
+# ==== Unity Auto‑Generated ==== 
+*.unityproj
+*.booproj
+*.tmp
+*.bak
+*.old
+*.orig
+*.copy
+
+# ==== Crash / Diagnostic ==== 
+sysinfo.txt
+*.stacktrace
+*.dmp
+
+# ==== Build Artifacts ==== 
+*.apk
+*.aab
+*.xcodeproj
+*.xcworkspace
+*.ipa
+*.unitypackage
+*.exe
+*.app
+*.dll
+*.wasm
+*.js
+Build*/
+
+# ==== Addressables / AssetBundles (rebuildable) ====
+[Aa]ssetBundles/
+[Bb]undles/
+
+# ==== Lightmaps & GI Cache (lives in Library anyway) ====
+# (Not needed; covered by Library/)
+
+# ==== Optional: Uncomment to ignore meta files (NOT recommended) ====
+# [Aa]ssets/**/.*.meta
+# *.meta
+
+# ==== Logs & Profiles ==== 
+*.log
+*.log.*
+*.profile
+*.diff
+
+# ==== Generated Code / Backups ==== 
+*.bak
+*.backup
+*.generated.cs
+
+# ==== Unity Collab Service ==== 
+.collab/
+
+# ==== OS Specific ==== 
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==== Python / Scripts (if added) ====
+__pycache__/
+*.pyc
+
+# ==== Containers / Temp ==== 
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# ==== Experimental: Exclude solution artifacts but keep Packages ==== 
+# Keep Packages/ folder (manifest + lockfile must be versioned)
+# DO NOT ignore Packages/ or ProjectSettings/
+
+# ==== Notes ==== 
+# - Keep Assets/, Packages/, ProjectSettings/, and any *.meta to ensure correct GUID mapping.
+# - If the team wants shared VSCode settings remove .vscode/ from this file.
+# - Add exceptions below if you introduce generated source that SHOULD be tracked.

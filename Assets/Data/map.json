@@ -1,0 +1,80 @@
+{
+  "width": 8,
+  "height": 6,
+  "walls": [
+    [9, 8, 12, 9, 12, 9, 8, 12],
+    [1, 0, 6, 3, 6, 3, 2, 6],
+    [1, 4, 9, 8, 8, 12, 9, 12],
+    [3, 6, 3, 2, 2, 6, 3, 6],
+    [9, 8, 8, 8, 12, 9, 12, 13],
+    [3, 2, 2, 2, 6, 3, 6, 7]
+  ],
+  "victims": [
+    {"x": 2, "y": 4},
+    {"x": 5, "y": 8}
+  ],
+  "fires": [
+    {"x": 5, "y": 1}
+  ],
+  "doors": [
+    {"x": 1, "y": 6},
+    {"x": 3, "y": 1},
+    {"x": 4, "y": 8},
+    {"x": 6, "y": 3}
+  ],
+  "agents": [
+    {"x": 2, "y": 2},
+    {"x": 2, "y": 3},
+    {"x": 3, "y": 2},
+    {"x": 3, "y": 3},
+    {"x": 3, "y": 4},
+    {"x": 3, "y": 5},
+    {"x": 4, "y": 4},
+    {"x": 5, "y": 6},
+    {"x": 5, "y": 7},
+    {"x": 6, "y": 6}
+  ],
+  "explosions": [],
+  "wallsInfo": [
+    {
+      "wallId": 101,
+      "gridPosition": {"x": 2, "y": 3},
+      "direction": 0,
+      "state": 0,
+      "health": 100,
+      "maxHealth": 100
+    },
+    {
+      "wallId": 102,
+      "gridPosition": {"x": 2, "y": 3},
+      "direction": 1,
+      "state": 0,
+      "health": 100,
+      "maxHealth": 100
+    },
+    {
+      "wallId": 103,
+      "gridPosition": {"x": 2, "y": 3},
+      "direction": 2,
+      "state": 1,
+      "health": 50,
+      "maxHealth": 100
+    },
+    {
+      "wallId": 104,
+      "gridPosition": {"x": 2, "y": 3},
+      "direction": 3,
+      "state": 0,
+      "health": 100,
+      "maxHealth": 100
+    },
+    {
+      "wallId": 105,
+      "gridPosition": {"x": 3, "y": 3},
+      "direction": 0,
+      "state": 2,
+      "health": 0,
+      "maxHealth": 100
+    }
+  ]
+}
