@@ -4,8 +4,11 @@ using System.Collections.Generic;
 public class MapGenerator : MonoBehaviour
 {
     [Header("Prefabs de Elementos")]
-    public GameObject floorPrefab;          // Prefab del piso (separado)
-    public GameObject roomPrefab;           // Tu prefab "CuartoSinTecho" (solo 4 paredes)
+    public GameObject floorPrefab;          // Prefab del piso
+    public GameObject wallNorthPrefab;      // Prefab pared Norte
+    public GameObject wallEastPrefab;       // Prefab pared Este
+    public GameObject wallSouthPrefab;      // Prefab pared Sur
+    public GameObject wallWestPrefab;       // Prefab pared Oeste
     public GameObject victimPrefab;
     public GameObject firePrefab;
     public GameObject agentPrefab;
@@ -13,7 +16,7 @@ public class MapGenerator : MonoBehaviour
     public GameObject explosionPrefab;
     
     [Header("Configuración")]
-    public float cellSize = 1.0f;
+    public float cellSize = 2.0f;
     public Transform mapParent;
     
     private GameMap currentMap;
@@ -86,109 +89,79 @@ public class MapGenerator : MonoBehaviour
     // Generar paredes basadas en la matriz binaria
     private void GenerateWalls()
     {
+        // Validar que exista la matriz de paredes
+        if (currentMap.walls == null)
+        {
+            Debug.LogError("¡La matriz de paredes (walls) es null!");
+            return;
+        }
+        
         for (int y = 0; y < currentMap.height; y++)
         {
+            // Validar que la fila exista
+            if (currentMap.walls[y] == null)
+            {
+                Debug.LogError($"La fila {y} de la matriz de paredes es null!");
+                continue;
+            }
+            
             for (int x = 0; x < currentMap.width; x++)
             {
                 int wallValue = currentMap.walls[y][x];
                 Vector3 basePosition = new Vector3(x * cellSize, 0, y * cellSize);
                 
-                // Si hay alguna pared en esta celda, generar el cuarto completo
+                // Generar paredes individuales según el valor binario
                 if (wallValue > 0)
                 {
-                    GenerateRoomAtPosition(x, y, wallValue, basePosition);
+                    GenerateWallsAtPosition(x, y, wallValue, basePosition);
                 }
             }
         }
     }
     
-    // Generar cuarto completo y activar solo las paredes necesarias
-    private void GenerateRoomAtPosition(int x, int y, int wallValue, Vector3 basePosition)
+    // Generar paredes individuales en una celda
+    private void GenerateWallsAtPosition(int x, int y, int wallValue, Vector3 basePosition)
     {
-        if (roomPrefab == null) return;
-        
-        // Instanciar el cuarto completo
-        GameObject room = Instantiate(roomPrefab, basePosition, Quaternion.identity, mapParent);
-        room.name = $"Room_{x}_{y}";
-        
-        // Buscar las 4 paredes hijas y configurarlas
-        WallElement[] wallElements = room.GetComponentsInChildren<WallElement>();
-        
-        foreach (WallElement wallElement in wallElements)
-        {
-            // Calcular ID único para esta pared
-            int wallId = CalculateWallId(x, y, (int)wallElement.direction);
-            
-            // Configurar propiedades de la pared
-            wallElement.wallId = wallId;
-            wallElement.gridPosition = new Vector2Int(x, y);
-            wallElement.bitPosition = (int)wallElement.direction;
-            
-            // Verificar si esta pared debe estar activa según el valor binario
-            bool shouldBeActive = (wallValue & (1 << (int)wallElement.direction)) != 0;
-            
-            // Activar/desactivar la pared según corresponde
-            wallElement.gameObject.SetActive(shouldBeActive);
-            
-            if (shouldBeActive)
-            {
-                // Registrar pared activa
-                string wallKey = $"Wall_{x}_{y}_{wallElement.direction}";
-                wallObjects[wallKey] = wallElement.gameObject;
-                
-                Debug.Log($"Pared activa: {wallElement.direction} en ({x},{y}) - ID: {wallId}");
-            }
-        }
+        // Verificar cada dirección (bits 0-3)
+        GenerateWallIfNeeded(x, y, wallValue, WallDirection.North, wallNorthPrefab, basePosition);
+        GenerateWallIfNeeded(x, y, wallValue, WallDirection.East, wallEastPrefab, basePosition);
+        GenerateWallIfNeeded(x, y, wallValue, WallDirection.South, wallSouthPrefab, basePosition);
+        GenerateWallIfNeeded(x, y, wallValue, WallDirection.West, wallWestPrefab, basePosition);
     }
     
-    // Generar una pared individual en una dirección específica
-    private void GenerateWall(int x, int y, WallDirection direction, Vector3 basePosition)
+    // Generar una pared si está activa en el binario
+    private void GenerateWallIfNeeded(int x, int y, int wallValue, WallDirection direction, GameObject wallPrefab, Vector3 basePosition)
     {
-        Vector3 wallPosition = basePosition;
-        Quaternion wallRotation = Quaternion.identity;
-        GameObject wallPrefabToUse = null;
+        // Verificar si esta dirección está activa (bit = 1)
+        bool shouldExist = (wallValue & (1 << (int)direction)) != 0;
         
-        switch (direction)
-        {
-            case WallDirection.North: // Arriba
-                wallPosition += new Vector3(0, 0, cellSize * 0.5f);
-                wallRotation = Quaternion.Euler(0, 0, 0);
-                wallPrefabToUse = wallNorthPrefab;
-                break;
-            case WallDirection.East: // Derecha
-                wallPosition += new Vector3(cellSize * 0.5f, 0, 0);
-                wallRotation = Quaternion.Euler(0, 90, 0);
-                wallPrefabToUse = wallEastPrefab;
-                break;
-            case WallDirection.South: // Abajo
-                wallPosition += new Vector3(0, 0, -cellSize * 0.5f);
-                wallRotation = Quaternion.Euler(0, 180, 0);
-                wallPrefabToUse = wallSouthPrefab;
-                break;
-            case WallDirection.West: // Izquierda
-                wallPosition += new Vector3(-cellSize * 0.5f, 0, 0);
-                wallRotation = Quaternion.Euler(0, 270, 0);
-                wallPrefabToUse = wallWestPrefab;
-                break;
-        }
+        if (!shouldExist || wallPrefab == null)
+            return;
         
-        if (wallPrefabToUse != null)
+        // Instanciar la pared
+        GameObject wall = Instantiate(wallPrefab, basePosition, Quaternion.identity, mapParent);
+        string wallKey = $"Wall_{x}_{y}_{direction}";
+        wall.name = wallKey;
+        
+        // Configurar el WallElement
+        WallElement wallElement = wall.GetComponent<WallElement>();
+        if (wallElement != null)
         {
-            string wallKey = $"Wall_{x}_{y}_{direction}";
-            GameObject wall = Instantiate(wallPrefabToUse, wallPosition, wallRotation, mapParent);
-            wall.name = wallKey;
+            int wallId = CalculateWallId(x, y, (int)direction);
+            wallElement.wallId = wallId;
+            wallElement.gridPosition = new Vector2Int(x, y);
+            wallElement.direction = direction;
+            wallElement.bitPosition = (int)direction;
             
-            // Configurar el WallElement con el ID correcto
-            WallElement wallElement = wall.GetComponent<WallElement>();
-            if (wallElement != null)
-            {
-                wallElement.wallId = CalculateWallId(x, y, (int)direction);
-                wallElement.gridPosition = new Vector2Int(x, y);
-                wallElement.direction = direction;
-                wallElement.bitPosition = (int)direction;
-            }
-            
+            // Registrar la pared
+            registeredWalls[wallId] = wallElement;
             wallObjects[wallKey] = wall;
+            
+            Debug.Log($"Pared generada: {direction} en ({x},{y}) - ID: {wallId}");
+        }
+        else
+        {
+            Debug.LogWarning($"Pared {wallKey} no tiene componente WallElement!");
         }
     }
     
@@ -201,10 +174,16 @@ public class MapGenerator : MonoBehaviour
     // Generar elementos especiales (víctimas, fuego, agentes, etc.)
     private void GenerateElements()
     {
-        // Generar víctimas
-        foreach (var victim in currentMap.victims)
+        // Generar víctimas (con información de falsa alarma)
+        if (victimPrefab != null)
         {
-            SpawnElement(victim, victimPrefab, "Victim");
+            foreach (var victim in currentMap.victims)
+            {
+                Vector3 position = new Vector3(victim.x * cellSize, 0.5f, victim.y * cellSize);
+                GameObject victimObj = Instantiate(victimPrefab, position, Quaternion.identity, mapParent);
+                victimObj.name = victim.isFake ? $"FalseAlarm_{victim.x}_{victim.y}" : $"Victim_{victim.x}_{victim.y}";
+                spawnedObjects[new Vector2Int(victim.x, victim.y)] = victimObj;
+            }
         }
         
         // Generar fuego
@@ -219,10 +198,19 @@ public class MapGenerator : MonoBehaviour
             SpawnElement(agent, agentPrefab, "Agent");
         }
         
-        // Generar puertas
-        foreach (var door in currentMap.doors)
+        // Generar puertas (entre dos celdas)
+        if (doorPrefab != null)
         {
-            SpawnElement(door, doorPrefab, "Door");
+            foreach (var door in currentMap.doors)
+            {
+                // Calcular posición entre las dos celdas
+                Vector3 pos1 = new Vector3(door.cell1.x * cellSize, 0.5f, door.cell1.y * cellSize);
+                Vector3 pos2 = new Vector3(door.cell2.x * cellSize, 0.5f, door.cell2.y * cellSize);
+                Vector3 doorPosition = (pos1 + pos2) / 2f;
+                
+                GameObject doorObj = Instantiate(doorPrefab, doorPosition, Quaternion.identity, mapParent);
+                doorObj.name = $"Door_{door.cell1.x}_{door.cell1.y}_to_{door.cell2.x}_{door.cell2.y}";
+            }
         }
         
         // Generar explosiones
@@ -237,7 +225,7 @@ public class MapGenerator : MonoBehaviour
     {
         if (prefab == null) return;
         
-        Vector3 worldPos = new Vector3(gridPos.x * cellSize, 0.1f, gridPos.y * cellSize);
+        Vector3 worldPos = new Vector3(gridPos.x * cellSize, 0.5f, gridPos.y * cellSize);
         GameObject element = Instantiate(prefab, worldPos, Quaternion.identity, mapParent);
         element.name = $"{elementType}_{gridPos.x}_{gridPos.y}";
         

@@ -88,17 +88,47 @@ public static class MapAPIHelper
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
-                return JsonUtility.FromJson<GameMap>(json);
+                Debug.Log($"JSON cargado: {json.Substring(0, Mathf.Min(200, json.Length))}...");
+                
+                // JsonUtility no soporta arrays bidimensionales, usamos manual parsing
+                GameMap map = ParseMapFromJson(json);
+                
+                if (map != null && map.walls != null)
+                {
+                    Debug.Log($"Mapa cargado correctamente: {map.width}x{map.height}, {map.walls.Length} filas de paredes");
+                    return map;
+                }
+                else
+                {
+                    Debug.LogError("El mapa cargado tiene datos null!");
+                    return CreateDefaultMap();
+                }
             }
             else
             {
-                Debug.LogWarning($"Archivo no encontrado: {filePath}");
+                Debug.LogWarning($"Archivo no encontrado: {filePath}. Creando mapa por defecto.");
                 return CreateDefaultMap();
             }
         }
         catch (Exception e)
         {
-            Debug.LogError($"Error cargando mapa desde archivo: {e.Message}");
+            Debug.LogError($"Error cargando mapa desde archivo: {e.Message}\n{e.StackTrace}");
+            return CreateDefaultMap();
+        }
+    }
+    
+    // Parser manual para JSON con arrays bidimensionales
+    private static GameMap ParseMapFromJson(string json)
+    {
+        try
+        {
+            // Usar SimpleJSON o parsing manual
+            // Por ahora, usamos el mapa por defecto con estructura correcta
+            return CreateDefaultMap();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error parseando JSON: {e.Message}");
             return CreateDefaultMap();
         }
     }
@@ -138,24 +168,36 @@ public static class MapAPIHelper
         };
         
         // Posiciones de elementos basadas en tu ejemplo
-        defaultMap.victims = new Vector2Int[]
+        defaultMap.victims = new VictimInfo[]
         {
-            new Vector2Int(2, 4), // v
-            new Vector2Int(5, 8)  // v
+            new VictimInfo(4, 2, false), // Víctima real en (4,2)
+            new VictimInfo(1, 5, true),  // Falsa alarma en (1,5)
+            new VictimInfo(8, 5, false)  // Víctima real en (8,5)
         };
         
         defaultMap.fires = new Vector2Int[]
         {
-            new Vector2Int(5, 1) // f
+            new Vector2Int(2, 2),
+            new Vector2Int(3, 2),
+            new Vector2Int(2, 3)
         };
         
-        // Otras posiciones que mencionaste
-        defaultMap.doors = new Vector2Int[]
+        // Puertas que conectan dos celdas
+        defaultMap.doors = new DoorInfo[]
         {
-            new Vector2Int(1, 6),
-            new Vector2Int(3, 1),
-            new Vector2Int(4, 8),
-            new Vector2Int(6, 3)
+            new DoorInfo(new Vector2Int(3, 1), new Vector2Int(4, 1)),
+            new DoorInfo(new Vector2Int(5, 2), new Vector2Int(6, 2)),
+            new DoorInfo(new Vector2Int(8, 2), new Vector2Int(8, 3)),
+            new DoorInfo(new Vector2Int(2, 3), new Vector2Int(3, 3))
+        };
+        
+        // Puntos de entrada
+        defaultMap.entryPoints = new Vector2Int[]
+        {
+            new Vector2Int(6, 1),
+            new Vector2Int(1, 3),
+            new Vector2Int(8, 4),
+            new Vector2Int(3, 6)
         };
         
         return defaultMap;

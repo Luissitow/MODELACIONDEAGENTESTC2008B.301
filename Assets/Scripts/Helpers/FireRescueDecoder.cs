@@ -32,10 +32,10 @@ public static class FireRescueDecoder
     // Decodificar elementos especiales (víctimas, fuegos, agentes, puertas)
     private static void DecodeElements(GameMap map, string[] elements)
     {
-        var victims = new System.Collections.Generic.List<Vector2Int>();
+        var victims = new System.Collections.Generic.List<VictimInfo>();
         var fires = new System.Collections.Generic.List<Vector2Int>();
         var agents = new System.Collections.Generic.List<Vector2Int>();
-        var doors = new System.Collections.Generic.List<Vector2Int>();
+        var doors = new System.Collections.Generic.List<DoorInfo>();
         
         foreach (string element in elements)
         {
@@ -43,30 +43,29 @@ public static class FireRescueDecoder
             
             if (parts.Length >= 3 && parts[2] == "v")
             {
-                // Víctima: "2 4 v"
-                victims.Add(new Vector2Int(int.Parse(parts[0]), int.Parse(parts[1])));
+                // Víctima real: "2 4 v"
+                victims.Add(new VictimInfo(int.Parse(parts[0]), int.Parse(parts[1]), false));
             }
             else if (parts.Length >= 3 && parts[2] == "f")
             {
-                // Fuego: "5 1 f"
-                fires.Add(new Vector2Int(int.Parse(parts[0]), int.Parse(parts[1])));
+                // Falsa alarma: "5 1 f"
+                victims.Add(new VictimInfo(int.Parse(parts[0]), int.Parse(parts[1]), true));
             }
             else if (parts.Length == 2)
             {
-                // Agente o puerta: "2 2" o "1 6"
+                // Fuego o agente: "2 2" o "1 6"
                 int x = int.Parse(parts[0]);
                 int y = int.Parse(parts[1]);
                 
-                // Determinar si es puerta o agente basado en posición
-                // (Este es un ejemplo, ajustar según tu lógica específica)
-                if (IsAtMapBorder(x, y, map.width, map.height))
-                {
-                    doors.Add(new Vector2Int(x, y));
-                }
-                else
-                {
-                    agents.Add(new Vector2Int(x, y));
-                }
+                // Por ahora asumimos que son agentes
+                agents.Add(new Vector2Int(x, y));
+            }
+            else if (parts.Length == 4)
+            {
+                // Puerta entre dos celdas: "1 3 1 4"
+                Vector2Int cell1 = new Vector2Int(int.Parse(parts[0]), int.Parse(parts[1]));
+                Vector2Int cell2 = new Vector2Int(int.Parse(parts[2]), int.Parse(parts[3]));
+                doors.Add(new DoorInfo(cell1, cell2));
             }
         }
         

@@ -6,9 +6,10 @@ public class GameMap
     public int width;
     public int height;
     public int[][] walls;           // Matriz de paredes en binario
-    public Vector2Int[] victims;    // Posiciones de víctimas (v)
-    public Vector2Int[] fires;      // Posiciones de fuegos (f)
-    public Vector2Int[] doors;      // Posiciones de puertas
+    public VictimInfo[] victims;    // Víctimas con información de falsa alarma
+    public Vector2Int[] fires;      // Posiciones de fuegos
+    public DoorInfo[] doors;        // Puertas que conectan dos celdas
+    public Vector2Int[] entryPoints; // Puntos de entrada
     public Vector2Int[] agents;     // Posiciones de agentes
     public Vector2Int[] explosions; // Posiciones de explosiones
     public WallInfo[] wallsInfo;    // Información detallada de paredes individuales
@@ -16,9 +17,10 @@ public class GameMap
     // Constructor
     public GameMap()
     {
-        victims = new Vector2Int[0];
+        victims = new VictimInfo[0];
         fires = new Vector2Int[0];
-        doors = new Vector2Int[0];
+        doors = new DoorInfo[0];
+        entryPoints = new Vector2Int[0];
         agents = new Vector2Int[0];
         explosions = new Vector2Int[0];
         wallsInfo = new WallInfo[0];
@@ -55,10 +57,11 @@ public class GameMap
                 return CellType.Explosion;
         }
         
-        // Verificar si hay puerta
+        // Verificar si hay puerta (cualquiera de las dos celdas)
         foreach (var door in doors)
         {
-            if (door.x == x && door.y == y)
+            if ((door.cell1.x == x && door.cell1.y == y) ||
+                (door.cell2.x == x && door.cell2.y == y))
                 return CellType.Door;
         }
         
@@ -106,4 +109,34 @@ public enum WallDirection
     East = 1,   // Derecha
     South = 2,  // Abajo
     West = 3    // Izquierda
+}
+
+// Información de víctima
+[System.Serializable]
+public struct VictimInfo
+{
+    public int x;
+    public int y;
+    public bool isFake; // true = falsa alarma, false = víctima real
+    
+    public VictimInfo(int x, int y, bool isFake)
+    {
+        this.x = x;
+        this.y = y;
+        this.isFake = isFake;
+    }
+}
+
+// Información de puerta (conecta dos celdas)
+[System.Serializable]
+public struct DoorInfo
+{
+    public Vector2Int cell1;
+    public Vector2Int cell2;
+    
+    public DoorInfo(Vector2Int cell1, Vector2Int cell2)
+    {
+        this.cell1 = cell1;
+        this.cell2 = cell2;
+    }
 }

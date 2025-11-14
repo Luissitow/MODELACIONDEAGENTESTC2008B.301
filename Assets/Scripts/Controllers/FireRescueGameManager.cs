@@ -192,8 +192,10 @@ public class FireRescueGameManager : MonoBehaviour
     {
         if (currentMap == null) return;
         
-        // Comparar y actualizar víctimas
-        CompareAndUpdateElements(currentMap.victims, newMap.victims, CellType.Victim, "Víctimas");
+        // Comparar y actualizar víctimas (con conversión de VictimInfo a Vector2Int)
+        Vector2Int[] oldVictimPositions = System.Array.ConvertAll(currentMap.victims, v => new Vector2Int(v.x, v.y));
+        Vector2Int[] newVictimPositions = System.Array.ConvertAll(newMap.victims, v => new Vector2Int(v.x, v.y));
+        CompareAndUpdateElements(oldVictimPositions, newVictimPositions, CellType.Victim, "Víctimas");
         
         // Comparar y actualizar fuegos
         CompareAndUpdateElements(currentMap.fires, newMap.fires, CellType.Fire, "Fuegos");
@@ -284,7 +286,7 @@ public class FireRescueGameManager : MonoBehaviour
     
     private void RemoveVictimAt(Vector2Int position)
     {
-        var victimsList = new System.Collections.Generic.List<Vector2Int>(currentMap.victims);
+        var victimsList = new System.Collections.Generic.List<VictimInfo>(currentMap.victims);
         victimsList.RemoveAll(v => v.x == position.x && v.y == position.y);
         currentMap.victims = victimsList.ToArray();
     }
