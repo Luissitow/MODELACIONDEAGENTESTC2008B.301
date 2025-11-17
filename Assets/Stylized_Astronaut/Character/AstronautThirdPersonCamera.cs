@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace AstronautThirdPersonCamera
 {
-
+  // DESHABILITADO - Usar FirstPersonController en su lugar
+  // Script original comentado para evitar conflictos con el nuevo Input System
+  
+  /*
   public class AstronautThirdPersonCamera : MonoBehaviour
   {
     private const float Y_ANGLE_MIN = 0.0f;
@@ -40,4 +43,5 @@ namespace AstronautThirdPersonCamera
         camTransform.LookAt(lookAt.position);
     }
   }
+  */
 }

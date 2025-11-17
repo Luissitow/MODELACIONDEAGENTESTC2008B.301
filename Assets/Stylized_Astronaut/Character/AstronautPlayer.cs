@@ -3,7 +3,10 @@ using System.Collections;
 
 namespace AstronautPlayer
 {
-
+	// DESHABILITADO - Usar FirstPersonController en su lugar
+	// Script original comentado para evitar conflictos con el nuevo Input System
+	
+	/*
 	public class AstronautPlayer : MonoBehaviour {
 
 		private Animator anim;
@@ -36,4 +39,5 @@ namespace AstronautPlayer
 			moveDirection.y -= gravity * Time.deltaTime;
 		}
 	}
+	*/
 }
