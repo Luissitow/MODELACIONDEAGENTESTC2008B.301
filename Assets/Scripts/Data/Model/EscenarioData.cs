@@ -10,11 +10,14 @@ public class EscenarioData
     public int fila;                    // Número de filas del tablero (6)
     public int columna;                 // Número de columnas del tablero (8)
     public string[] celdas;             // Array de configuraciones de paredes "1100", "1000", etc.
-    public VictimaData[] victimas;      // Array de víctimas y falsas alarmas
+    public VictimaData[] victimas;      // Array de víctimas reales
+    public VictimaData[] falsasAlarmas; // Array de falsas alarmas
+    public TripulacionData[] tripulacion; // Array de miembros de la tripulación
     public AranaData[] arañas;          // Array de posiciones de arañas
     public HuevoData[] huevos;          // Array de posiciones de huevos
     public PuertaData[] puertas;        // Array de puertas entre celdas
     public EntradaData[] entradas;      // Array de puntos de entrada
+    public PuntoInteresData[] puntosInteres; // Array de puntos de interés especiales
     
     /// <summary>
     /// Obtiene la configuración de paredes de una celda específica

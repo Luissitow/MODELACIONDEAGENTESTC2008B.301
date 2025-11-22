@@ -11,8 +11,16 @@
   ],
   "victimas": [
     {"row": 2, "col": 4, "type": "victima"},
-    {"row": 5, "col": 1, "type": "falsaalarma"},
     {"row": 5, "col": 8, "type": "victima"}
+  ],
+  "falsasAlarmas": [
+    {"row": 5, "col": 1, "type": "falsaalarma"}
+  ],
+  "tripulacion": [
+    {"row": 1, "col": 1, "tipo": "bombero", "id": 1},
+    {"row": 1, "col": 8, "tipo": "paramedico", "id": 2},
+    {"row": 6, "col": 1, "tipo": "especialista", "id": 3},
+    {"row": 6, "col": 8, "tipo": "ingeniero", "id": 4}
   ],
   "arañas": [
     {"row": 1, "col": 2},
@@ -48,5 +56,6 @@
     {"row": 3, "col": 1},
     {"row": 4, "col": 8},
     {"row": 6, "col": 3}
-  ]
+  ],
+  "puntosInteres": []
 }

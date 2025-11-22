@@ -12,9 +12,15 @@ public class ConstructorTablero : MonoBehaviour
     [SerializeField] private GameObject aranaPrefab;
     [SerializeField] private GameObject huevoPrefab;
     [SerializeField] private GameObject victimaPrefab;
+    [SerializeField] private GameObject falsaAlarmaPrefab;
+    [SerializeField] private GameObject tripulacionPrefab;
+    [SerializeField] private GameObject puertaPrefab;
+    [SerializeField] private GameObject entradaPrefab;
+    [SerializeField] private GameObject puntoInteresPrefab;
     
     [Header("Configuración")]
-    [SerializeField] private float tamanoCelda = 1f;  // Tamaño de cada celda (1 unidad)
+    [SerializeField] private float tamanoCelda = 4f;  // Tamaño de cada celda (1 unidad)
+    [SerializeField] private float alturaBase = 4f;   // Altura Y base del tablero (para elevarlo)
     
     /// <summary>
     /// Construye el mapa completo a partir de los datos del escenario
@@ -23,11 +29,14 @@ public class ConstructorTablero : MonoBehaviour
     {
         CrearPisos(datos);
         CrearParedes(datos);
+        CrearPuertas(datos);
+        CrearEntradas(datos);
         CrearAranas(datos);
         CrearHuevos(datos);
         CrearVictimas(datos);
-        // CrearPuertas(datos);  // Por implementar
-        // CrearEntradas(datos); // Por implementar
+        CrearFalsasAlarmas(datos);
+        CrearTripulacion(datos);
+        CrearPuntosInteres(datos);
     }
     
     /// <summary>
@@ -128,7 +137,7 @@ public class ConstructorTablero : MonoBehaviour
     }
     
     /// <summary>
-    /// Crea las víctimas en las posiciones especificadas
+    /// Crea las víctimas reales en las posiciones especificadas
     /// </summary>
     void CrearVictimas(EscenarioData datos)
     {
@@ -137,9 +146,138 @@ public class ConstructorTablero : MonoBehaviour
         foreach (var victima in datos.victimas)
         {
             // Convertir: col->X, row->Z invertido  
-            Vector3 posicion = new Vector3((victima.col - 1) * tamanoCelda, 0.3f, (datos.fila - victima.row) * tamanoCelda);
+            Vector3 posicion = new Vector3((victima.col - 1) * tamanoCelda, 0.05f, (datos.fila - victima.row) * tamanoCelda);
             GameObject victimaObj = Instantiate(victimaPrefab, posicion, Quaternion.identity, transform);
-            victimaObj.name = $"Victima_{victima.row}_{victima.col}_{victima.type}";
+            victimaObj.name = $"Victima_{victima.row}_{victima.col}";
+        }
+    }
+    
+    /// <summary>
+    /// Crea las falsas alarmas en las posiciones especificadas
+    /// </summary>
+    void CrearFalsasAlarmas(EscenarioData datos)
+    {
+        if (falsaAlarmaPrefab == null || datos.falsasAlarmas == null) return;
+        
+        foreach (var falsa in datos.falsasAlarmas)
+        {
+            // Convertir: col->X, row->Z invertido  
+            Vector3 posicion = new Vector3((falsa.col - 1) * tamanoCelda, 0.05f, (datos.fila - falsa.row) * tamanoCelda);
+            GameObject falsaObj = Instantiate(falsaAlarmaPrefab, posicion, Quaternion.identity, transform);
+            falsaObj.name = $"FalsaAlarma_{falsa.row}_{falsa.col}";
+        }
+    }
+    
+    /// <summary>
+    /// Crea los miembros de la tripulación en las posiciones especificadas
+    /// </summary>
+    void CrearTripulacion(EscenarioData datos)
+    {
+        if (tripulacionPrefab == null || datos.tripulacion == null) return;
+        
+        foreach (var miembro in datos.tripulacion)
+        {
+            // Convertir: col->X, row->Z invertido
+            Vector3 posicion = new Vector3((miembro.col - 1) * tamanoCelda, 0.05f, (datos.fila - miembro.row) * tamanoCelda);
+            GameObject tripulanteObj = Instantiate(tripulacionPrefab, posicion, Quaternion.identity, transform);
+            tripulanteObj.name = $"Tripulante_{miembro.id}_{miembro.tipo}";
+        }
+    }
+    
+    /// <summary>
+    /// Crea las puertas entre dos celdas
+    /// Las puertas conectan dos celdas adyacentes y se posicionan en el muro entre ellas
+    /// </summary>
+    void CrearPuertas(EscenarioData datos)
+    {
+        if (puertaPrefab == null || datos.puertas == null) return;
+        
+        foreach (var puerta in datos.puertas)
+        {
+            // Convertir coordenadas de grid a Unity
+            Vector3 pos1 = new Vector3((puerta.c1 - 1) * tamanoCelda, 0, (datos.fila - puerta.r1) * tamanoCelda);
+            Vector3 pos2 = new Vector3((puerta.c2 - 1) * tamanoCelda, 0, (datos.fila - puerta.r2) * tamanoCelda);
+            
+            // Calcular posición central entre las dos celdas
+            Vector3 posicionPuerta = (pos1 + pos2) / 2f;
+            posicionPuerta.y = 0.5f; // Altura de la puerta (misma que paredes)
+            
+            // Determinar orientación de la puerta (horizontal o vertical)
+            Quaternion rotacion = Quaternion.identity;
+            
+            // Si la diferencia es en columnas -> puerta vertical (Este-Oeste)
+            if (puerta.c1 != puerta.c2)
+            {
+                rotacion = Quaternion.Euler(0, 90, 0);
+            }
+            // Si la diferencia es en filas -> puerta horizontal (Norte-Sur)
+            // (rotación por defecto = 0)
+            
+            GameObject puertaObj = Instantiate(puertaPrefab, posicionPuerta, rotacion, transform);
+            puertaObj.name = $"Puerta_({puerta.r1},{puerta.c1})-({puerta.r2},{puerta.c2})";
+        }
+    }
+    
+    /// <summary>
+    /// Crea los puntos de entrada al edificio
+    /// Los puntos de entrada son marcadores especiales en el borde del mapa
+    /// </summary>
+    void CrearEntradas(EscenarioData datos)
+    {
+        if (entradaPrefab == null || datos.entradas == null) return;
+        
+        foreach (var entrada in datos.entradas)
+        {
+            // Convertir: col->X, row->Z invertido
+            Vector3 posicion = new Vector3((entrada.col - 1) * tamanoCelda, 0.05f, (datos.fila - entrada.row) * tamanoCelda);
+            GameObject entradaObj = Instantiate(entradaPrefab, posicion, Quaternion.identity, transform);
+            entradaObj.name = $"Entrada_{entrada.row}_{entrada.col}";
+            
+            // Opcional: Escalar el prefab para que sea un marcador visible
+            entradaObj.transform.localScale = new Vector3(0.6f, 0.1f, 0.6f);
+        }
+    }
+    
+    /// <summary>
+    /// Crea los puntos de interés en el mapa
+    /// Los puntos de interés se colocan automáticamente donde hay víctimas y falsas alarmas
+    /// Altura elevada (Y=1.5) para que sean visibles desde vista aérea sin tapar personajes
+    /// </summary>
+    void CrearPuntosInteres(EscenarioData datos)
+    {
+        if (puntoInteresPrefab == null) return;
+        
+        // Crear puntos de interés en las posiciones de víctimas
+        if (datos.victimas != null)
+        {
+            foreach (var victima in datos.victimas)
+            {
+                Vector3 posicion = new Vector3((victima.col - 1) * tamanoCelda, 2.0f, (datos.fila - victima.row) * tamanoCelda);
+                GameObject puntoObj = Instantiate(puntoInteresPrefab, posicion, Quaternion.identity, transform);
+                puntoObj.name = $"PuntoInteres_Victima_{victima.row}_{victima.col}";
+            }
+        }
+        
+        // Crear puntos de interés en las posiciones de falsas alarmas
+        if (datos.falsasAlarmas != null)
+        {
+            foreach (var falsa in datos.falsasAlarmas)
+            {
+                Vector3 posicion = new Vector3((falsa.col - 1) * tamanoCelda, 2.0f, (datos.fila - falsa.row) * tamanoCelda);
+                GameObject puntoObj = Instantiate(puntoInteresPrefab, posicion, Quaternion.identity, transform);
+                puntoObj.name = $"PuntoInteres_FalsaAlarma_{falsa.row}_{falsa.col}";
+            }
+        }
+        
+        // Crear puntos de interés adicionales si están definidos en el JSON
+        if (datos.puntosInteres != null)
+        {
+            foreach (var punto in datos.puntosInteres)
+            {
+                Vector3 posicion = new Vector3((punto.col - 1) * tamanoCelda, 2.0f, (datos.fila - punto.row) * tamanoCelda);
+                GameObject puntoObj = Instantiate(puntoInteresPrefab, posicion, Quaternion.identity, transform);
+                puntoObj.name = $"PuntoInteres_{punto.tipo}_{punto.row}_{punto.col}";
+            }
         }
     }
 }

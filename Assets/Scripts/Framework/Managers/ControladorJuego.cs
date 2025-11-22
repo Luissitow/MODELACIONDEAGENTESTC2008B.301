@@ -3,6 +3,7 @@ using UnityEngine;
 /// <summary>
 /// Controlador principal del juego
 /// Coordina la carga del escenario y la construcción del tablero
+
 /// </summary>
 public class ControladorJuego : MonoBehaviour
 {
@@ -20,9 +21,12 @@ public class ControladorJuego : MonoBehaviour
         ConstruirTablero();
     }
     
+
+
     /// <summary>
     /// Carga el archivo JSON del escenario desde Resources
     /// </summary>
+    /// 
     void CargarEscenario()
     {
         TextAsset archivoJSON = Resources.Load<TextAsset>(nombreArchivoJSON);
