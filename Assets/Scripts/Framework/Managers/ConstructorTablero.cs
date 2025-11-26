@@ -17,10 +17,12 @@ public class ConstructorTablero : MonoBehaviour
     [SerializeField] private GameObject puertaPrefab;
     [SerializeField] private GameObject entradaPrefab;
     [SerializeField] private GameObject puntoInteresPrefab;
+    [SerializeField] private GameObject paredDanadaPrefab;
+    [SerializeField] private GameObject paredDestruidaPrefab;
     
     [Header("Configuración")]
     [SerializeField] private float tamanoCelda = 4f;  // Tamaño de cada celda (1 unidad)
-    [SerializeField] private float alturaBase = 4f;   // Altura Y base del tablero (para elevarlo)
+    ///[SerializeField] private float alturaBase = -2f;   // Altura Y base del tablero (para elevarlo)
     
     /// <summary>
     /// Construye el mapa completo a partir de los datos del escenario
@@ -50,7 +52,7 @@ public class ConstructorTablero : MonoBehaviour
             {
                 // Convertir de grid (row,col) a Unity (X,Z)
                 // row=0 debe estar arriba (Z mayor), row=5 abajo (Z menor)
-                Vector3 posicion = new Vector3(col * tamanoCelda, 0, (datos.fila - 1 - fila) * tamanoCelda);
+                Vector3 posicion = new Vector3(col * tamanoCelda, -0.4f, (datos.fila - 1 - fila) * tamanoCelda);
                 GameObject piso = Instantiate(pisoPrefab, posicion, Quaternion.identity, transform);
                 piso.name = $"Piso_{fila}_{col}";
             }
@@ -74,34 +76,89 @@ public class ConstructorTablero : MonoBehaviour
                 // Norte (bit 0) - hacia Z+ (arriba en grid)
                 if (paredes[0] == '1')
                 {
-                    Vector3 pos = posicionCelda + new Vector3(0, 0.5f, 0.5f * tamanoCelda);
-                    Instantiate(paredPrefab, pos, Quaternion.identity, transform);
+                    Vector3 pos = posicionCelda + new Vector3(0, 0.1f, 0.5f * tamanoCelda);
+                    InstanciarPared(datos, fila, col, "norte", pos, Quaternion.identity);
                 }
                 
                 // Oeste (bit 1) - hacia X- (izquierda)
                 if (paredes[1] == '1')
                 {
-                    Vector3 pos = posicionCelda + new Vector3(-0.5f * tamanoCelda, 0.5f, 0);
+                    Vector3 pos = posicionCelda + new Vector3(-0.5f * tamanoCelda, 0.1f, 0);
                     Quaternion rot = Quaternion.Euler(0, 90, 0);
-                    Instantiate(paredPrefab, pos, rot, transform);
+                    InstanciarPared(datos, fila, col, "oeste", pos, rot);
                 }
                 
                 // Sur (bit 2) - hacia Z- (abajo en grid)
                 if (paredes[2] == '1')
                 {
-                    Vector3 pos = posicionCelda + new Vector3(0, 0.5f, -0.5f * tamanoCelda);
-                    Instantiate(paredPrefab, pos, Quaternion.identity, transform);
+                    Vector3 pos = posicionCelda + new Vector3(0, 0.1f, -0.5f * tamanoCelda);
+                    InstanciarPared(datos, fila, col, "sur", pos, Quaternion.identity);
                 }
                 
                 // Este (bit 3) - hacia X+ (derecha)
                 if (paredes[3] == '1')
                 {
-                    Vector3 pos = posicionCelda + new Vector3(0.5f * tamanoCelda, 0.5f, 0);
+                    Vector3 pos = posicionCelda + new Vector3(0.5f * tamanoCelda, 0.1f, 0);
                     Quaternion rot = Quaternion.Euler(0, 90, 0);
-                    Instantiate(paredPrefab, pos, rot, transform);
+                    InstanciarPared(datos, fila, col, "este", pos, rot);
                 }
             }
         }
+    }
+    
+    /// <summary>
+    /// Instancia una pared, considerando si es especial (puerta, dañada)
+    /// </summary>
+    void InstanciarPared(EscenarioData datos, int fila, int col, string direccion, Vector3 posicion, Quaternion rotacion)
+    {
+        ParedEspecialData especial = ObtenerParedEspecial(datos, fila, col, direccion);
+        
+        GameObject prefabAUsar = paredPrefab; // Por defecto
+        bool esPuerta = false;
+        int estadoInicial = 0;
+        
+        if (especial != null)
+        {
+            if (especial.tipo == "puerta")
+            {
+                prefabAUsar = puertaPrefab; // Asumir que puertaPrefab existe
+                esPuerta = true;
+            }
+            estadoInicial = especial.estado;
+        }
+        
+        // Instanciar
+        GameObject paredObj = Instantiate(prefabAUsar, posicion, rotacion, transform);
+        paredObj.name = $"Pared_{fila}_{col}_{direccion}";
+        
+        // Agregar script Wall
+        Wall wallScript = paredObj.AddComponent<Wall>();
+        wallScript.esPuerta = esPuerta;
+        wallScript.prefabDanado = paredDanadaPrefab;
+        wallScript.prefabDestruido = paredDestruidaPrefab;
+        
+        // Aplicar estado inicial (daño)
+        if (estadoInicial > 0)
+        {
+            wallScript.RecibirDanio(estadoInicial);
+        }
+    }
+    
+    /// <summary>
+    /// Busca si hay una pared especial en la posición y dirección dadas
+    /// </summary>
+    ParedEspecialData ObtenerParedEspecial(EscenarioData datos, int fila, int col, string direccion)
+    {
+        if (datos.paredesEspeciales == null) return null;
+        
+        foreach (var especial in datos.paredesEspeciales)
+        {
+            if (especial.fila == fila && especial.col == col && especial.direccion == direccion)
+            {
+                return especial;
+            }
+        }
+        return null;
     }
     
     /// <summary>
@@ -114,7 +171,7 @@ public class ConstructorTablero : MonoBehaviour
         foreach (var arana in datos.arañas)
         {
             // Convertir: col->X, row->Z invertido
-            Vector3 posicion = new Vector3((arana.col - 1) * tamanoCelda, 0.2f, (datos.fila - arana.row) * tamanoCelda);
+            Vector3 posicion = new Vector3((arana.col - 1) * tamanoCelda, -0.2f, (datos.fila - arana.row) * tamanoCelda);
             GameObject aranaObj = Instantiate(aranaPrefab, posicion, Quaternion.identity, transform);
             aranaObj.name = $"Arana_{arana.row}_{arana.col}";
         }
@@ -130,7 +187,7 @@ public class ConstructorTablero : MonoBehaviour
         foreach (var huevo in datos.huevos)
         {
             // Convertir: col->X, row->Z invertido
-            Vector3 posicion = new Vector3((huevo.col - 1) * tamanoCelda, 0.1f, (datos.fila - huevo.row) * tamanoCelda);
+            Vector3 posicion = new Vector3((huevo.col - 1) * tamanoCelda, -0.3f, (datos.fila - huevo.row) * tamanoCelda);
             GameObject huevoObj = Instantiate(huevoPrefab, posicion, Quaternion.identity, transform);
             huevoObj.name = $"Huevo_{huevo.row}_{huevo.col}";
         }
@@ -146,7 +203,7 @@ public class ConstructorTablero : MonoBehaviour
         foreach (var victima in datos.victimas)
         {
             // Convertir: col->X, row->Z invertido  
-            Vector3 posicion = new Vector3((victima.col - 1) * tamanoCelda, 0.05f, (datos.fila - victima.row) * tamanoCelda);
+            Vector3 posicion = new Vector3((victima.col - 1) * tamanoCelda, -0.35f, (datos.fila - victima.row) * tamanoCelda);
             GameObject victimaObj = Instantiate(victimaPrefab, posicion, Quaternion.identity, transform);
             victimaObj.name = $"Victima_{victima.row}_{victima.col}";
         }
@@ -162,7 +219,7 @@ public class ConstructorTablero : MonoBehaviour
         foreach (var falsa in datos.falsasAlarmas)
         {
             // Convertir: col->X, row->Z invertido  
-            Vector3 posicion = new Vector3((falsa.col - 1) * tamanoCelda, 0.05f, (datos.fila - falsa.row) * tamanoCelda);
+            Vector3 posicion = new Vector3((falsa.col - 1) * tamanoCelda, -0.35f, (datos.fila - falsa.row) * tamanoCelda);
             GameObject falsaObj = Instantiate(falsaAlarmaPrefab, posicion, Quaternion.identity, transform);
             falsaObj.name = $"FalsaAlarma_{falsa.row}_{falsa.col}";
         }
@@ -178,7 +235,7 @@ public class ConstructorTablero : MonoBehaviour
         foreach (var miembro in datos.tripulacion)
         {
             // Convertir: col->X, row->Z invertido
-            Vector3 posicion = new Vector3((miembro.col - 1) * tamanoCelda, 0.05f, (datos.fila - miembro.row) * tamanoCelda);
+            Vector3 posicion = new Vector3((miembro.col - 1) * tamanoCelda, -0.35f, (datos.fila - miembro.row) * tamanoCelda);
             GameObject tripulanteObj = Instantiate(tripulacionPrefab, posicion, Quaternion.identity, transform);
             tripulanteObj.name = $"Tripulante_{miembro.id}_{miembro.tipo}";
         }
@@ -200,7 +257,7 @@ public class ConstructorTablero : MonoBehaviour
             
             // Calcular posición central entre las dos celdas
             Vector3 posicionPuerta = (pos1 + pos2) / 2f;
-            posicionPuerta.y = 0.5f; // Altura de la puerta (misma que paredes)
+            posicionPuerta.y = 0.1f; // Altura de la puerta (misma que paredes)
             
             // Determinar orientación de la puerta (horizontal o vertical)
             Quaternion rotacion = Quaternion.identity;
@@ -229,7 +286,7 @@ public class ConstructorTablero : MonoBehaviour
         foreach (var entrada in datos.entradas)
         {
             // Convertir: col->X, row->Z invertido
-            Vector3 posicion = new Vector3((entrada.col - 1) * tamanoCelda, 0.05f, (datos.fila - entrada.row) * tamanoCelda);
+            Vector3 posicion = new Vector3((entrada.col - 1) * tamanoCelda, -0.35f, (datos.fila - entrada.row) * tamanoCelda);
             GameObject entradaObj = Instantiate(entradaPrefab, posicion, Quaternion.identity, transform);
             entradaObj.name = $"Entrada_{entrada.row}_{entrada.col}";
             

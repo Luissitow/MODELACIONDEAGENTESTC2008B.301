@@ -18,6 +18,7 @@ public class EscenarioData
     public PuertaData[] puertas;        // Array de puertas entre celdas
     public EntradaData[] entradas;      // Array de puntos de entrada
     public PuntoInteresData[] puntosInteres; // Array de puntos de interés especiales
+    public ParedEspecialData[] paredesEspeciales; // Array de paredes especiales (puertas, dañadas)
     
     /// <summary>
     /// Obtiene la configuración de paredes de una celda específica

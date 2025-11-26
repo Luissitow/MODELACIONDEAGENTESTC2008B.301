@@ -57,5 +57,9 @@
     {"row": 4, "col": 8},
     {"row": 6, "col": 3}
   ],
-  "puntosInteres": []
+  "puntosInteres": [],
+  "paredesEspeciales": [
+    {"fila": 0, "col": 0, "direccion": "norte", "tipo": "puerta", "estado": 1},
+    {"fila": 1, "col": 1, "direccion": "oeste", "tipo": "entrada", "estado": 1}
+  ]
 }
