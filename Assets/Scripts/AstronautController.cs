@@ -62,6 +62,43 @@ public class AstronautController : MonoBehaviour
     /// </summary>
     public Transform groundCheck;
 
+    [Header("Identificación y Posición")]
+    /// <summary>
+    /// ID único del astronauta (asignable en Inspector)
+    /// </summary>
+    [SerializeField]
+    public int astronautaID;
+    /// <summary>
+    /// Fila actual del astronauta en el tablero
+    /// </summary>
+    public int filaActual = -1; // -1 = zona exterior
+    /// <summary>
+    /// Columna actual del astronauta en el tablero
+    /// </summary>
+    public int columnaActual = 0;
+
+    // Propiedades de compatibilidad con sistema antiguo
+    public int id => astronautaID;
+    public int row => filaActual;
+    public int col => columnaActual;
+
+    [Header("Modo de Control")]
+    /// <summary>
+    /// Si está en true, el astronauta se controla manualmente (WASD)
+    /// Si está en false, se controla por JSON/simulación
+    /// </summary>
+    public bool modoManual = true;
+
+    [Header("Movimiento Automático")]
+    /// <summary>
+    /// Velocidad de movimiento automático (para animación Lerp)
+    /// </summary>
+    public float velocidadMovimientoAuto = 2f;
+    /// <summary>
+    /// Indica si el astronauta está siendo movido automáticamente
+    /// </summary>
+    private bool estaMoviendoAutomaticamente = false;
+
     // Variables privadas para input
     private float horizontalInput;
     private float verticalInput;
@@ -115,26 +152,37 @@ public class AstronautController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // Obtener inputs
-        GetInputs();
-        
-        // Verificar si está en el suelo
-        CheckGrounded();
-        
-        // Manejar movimiento
-        HandleMovement();
-        
-        // Manejar rotación con mouse
-        HandleMouseLook();
-        
-        // Manejar salto
-        HandleJump();
-        
-        // Aplicar gravedad
-        ApplyGravity();
-        
-        // Mover el personaje
-        controller.Move(velocity * Time.deltaTime);
+        // Si está en modo manual, permitir control WASD
+        if (modoManual && !estaMoviendoAutomaticamente)
+        {
+            // Obtener inputs
+            GetInputs();
+            
+            // Verificar si está en el suelo
+            CheckGrounded();
+            
+            // Manejar movimiento
+            HandleMovement();
+            
+            // Manejar rotación con mouse
+            HandleMouseLook();
+            
+            // Manejar salto
+            HandleJump();
+            
+            // Aplicar gravedad
+            ApplyGravity();
+            
+            // Mover el personaje
+            controller.Move(velocity * Time.deltaTime);
+        }
+        else if (!modoManual)
+        {
+            // En modo automático, solo aplicar gravedad para que se quede en el suelo
+            CheckGrounded();
+            ApplyGravity();
+            controller.Move(velocity * Time.deltaTime);
+        }
     }
 
     /// <summary>
@@ -290,10 +338,110 @@ public class AstronautController : MonoBehaviour
     {
         if (Application.isEditor)
         {
-            GUI.Label(new Rect(10, 10, 300, 20), $"Velocidad: {(runInput ? "Corriendo" : "Caminando")}");
-            GUI.Label(new Rect(10, 30, 300, 20), $"En suelo: {(isGrounded ? "Sí" : "No")}");
-            GUI.Label(new Rect(10, 50, 300, 20), $"Input H: {horizontalInput:F2}, V: {verticalInput:F2}");
-            GUI.Label(new Rect(10, 70, 300, 20), "Controles: WASD - Movimiento, Mouse - Mirar, Espacio - Saltar, Shift - Correr");
+            string modo = modoManual ? "MANUAL (WASD)" : "AUTOMÁTICO (JSON)";
+            GUI.Label(new Rect(10, 10, 300, 20), $"Modo: {modo}");
+            GUI.Label(new Rect(10, 30, 300, 20), $"Posición Tablero: ({filaActual},{columnaActual})");
+            GUI.Label(new Rect(10, 50, 300, 20), $"Velocidad: {(runInput ? "Corriendo" : "Caminando")}");
+            GUI.Label(new Rect(10, 70, 300, 20), $"En suelo: {(isGrounded ? "Sí" : "No")}");
+            
+            if (modoManual)
+                GUI.Label(new Rect(10, 90, 400, 20), "Controles: WASD - Movimiento, Mouse - Mirar, Espacio - Saltar, Shift - Correr");
         }
     }
-}
+
+    // ========== MÉTODOS PARA MOVIMIENTO AUTOMÁTICO DESDE JSON ==========
+
+    /// <summary>
+    /// Mueve el astronauta a una nueva posición en el tablero (usado por JSON/simulación)
+    /// </summary>
+    /// <param name="nuevaFila">Fila destino en el tablero</param>
+    /// <param name="nuevaColumna">Columna destino en el tablero</param>
+    /// <param name="tamanioCelda">Tamaño de cada celda del tablero</param>
+    public System.Collections.IEnumerator MoverA(int nuevaFila, int nuevaColumna, float tamanioCelda)
+    {
+        if (estaMoviendoAutomaticamente)
+        {
+            Debug.LogWarning($"⚠️ Astronauta {astronautaID} ya está moviéndose");
+            yield break;
+        }
+
+        estaMoviendoAutomaticamente = true;
+
+        // Calcular posición 3D destino
+        Vector3 posicionDestino = new Vector3(
+            nuevaColumna * tamanioCelda,
+            transform.position.y,
+            nuevaFila * tamanioCelda
+        );
+
+        // Rotar hacia la dirección de movimiento
+        Vector3 direccion = posicionDestino - transform.position;
+        if (direccion.magnitude > 0.1f)
+        {
+            Quaternion rotacionDestino = Quaternion.LookRotation(direccion);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotacionDestino, 0.5f);
+        }
+
+        // Mover suavemente con Lerp
+        Vector3 posicionInicial = transform.position;
+        float tiempoTranscurrido = 0f;
+        float duracion = 1f / velocidadMovimientoAuto;
+
+        while (tiempoTranscurrido < duracion)
+        {
+            tiempoTranscurrido += Time.deltaTime;
+            float progreso = tiempoTranscurrido / duracion;
+            transform.position = Vector3.Lerp(posicionInicial, posicionDestino, progreso);
+            yield return null;
+        }
+
+        transform.position = posicionDestino;
+
+        // Actualizar posición en tablero
+        filaActual = nuevaFila;
+        columnaActual = nuevaColumna;
+
+        estaMoviendoAutomaticamente = false;
+
+        Debug.Log($"✅ Astronauta {astronautaID} llegó a ({nuevaFila},{nuevaColumna})");
+    }
+
+    /// <summary>
+    /// Teletransporta el astronauta a una posición sin animación
+    /// </summary>
+    public void TeletransportarA(int fila, int columna, float tamanioCelda)
+    {
+        Vector3 nuevaPosicion = new Vector3(
+            columna * tamanioCelda,
+            transform.position.y,
+            fila * tamanioCelda
+        );
+
+        transform.position = nuevaPosicion;
+        filaActual = fila;
+        columnaActual = columna;
+
+        Debug.Log($"📍 Astronauta {astronautaID} teletransportado a ({fila},{columna})");
+    }
+
+    /// <summary>
+    /// Cambia entre modo manual y automático
+    /// </summary>
+    public void CambiarModoControl(bool manual)
+    {
+        modoManual = manual;
+        
+        if (manual)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            Debug.Log($"🎮 Astronauta {astronautaID}: Modo MANUAL activado");
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Debug.Log($"🤖 Astronauta {astronautaID}: Modo AUTOMÁTICO activado");
+        }
+    }
+} 
