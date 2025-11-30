@@ -17,10 +17,19 @@ public class ConstructorTablero : MonoBehaviour
     public GameObject falsaAlarmaPrefab;  // Falsa alarma en el piso (no rescatable)
     public GameObject puntoInteresPrefab;  // Marcador "?" flotante ARRIBA (vista aérea)
     [SerializeField] private GameObject puertaPrefab;
-    [SerializeField] private GameObject paredDanadaPrefab;
-    [SerializeField] private GameObject paredDestruidaPrefab;
+    [SerializeField] private GameObject paredDanadaPrefab; // IMPORTANTE: Asignar en Inspector
+    [SerializeField] private GameObject paredDestruidaPrefab; // IMPORTANTE: Asignar en Inspector (puede ser NULL, se desactivará)
     [SerializeField] private GameObject player1Prefab; // Prefab del astronauta jugador 1
     [SerializeField] private GameObject player2Prefab; // Prefab del astronauta jugador 2
+    
+    void Start()
+    {
+        // Validar prefabs críticos
+        if (paredDanadaPrefab == null)
+            Debug.LogWarning("⚠️ [ConstructorTablero] paredDanadaPrefab NO asignado. Las paredes no cambiarán visualmente al dañarse.");
+        if (paredDestruidaPrefab == null)
+            Debug.LogWarning("⚠️ [ConstructorTablero] paredDestruidaPrefab NO asignado. Las paredes se desactivarán al destruirse.");
+    }
     
     [Header("Configuración")]
     public float tamanioCelda = 3f;  // Tamaño de cada celda - CAMBIADO A 3 UNIDADES (público para ActionExecutor)
@@ -46,7 +55,7 @@ public class ConstructorTablero : MonoBehaviour
         CrearPisos(datos);
         CrearParedes(datos);
         CrearPuertas(datos);
-        // Entradas: no se crean objetos, simplemente son celdas sin paredes
+        CrearMarcadoresEntradas(datos); // Marcadores visuales de entradas/salidas
         CrearAranas(datos);
         CrearHuevos(datos);
         CrearTripulantes(datos); // Tripulantes rescatables en el piso
@@ -84,9 +93,9 @@ public class ConstructorTablero : MonoBehaviour
         {
             for (int col = 0; col < datos.columna; col++)
             {
-                // Saltar paredes si hay entrada en esta celda
-                if (HayEntradaEnCelda(datos, fila, col))
-                    continue;
+                // NOTA: Ya no saltamos celdas completas por entradas
+                // Las entradas se manejan como paredesEspeciales tipo "entrada"
+                // que NO crean paredes en direcciones específicas
 
                 string paredes = datos.ObtenerParedes(fila, col);
                 // Convertir de grid a Unity: invertir Z
@@ -126,7 +135,7 @@ public class ConstructorTablero : MonoBehaviour
     }
     
     /// <summary>
-    /// Instancia una pared, considerando si es especial (puerta, dañada)
+    /// Instancia una pared, considerando si es especial (puerta, entrada, dañada)
     /// </summary>
     void InstanciarPared(EscenarioData datos, int fila, int col, string direccion, Vector3 posicion, Quaternion rotacion)
     {
@@ -138,6 +147,13 @@ public class ConstructorTablero : MonoBehaviour
         
         if (especial != null)
         {
+            // Si es ENTRADA, NO crear nada (abertura en la pared)
+            if (especial.tipo == "entrada")
+            {
+                Debug.Log($"🚪 Entrada detectada en ({fila},{col}) {direccion} - NO se crea pared");
+                return; // SALIR sin crear nada
+            }
+            
             if (especial.tipo == "puerta")
             {
                 prefabAUsar = puertaPrefab; // Asumir que puertaPrefab existe
@@ -150,20 +166,41 @@ public class ConstructorTablero : MonoBehaviour
         GameObject paredObj = Instantiate(prefabAUsar, posicion, rotacion, transform);
         paredObj.name = $"Pared_{fila}_{col}_{direccion}";
         
+        // Asignar tag Wall (CRÍTICO para ActionExecutor)
+        paredObj.tag = "Wall";
+        
         // Obtener o agregar script Wall
         Wall wallScript = paredObj.GetComponent<Wall>();
         if (wallScript == null)
         {
+            Debug.LogWarning($"⚠️ Prefab {prefabAUsar.name} no tiene componente Wall, agregándolo...");
             wallScript = paredObj.AddComponent<Wall>();
         }
         
-        // Configurar propiedades
+        // Configurar propiedades básicas
         wallScript.tipo = esPuerta ? TipoPared.Puerta : TipoPared.Madera;
         wallScript.fila = fila;
         wallScript.columna = col;
         wallScript.direccion = direccion;
-        wallScript.prefabDanado = paredDanadaPrefab;
-        wallScript.prefabDestruido = paredDestruidaPrefab;
+        
+        // Asignar referencias de prefabs (CRÍTICO para cambios visuales)
+        // Si el prefab ya tiene estas referencias, las respetamos
+        // Si no, las asignamos desde ConstructorTablero
+        if (wallScript.prefabNormal == null)
+            wallScript.prefabNormal = prefabAUsar; // El mismo prefab que se usó
+        
+        if (wallScript.prefabDanado == null)
+            wallScript.prefabDanado = paredDanadaPrefab;
+        
+        if (wallScript.prefabDestruido == null)
+            wallScript.prefabDestruido = paredDestruidaPrefab;
+        
+        // Debug: mostrar qué referencias se asignaron (con verificación segura para Unity)
+        string nombreNormal = (wallScript.prefabNormal != null) ? wallScript.prefabNormal.name : "NULL";
+        string nombreDanado = (wallScript.prefabDanado != null) ? wallScript.prefabDanado.name : "NULL";
+        string nombreDestruido = (wallScript.prefabDestruido != null) ? wallScript.prefabDestruido.name : "NULL";
+        string referencias = $"Normal={nombreNormal}, Dañado={nombreDanado}, Destruido={nombreDestruido}";
+        Debug.Log($"🔧 Pared creada ({fila},{col}) {direccion} - {referencias}");
         
         // Aplicar estado inicial (daño) - SOLO A PAREDES, NO PUERTAS
         if (estadoInicial > 0 && !esPuerta)
@@ -392,9 +429,61 @@ public class ConstructorTablero : MonoBehaviour
         }
     }
     
-    // ELIMINADO: CrearEntradas()
-    // Las entradas son simplemente celdas sin paredes, no necesitan objetos
-    // La lógica de entradas se maneja en HayEntradaEnCelda() al crear paredes
+    /// <summary>
+    /// Crea marcadores visuales en el suelo para las entradas/salidas
+    /// Las entradas son aberturas en paredes donde los astronautas pueden entrar/salir
+    /// </summary>
+    void CrearMarcadoresEntradas(EscenarioData datos)
+    {
+        if (datos.entradas == null) return;
+        
+        foreach (var entrada in datos.entradas)
+        {
+            // Convertir de 1-indexed (JSON) a 0-indexed (Unity)
+            int filaUnity = entrada.row - 1;
+            int colUnity = entrada.col - 1;
+            
+            // Posición de la celda
+            Vector3 posicion = new Vector3(colUnity * tamanioCelda, 0.05f, (datos.fila - 1 - filaUnity) * tamanioCelda);
+            
+            // Crear marcador visual (cubo verde plano en el suelo)
+            GameObject marcador = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            marcador.transform.position = posicion;
+            marcador.transform.localScale = new Vector3(2.6f, 0.05f, 2.6f); // Plano, cubre casi toda la celda
+            marcador.transform.SetParent(transform);
+            marcador.name = $"Entrada_{entrada.row}_{entrada.col}";
+            
+            // Material verde brillante semi-transparente (URP)
+            Renderer renderer = marcador.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                // Usar shader URP Lit con modo Transparent
+                Shader urpShader = Shader.Find("Universal Render Pipeline/Lit");
+                if (urpShader == null) urpShader = Shader.Find("Standard"); // Fallback
+                
+                Material matEntrada = new Material(urpShader);
+                matEntrada.color = new Color(0, 1, 0, 0.3f); // Verde más transparente (alpha 0.3)
+                
+                // Configurar transparencia (URP)
+                matEntrada.SetFloat("_Surface", 1); // 0=Opaque, 1=Transparent
+                matEntrada.SetFloat("_Blend", 0); // 0=Alpha, 1=Premultiply, 2=Additive, 3=Multiply
+                matEntrada.SetFloat("_AlphaClip", 0);
+                matEntrada.SetFloat("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                matEntrada.SetFloat("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                matEntrada.SetFloat("_ZWrite", 0);
+                matEntrada.renderQueue = 3000;
+                
+                // Keywords para URP Lit Transparent
+                matEntrada.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+                matEntrada.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+                
+                renderer.material = matEntrada;
+                renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            }
+            
+            Debug.Log($"🚪 Marcador de entrada creado en ({filaUnity},{colUnity})");
+        }
+    }
     
     /// <summary>
     /// Crea marcadores "?" flotantes ARRIBA de las celdas con tripulantes o falsas alarmas

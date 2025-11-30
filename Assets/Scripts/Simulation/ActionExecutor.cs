@@ -124,7 +124,11 @@ public class ActionExecutor : MonoBehaviour
     IEnumerator EjecutarAccion(AccionData accion)
     {
         if (mostrarDebugLogs)
+        {
             Debug.Log($"🔍 Ejecutando acción tipo '{accion.tipo}' para astronauta ID {accion.astronautaID}");
+            // DEBUGGING CRÍTICO: Verificar valores de deserialización
+            accion.LogValues("EjecutarAccion");
+        }
 
         if (!astronautasCache.ContainsKey(accion.astronautaID))
         {
@@ -255,17 +259,40 @@ public class ActionExecutor : MonoBehaviour
         }
 
         GameObject pared = paredesCache[keyPared];
-        Wall wallController = pared.GetComponent<Wall>();
+        
+        // Cache el componente Wall ANTES de destrucción
+        Wall wallController = pared != null ? pared.GetComponent<Wall>() : null;
 
         if (wallController != null)
         {
-            if (mostrarDebugLogs)
-                Debug.Log($"💥 Astronauta {accion.astronautaID} ROMPE pared en ({fila},{columna}) {direccion}");
+            Debug.Log($"💥🔨 Astronauta {accion.astronautaID} ROMPE pared en ({fila},{columna}) {direccion}");
+            
+            // Animar astronauta atacando
+            AstronautController astronautaController = astronauta.GetComponent<AstronautController>();
+            if (astronautaController != null)
+            {
+                yield return astronautaController.AnimarAtaque(pared.transform.position, 0.4f);
+            }
 
-            wallController.Romper(); // 2 de daño
+            wallController.Romper(); // 2 de daño - destruye instantáneamente
+            
+            // Efecto visual de impacto doble
+            CrearEfectoImpacto(pared.transform.position);
+            yield return new WaitForSeconds(0.1f);
+            CrearEfectoImpacto(pared.transform.position + Vector3.up * 0.3f);
+            
+            yield return new WaitForSeconds(0.4f); // Pausa para ver destrucción
+            
+            // Actualizar cache si el objeto sigue existiendo después del cambio de prefab
+            if (wallController != null && wallController.gameObject != null)
+            {
+                paredesCache[keyPared] = wallController.gameObject;
+            }
         }
-
-        yield return new WaitForSeconds(0.5f);
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
     /// <summary>
@@ -274,13 +301,14 @@ public class ActionExecutor : MonoBehaviour
     IEnumerator AtacarPared(GameObject astronauta, AccionData accion)
     {
         // Obtener fila, columna, direccion desde pared o directamente
-        int fila = accion.pared != null ? accion.pared.fila : accion.fila;
-        int columna = accion.pared != null ? accion.pared.columna : accion.columna;
-        string direccion = accion.pared != null ? accion.pared.direccion : accion.direccion;
+        // Si pared existe Y tiene valores válidos, usarla; sino usar propiedades directas
+        int fila = (accion.pared != null && accion.pared.fila >= 0) ? accion.pared.fila : accion.fila;
+        int columna = (accion.pared != null && accion.pared.columna >= 0) ? accion.pared.columna : accion.columna;
+        string direccion = (accion.pared != null && !string.IsNullOrEmpty(accion.pared.direccion)) ? accion.pared.direccion : accion.direccion;
         
         if (string.IsNullOrEmpty(direccion))
         {
-            Debug.LogWarning("⚠️ Acción atacar_pared/danar_pared sin dirección especificada");
+            Debug.LogWarning($"⚠️ Acción atacar_pared/danar_pared sin dirección especificada (fila={accion.fila}, columna={accion.columna}, direccion='{accion.direccion}')");
             yield break;
         }
 
@@ -293,17 +321,77 @@ public class ActionExecutor : MonoBehaviour
         }
 
         GameObject pared = paredesCache[keyPared];
-        Wall wallController = pared.GetComponent<Wall>();
+        
+        // CRÍTICO: Cache el componente Wall ANTES de cualquier operación que pueda destruir el GameObject
+        Wall wallController = pared != null ? pared.GetComponent<Wall>() : null;
 
         if (wallController != null)
         {
             if (mostrarDebugLogs)
                 Debug.Log($"⚔️ Astronauta {accion.astronautaID} ATACA pared en ({fila},{columna}) {direccion}");
 
-            wallController.Atacar(); // 1 de daño
-        }
+            // Animar astronauta atacando hacia la pared
+            AstronautController astronautaController = astronauta.GetComponent<AstronautController>();
+            if (astronautaController != null)
+            {
+                yield return astronautaController.AnimarAtaque(pared.transform.position, 0.4f);
+            }
 
-        yield return new WaitForSeconds(0.3f);
+            // Aplicar daño a la pared
+            // Puertas reciben 1 de daño (atacar), paredes normales reciben 2 (romper)
+            if (wallController.tipo == TipoPared.Puerta)
+            {
+                Debug.Log($"🚪 Atacando PUERTA (1 de daño)");
+                wallController.Atacar(); // 1 de daño
+            }
+            else
+            {
+                Debug.Log($"🧱 Atacando PARED NORMAL (2 de daño - romper)");
+                wallController.Romper(); // 2 de daño - destruye pared en 1 golpe
+            }
+            
+            // Efecto visual de impacto (partículas, shake)
+            CrearEfectoImpacto(pared.transform.position);
+            yield return new WaitForSeconds(0.3f); // Pausa para ver efecto
+            
+            // Actualizar cache si la pared cambió de prefab
+            if (wallController != null && wallController.gameObject != null)
+            {
+                paredesCache[keyPared] = wallController.gameObject;
+            }
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.3f);
+        }
+    }
+
+    /// <summary>
+    /// Crea efecto visual de impacto en una posición
+    /// </summary>
+    void CrearEfectoImpacto(Vector3 posicion)
+    {
+        // TODO: Instanciar prefab de partículas cuando esté disponible
+        // Por ahora, solo debug visual
+        Debug.Log($"💥 Efecto de impacto en {posicion}");
+        
+        // Crear un flash temporal (esfera roja que desaparece)
+        GameObject flash = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        flash.transform.position = posicion;
+        flash.transform.localScale = Vector3.one * 0.5f;
+        
+        Renderer renderer = flash.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            Material mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            mat.color = new Color(1f, 0.3f, 0f, 0.8f); // Naranja brillante
+            mat.EnableKeyword("_EMISSION");
+            mat.SetColor("_EmissionColor", Color.red * 2f);
+            renderer.material = mat;
+        }
+        
+        // Destruir después de 0.2 segundos
+        Destroy(flash, 0.2f);
     }
 
     /// <summary>
@@ -312,22 +400,112 @@ public class ActionExecutor : MonoBehaviour
     IEnumerator AbrirPuerta(GameObject astronauta, AccionData accion)
     {
         // Obtener fila, columna, direccion desde pared o directamente
-        int fila = accion.pared != null ? accion.pared.fila : accion.fila;
-        int columna = accion.pared != null ? accion.pared.columna : accion.columna;
-        string direccion = accion.pared != null ? accion.pared.direccion : accion.direccion;
+        // Priorizar campos directos (fila, columna, direccion) sobre pared anidado
+        int fila = accion.fila;
+        int columna = accion.columna;
+        string direccion = accion.direccion;
+        
+        Debug.Log($"🔍 [AbrirPuerta] AccionData recibida: fila={fila}, columna={columna}, direccion='{direccion}'");
+        
+        // Si no están en campos directos, buscar en pared anidado
+        if (fila == 0 && columna == 0 && string.IsNullOrEmpty(direccion) && accion.pared != null)
+        {
+            Debug.Log($"⚠️ [AbrirPuerta] Coordenadas principales vacías, usando accion.pared");
+            fila = accion.pared.fila;
+            columna = accion.pared.columna;
+            direccion = accion.pared.direccion;
+        }
+        
+        Debug.Log($"🔍 [AbrirPuerta] Buscando puerta en ({fila},{columna}) dirección: {direccion}");
+        Debug.Log($"🔍 [AbrirPuerta] Total paredes en cache: {paredesCache.Count}");
         
         if (string.IsNullOrEmpty(direccion))
         {
             Debug.LogWarning("⚠️ Acción abrir_puerta sin dirección especificada");
-            yield break;
+            
+            // Intentar buscar puerta en cualquier dirección desde esta celda
+            string[] direcciones = { "norte", "sur", "este", "oeste" };
+            foreach (string dir in direcciones)
+            {
+                string key = GenerarKeyPared(fila, columna, dir);
+                if (paredesCache.ContainsKey(key))
+                {
+                    GameObject obj = paredesCache[key];
+                    Wall wall = obj.GetComponent<Wall>();
+                    if (wall != null && wall.tipo == TipoPared.Puerta)
+                    {
+                        Debug.Log($"✅ Puerta encontrada en dirección {dir}");
+                        direccion = dir;
+                        break;
+                    }
+                }
+            }
+            
+            if (string.IsNullOrEmpty(direccion))
+            {
+                Debug.LogError($"❌ No se encontró ninguna puerta en ({fila},{columna})");
+                yield break;
+            }
         }
 
         string keyPared = GenerarKeyPared(fila, columna, direccion);
+        Debug.Log($"🔑 [AbrirPuerta] Key buscada: '{keyPared}'");
         
         if (!paredesCache.ContainsKey(keyPared))
         {
-            Debug.LogWarning($"⚠️ No se encontró puerta en {keyPared}");
-            yield break;
+            Debug.LogWarning($"⚠️ [AbrirPuerta] No se encontró puerta con key: '{keyPared}' - Intentando corrección automática...");
+            
+            // Buscar puerta en celdas adyacentes (puede ser error de coordenadas en JSON)
+            string puertaCorrecta = null;
+            GameObject puertaObj = null;
+            
+            // Intentar direcciones opuestas y celdas adyacentes
+            string[] direccionesAlternas = ObtenerDireccionesAlternas(direccion);
+            int[] filasAdyacentes = { fila - 1, fila, fila + 1 };
+            int[] columnasAdyacentes = { columna - 1, columna, columna + 1 };
+            
+            foreach (int f in filasAdyacentes)
+            {
+                foreach (int c in columnasAdyacentes)
+                {
+                    foreach (string dir in direccionesAlternas)
+                    {
+                        string keyAlterna = GenerarKeyPared(f, c, dir);
+                        if (paredesCache.ContainsKey(keyAlterna))
+                        {
+                            Wall w = paredesCache[keyAlterna].GetComponent<Wall>();
+                            if (w != null && w.tipo == TipoPared.Puerta)
+                            {
+                                Debug.Log($"✅ [AbrirPuerta] CORREGIDO: Encontrada puerta en '{keyAlterna}' (original: '{keyPared}')");
+                                puertaCorrecta = keyAlterna;
+                                puertaObj = paredesCache[keyAlterna];
+                                fila = f;
+                                columna = c;
+                                direccion = dir;
+                                goto FoundDoor;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            FoundDoor:
+            if (puertaObj == null)
+            {
+                Debug.LogError($"❌ [AbrirPuerta] No se encontró ninguna puerta cerca de ({fila},{columna}) {direccion}");
+                Debug.Log($"📜 [AbrirPuerta] Puertas disponibles en cache:");
+                foreach (var kvp in paredesCache)
+                {
+                    Wall w = kvp.Value.GetComponent<Wall>();
+                    if (w != null && w.tipo == TipoPared.Puerta)
+                    {
+                        Debug.Log($"  📌 '{kvp.Key}' → Puerta en ({w.fila},{w.columna}) {w.direccion}");
+                    }
+                }
+                yield break;
+            }
+            
+            keyPared = puertaCorrecta;
         }
 
         GameObject puerta = paredesCache[keyPared];
@@ -335,13 +513,19 @@ public class ActionExecutor : MonoBehaviour
 
         if (wallController != null && wallController.tipo == TipoPared.Puerta)
         {
-            if (mostrarDebugLogs)
-                Debug.Log($"🚪 Astronauta {accion.astronautaID} abre puerta en ({fila},{columna}) {direccion}");
-
+            Debug.Log($"🚪✨ Astronauta {accion.astronautaID} abre puerta en ({fila},{columna}) {direccion}");
+            
+            // AbrirPuerta() inicia automáticamente la animación con StartCoroutine
             wallController.AbrirPuerta();
+            
+            // Esperar un poco para que se vea la animación (0.8s de animación + 0.2s buffer)
+            yield return new WaitForSeconds(1.0f);
         }
-
-        yield return new WaitForSeconds(0.3f);
+        else
+        {
+            Debug.LogWarning($"⚠️ Objeto en {keyPared} no es una puerta o no tiene Wall component");
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
     /// <summary>
@@ -412,6 +596,27 @@ public class ActionExecutor : MonoBehaviour
     string GenerarKeyPared(int fila, int columna, string direccion)
     {
         return $"{fila}_{columna}_{direccion}";
+    }
+    
+    /// <summary>
+    /// Obtiene direcciones alternas para buscar puertas (incluye opuesta y adyacentes)
+    /// </summary>
+    string[] ObtenerDireccionesAlternas(string direccionOriginal)
+    {
+        // Priorizar la dirección original, luego opuesta, luego otras
+        switch (direccionOriginal.ToLower())
+        {
+            case "norte":
+                return new[] { "norte", "sur", "este", "oeste" };
+            case "sur":
+                return new[] { "sur", "norte", "este", "oeste" };
+            case "este":
+                return new[] { "este", "oeste", "norte", "sur" };
+            case "oeste":
+                return new[] { "oeste", "este", "norte", "sur" };
+            default:
+                return new[] { "norte", "sur", "este", "oeste" };
+        }
     }
 
     /// <summary>
@@ -503,6 +708,12 @@ public class AccionData
     public int fila;
     public int columna;
     public string direccion;
+    
+    // Constructor para debugging
+    public void LogValues(string context)
+    {
+        Debug.Log($"[{context}] AccionData: tipo={tipo}, astronautaID={astronautaID}, fila={fila}, columna={columna}, direccion='{direccion}', desde={(desde != null ? $"({desde.fila},{desde.columna})" : "null")}, hacia={(hacia != null ? $"({hacia.fila},{hacia.columna})" : "null")}");
+    }
 }
 
 /// <summary>

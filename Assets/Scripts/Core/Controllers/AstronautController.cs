@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 /// <summary>
 /// This astronaut controller class will handle the movement and camera controls for the astronaut player.
@@ -81,6 +82,17 @@ public class AstronautController : MonoBehaviour
     public int id => astronautaID;
     public int row => filaActual;
     public int col => columnaActual;
+
+    [Header("Transporte de Víctimas")]
+    /// <summary>
+    /// Víctima que está siendo transportada por este astronauta (null si no lleva ninguna)
+    /// </summary>
+    public GameObject victimaEnTransporte = null;
+    
+    /// <summary>
+    /// Propiedad de ayuda para verificar si está cargando una víctima
+    /// </summary>
+    public bool TieneVictima => victimaEnTransporte != null;
 
     [Header("Modo de Control")]
     /// <summary>
@@ -425,6 +437,63 @@ public class AstronautController : MonoBehaviour
     }
 
     /// <summary>
+    /// Anima el ataque a una pared: rotación hacia objetivo + efecto de golpe
+    /// </summary>
+    public IEnumerator AnimarAtaque(Vector3 posicionObjetivo, float duracion = 0.4f)
+    {
+        Vector3 rotacionInicial = transform.eulerAngles;
+        Vector3 direccion = (posicionObjetivo - transform.position).normalized;
+        
+        // Calcular ángulo hacia el objetivo (solo en Y)
+        float anguloObjetivo = Mathf.Atan2(direccion.x, direccion.z) * Mathf.Rad2Deg;
+        Vector3 rotacionObjetivo = new Vector3(0, anguloObjetivo, 0);
+
+        // Fase 1: Rotar hacia objetivo (0.15s)
+        float tiempoRotacion = 0.15f;
+        float tiempoTranscurrido = 0f;
+        
+        while (tiempoTranscurrido < tiempoRotacion)
+        {
+            tiempoTranscurrido += Time.deltaTime;
+            float progreso = tiempoTranscurrido / tiempoRotacion;
+            transform.eulerAngles = Vector3.Lerp(rotacionInicial, rotacionObjetivo, progreso);
+            yield return null;
+        }
+
+        transform.eulerAngles = rotacionObjetivo;
+
+        // Fase 2: Movimiento de golpe (adelante y atrás) (0.25s)
+        Vector3 posicionInicial = transform.position;
+        Vector3 posicionGolpe = transform.position + direccion * 0.3f; // Avanza 0.3 unidades
+        
+        // Avanzar hacia pared
+        tiempoTranscurrido = 0f;
+        float duracionGolpe = 0.12f;
+        
+        while (tiempoTranscurrido < duracionGolpe)
+        {
+            tiempoTranscurrido += Time.deltaTime;
+            float progreso = tiempoTranscurrido / duracionGolpe;
+            transform.position = Vector3.Lerp(posicionInicial, posicionGolpe, progreso);
+            yield return null;
+        }
+
+        // Retroceder a posición original
+        tiempoTranscurrido = 0f;
+        while (tiempoTranscurrido < duracionGolpe)
+        {
+            tiempoTranscurrido += Time.deltaTime;
+            float progreso = tiempoTranscurrido / duracionGolpe;
+            transform.position = Vector3.Lerp(posicionGolpe, posicionInicial, progreso);
+            yield return null;
+        }
+
+        transform.position = posicionInicial;
+        
+        Debug.Log($"⚔️ Astronauta {astronautaID} completó animación de ataque");
+    }
+
+    /// <summary>
     /// Cambia entre modo manual y automático
     /// </summary>
     public void CambiarModoControl(bool manual)
@@ -443,5 +512,95 @@ public class AstronautController : MonoBehaviour
             Cursor.visible = true;
             Debug.Log($"🤖 Astronauta {astronautaID}: Modo AUTOMÁTICO activado");
         }
+    }
+
+    // ============================================================================
+    // SISTEMA DE TRANSPORTE DE VÍCTIMAS
+    // ============================================================================
+
+    /// <summary>
+    /// Carga una víctima para transportarla
+    /// </summary>
+    /// <param name="victima">GameObject de la víctima a cargar</param>
+    public void CargarVictima(GameObject victima)
+    {
+        if (victimaEnTransporte != null)
+        {
+            Debug.LogWarning($"⚠️ Astronauta {astronautaID} ya está cargando una víctima");
+            return;
+        }
+
+        // Verificar que sea una víctima válida
+        Victima scriptVictima = victima.GetComponent<Victima>();
+        if (scriptVictima == null)
+        {
+            Debug.LogError($"❌ El objeto {victima.name} no tiene el script Victima.cs");
+            return;
+        }
+
+        if (!scriptVictima.PuedeSerRecogida())
+        {
+            Debug.LogWarning($"⚠️ La víctima en ({scriptVictima.fila},{scriptVictima.columna}) no puede ser recogida");
+            return;
+        }
+
+        victimaEnTransporte = victima;
+        scriptVictima.SerRecogida(gameObject);
+
+        Debug.Log($"✅ Astronauta {astronautaID} cargó víctima en ({scriptVictima.fila},{scriptVictima.columna})");
+    }
+
+    /// <summary>
+    /// Suelta la víctima que está transportando
+    /// </summary>
+    /// <param name="posicion">Posición donde soltar (opcional, usa posición actual si es null)</param>
+    public void SoltarVictima(Vector3? posicion = null)
+    {
+        if (victimaEnTransporte == null)
+        {
+            Debug.LogWarning($"⚠️ Astronauta {astronautaID} no está cargando ninguna víctima");
+            return;
+        }
+
+        Victima scriptVictima = victimaEnTransporte.GetComponent<Victima>();
+        if (scriptVictima != null)
+        {
+            Vector3 posicionSoltar = posicion ?? transform.position;
+            scriptVictima.SerSoltada(posicionSoltar);
+        }
+
+        victimaEnTransporte = null;
+
+        Debug.Log($"📍 Astronauta {astronautaID} soltó víctima");
+    }
+
+    /// <summary>
+    /// Rescata la víctima en un punto de salida
+    /// </summary>
+    public void RescatarVictima()
+    {
+        if (victimaEnTransporte == null)
+        {
+            Debug.LogWarning($"⚠️ Astronauta {astronautaID} no tiene víctima para rescatar");
+            return;
+        }
+
+        Victima scriptVictima = victimaEnTransporte.GetComponent<Victima>();
+        if (scriptVictima != null)
+        {
+            scriptVictima.RescateExitoso();
+        }
+
+        victimaEnTransporte = null;
+
+        Debug.Log($"🎉 Astronauta {astronautaID} RESCATÓ una víctima exitosamente!");
+    }
+
+    /// <summary>
+    /// Obtiene la víctima que está transportando
+    /// </summary>
+    public GameObject ObtenerVictimaEnTransporte()
+    {
+        return victimaEnTransporte;
     }
 } 

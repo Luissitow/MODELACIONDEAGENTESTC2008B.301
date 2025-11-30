@@ -51,7 +51,8 @@ public class ControladorJuego : MonoBehaviour
             return;
         }
         
-        datosEscenario = JsonUtility.FromJson<EscenarioData>(archivoJSON.text);
+        // USAR JsonHelper para compatibilidad con snake_case
+        datosEscenario = JsonHelper.Deserialize<EscenarioData>(archivoJSON.text);
         Debug.Log($"Escenario cargado: {datosEscenario.fila}x{datosEscenario.columna} celdas");
     }
     

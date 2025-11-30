@@ -36,17 +36,86 @@ public class SimulacionPlayer : MonoBehaviour
 
     void Start()
     {
+        // 🛑 DESACTIVAR MODO MANUAL (ControladorJuego y GameManager)
+        // para evitar duplicación de astronautas y objetos
+        DesactivarModoManual();
+        
         if (reproducirAutomaticamente)
         {
-            // Esperar 1 segundo para que ControladorJuego construya el tablero primero
+            // Esperar 1 frame para que se complete la desactivación
             StartCoroutine(IniciarConRetraso());
+        }
+    }
+    
+    /// <summary>
+    /// Desactiva los sistemas del modo manual para evitar conflictos
+    /// </summary>
+    void DesactivarModoManual()
+    {
+        // Buscar y desactivar ControladorJuego si existe
+        ControladorJuego controladorJuego = FindFirstObjectByType<ControladorJuego>();
+        if (controladorJuego != null && controladorJuego.gameObject != gameObject)
+        {
+            controladorJuego.enabled = false;
+            if (mostrarDebugLogs)
+                Debug.Log("🛑 ControladorJuego desactivado para modo simulación");
+        }
+        
+        // Desactivar astronautas del modo manual que tengan AstronautController
+        AstronautController[] astronautas = FindObjectsOfType<AstronautController>();
+        foreach (var astronauta in astronautas)
+        {
+            // Desactivar solo el componente AstronautController, no el GameObject
+            // para que ActionExecutor pueda seguir usándolos
+            astronauta.enabled = false;
+            
+            // Desactivar controles de cámara si existen
+            CamaraLibre[] camaras = astronauta.GetComponentsInChildren<CamaraLibre>(true);
+            foreach (var camara in camaras)
+            {
+                camara.enabled = false;
+            }
+            
+            // Desactivar AudioListener duplicados (dejar solo 1 en toda la escena)
+            AudioListener[] listeners = astronauta.GetComponentsInChildren<AudioListener>(true);
+            foreach (var listener in listeners)
+            {
+                listener.enabled = false;
+            }
+        }
+        
+        if (mostrarDebugLogs && astronautas.Length > 0)
+            Debug.Log($"🛑 {astronautas.Length} astronautas desactivados para modo simulación");
+        
+        // 🔊 Asegurar que haya EXACTAMENTE 1 AudioListener activo
+        AudioListener[] todosListeners = FindObjectsByType<AudioListener>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        bool tieneListenerActivo = false;
+        
+        foreach (var listener in todosListeners)
+        {
+            if (!tieneListenerActivo && listener.enabled)
+            {
+                tieneListenerActivo = true; // Mantener el primero activo
+            }
+            else
+            {
+                listener.enabled = false; // Desactivar los demás
+            }
+        }
+        
+        // Si no quedó ninguno activo, activar el primero disponible
+        if (!tieneListenerActivo && todosListeners.Length > 0)
+        {
+            todosListeners[0].enabled = true;
+            if (mostrarDebugLogs)
+                Debug.Log("🔊 AudioListener principal activado");
         }
     }
 
     IEnumerator IniciarConRetraso()
     {
-        // Esperar a que el tablero se construya completamente
-        yield return new WaitForSeconds(1f);
+        // Esperar 1 frame para que se complete la desactivación del modo manual
+        yield return null;
         CargarYReproducirSimulacion();
     }
 
@@ -74,7 +143,8 @@ public class SimulacionPlayer : MonoBehaviour
         
         try
         {
-            simulacionData = JsonUtility.FromJson<SimulacionData>(jsonContent);
+            // USAR JsonHelper personalizado para convertir snake_case a camelCase
+            simulacionData = JsonHelper.Deserialize<SimulacionData>(jsonContent);
             
             if (simulacionData == null || simulacionData.turnos == null)
             {
@@ -107,6 +177,24 @@ public class SimulacionPlayer : MonoBehaviour
             return;
         }
 
+        // 🔍 VERIFICAR SI EL TABLERO YA ESTÁ CONSTRUIDO
+        // Si hay paredes en la escena, significa que ControladorJuego ya construyó el mapa
+        Wall[] paredesExistentes = FindObjectsOfType<Wall>();
+        
+        if (paredesExistentes.Length > 0)
+        {
+            if (mostrarDebugLogs)
+                Debug.Log($"✅ Tablero ya construido ({paredesExistentes.Length} paredes encontradas). Reutilizando estructura existente.");
+            
+            // Solo reinicializar cache sin reconstruir
+            StartCoroutine(ReinicializarCacheConRetraso());
+            return;
+        }
+
+        // Si NO hay paredes, construir el tablero desde cero
+        if (mostrarDebugLogs)
+            Debug.Log("🏗️ Construyendo tablero desde cero...");
+            
         // Si el JSON tiene estado inicial con escenario, usarlo
         if (simulacionData.estado_inicial != null && simulacionData.estado_inicial.escenario != null)
         {
@@ -141,7 +229,8 @@ public class SimulacionPlayer : MonoBehaviour
         
         try
         {
-            EscenarioData escenario = JsonUtility.FromJson<EscenarioData>(jsonEscenario);
+            // USAR JsonHelper para compatibilidad con snake_case
+            EscenarioData escenario = JsonHelper.Deserialize<EscenarioData>(jsonEscenario);
             
             if (escenario != null)
             {
