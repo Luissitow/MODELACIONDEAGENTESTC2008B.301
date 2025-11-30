@@ -311,6 +311,11 @@ public class ConstructorTablero : MonoBehaviour
             Vector3 pos1 = new Vector3(colUnity * tamanioCelda, -0.35f, (datos.fila - 1 - filaUnity) * tamanioCelda);
             GameObject player1Obj = Instantiate(player1Prefab, pos1, Quaternion.identity, transform);
             player1Obj.name = "Player1_Astronauta";
+            
+            // Ajustar escala para celdas de 3×3 (antes eran 4×4)
+            // Factor = 3/4 = 0.75
+            player1Obj.transform.localScale = Vector3.one * 0.75f;
+            
             var controller1 = player1Obj.GetComponent<AstronautController>();
             if (controller1 != null)
             {
@@ -329,6 +334,10 @@ public class ConstructorTablero : MonoBehaviour
             Vector3 pos2 = new Vector3(colUnity * tamanioCelda, -0.35f, (datos.fila - 1 - filaUnity) * tamanioCelda);
             GameObject player2Obj = Instantiate(player2Prefab, pos2, Quaternion.identity, transform);
             player2Obj.name = "Player2_Astronauta";
+            
+            // Ajustar escala para celdas de 3×3 (antes eran 4×4)
+            player2Obj.transform.localScale = Vector3.one * 0.75f;
+            
             var controller2 = player2Obj.GetComponent<AstronautController>();
             if (controller2 != null)
             {
