@@ -52,28 +52,23 @@ public class Wall : MonoBehaviour
     }
 
     /// <summary>
-    /// Aplica daño a la pared
+    /// Aplica daño a la pared o puerta
     /// </summary>
     /// <param name="cantidad">Cantidad de daño (1 o 2)</param>
     public void RecibirDano(int cantidad)
     {
-        if (tipo == TipoPared.Puerta)
-        {
-            Debug.LogWarning($"⚠️ No se puede romper una puerta en ({fila},{columna}) {direccion}. Usa AbrirPuerta()");
-            return;
-        }
-
         if (estaDestruida)
         {
-            Debug.LogWarning($"⚠️ La pared en ({fila},{columna}) {direccion} ya está destruida");
+            Debug.LogWarning($"⚠️ {(tipo == TipoPared.Puerta ? "La puerta" : "La pared")} en ({fila},{columna}) {direccion} ya está destruida");
             return;
         }
 
         vidaActual -= cantidad;
         
         string emoji = cantidad == 2 ? "🔨" : "⚔️";
-        string accion = cantidad == 2 ? "ROMPER" : "ATACAR";
-        Debug.Log($"{emoji} {accion} pared en ({fila},{columna}) {direccion} | Vida: {vidaActual}/{vidaMaxima}");
+        string tipoObjeto = tipo == TipoPared.Puerta ? "puerta" : "pared";
+        string accion = cantidad == 2 ? "GOLPE FUERTE" : "GOLPE";
+        Debug.Log($"{emoji} {accion} en {tipoObjeto} ({fila},{columna}) {direccion} | Vida: {vidaActual}/{vidaMaxima}");
 
         if (vidaActual <= 0)
         {
@@ -102,21 +97,23 @@ public class Wall : MonoBehaviour
     }
 
     /// <summary>
-    /// Destruye la pared
+    /// Destruye la pared o puerta
     /// </summary>
     void Destruir()
     {
         estaDestruida = true;
+        string tipoObjeto = tipo == TipoPared.Puerta ? "Puerta" : "Pared";
 
         if (prefabDestruido != null)
         {
             CambiarPrefab(prefabDestruido);
+            Debug.Log($"💥 {tipoObjeto} DESTRUIDA en ({fila},{columna}) {direccion} - Cambió a prefab destruido");
         }
         else
         {
-            // Simplemente desactivar
+            // Sin prefab destruido: desactivar el objeto (desaparece)
             gameObject.SetActive(false);
-            Debug.Log($"💥 Pared destruida en ({fila},{columna}) {direccion}");
+            Debug.Log($"💥 {tipoObjeto} DESTRUIDA en ({fila},{columna}) {direccion} - Vida: 0/{vidaMaxima} [GameObject desactivado - no hay prefab destruido]");
         }
     }
 
@@ -166,14 +163,28 @@ public class Wall : MonoBehaviour
 
     /// <summary>
     /// Actualiza el estado visual según la vida actual
+    /// Soporta tanto paredes como puertas
     /// </summary>
     void ActualizarEstadoVisual()
     {
-        if (meshRenderer == null || tipo == TipoPared.Puerta) return;
-
         float porcentajeVida = (float)vidaActual / vidaMaxima;
+        string tipoObjeto = tipo == TipoPared.Puerta ? "Puerta" : "Pared";
 
-        if (materialIntacto != null && materialDanado != null)
+        // Opción 1: Cambiar prefab completo (más visual)
+        if (porcentajeVida <= 0.5f && vidaActual > 0 && prefabDanado != null)
+        {
+            CambiarPrefab(prefabDanado);
+            Debug.Log($"🔧 {tipoObjeto} DAÑADA en ({fila},{columna}) {direccion} - Vida: {vidaActual}/{vidaMaxima} - Cambió a prefab dañado");
+            return;
+        }
+        else if (porcentajeVida <= 0.5f && vidaActual > 0 && prefabDanado == null)
+        {
+            // No hay prefab dañado, solo mostrar estado
+            Debug.Log($"⚠️ {tipoObjeto} DAÑADA en ({fila},{columna}) {direccion} - Vida: {vidaActual}/{vidaMaxima} [Sin cambio visual - no hay prefab dañado asignado]");
+        }
+
+        // Opción 2: Cambiar material (más sutil)
+        if (meshRenderer != null && materialIntacto != null && materialDanado != null)
         {
             if (porcentajeVida > 0.5f)
             {
@@ -187,23 +198,44 @@ public class Wall : MonoBehaviour
     }
 
     /// <summary>
-    /// Cambia el prefab de la pared
+    /// Cambia el prefab de la pared/puerta manteniendo su estado
     /// </summary>
     private void CambiarPrefab(GameObject nuevoPrefab)
     {
-        // Instanciar nuevo prefab en la misma posición
+        // Instanciar nuevo prefab en la misma posición y rotación
         GameObject nuevo = Instantiate(nuevoPrefab, transform.position, transform.rotation, transform.parent);
-        nuevo.name = gameObject.name; // Mantener nombre
+        nuevo.name = gameObject.name; // Mantener nombre para identificación
 
-        // Copiar componentes si es necesario (ej. Wall script)
+        // Asignar tag si el actual lo tiene
+        if (!string.IsNullOrEmpty(gameObject.tag))
+            nuevo.tag = gameObject.tag;
+
+        // Copiar estado al nuevo Wall script
         Wall nuevoWall = nuevo.GetComponent<Wall>();
-        if (nuevoWall != null)
+        if (nuevoWall == null)
         {
-            nuevoWall.vidaActual = vidaActual;
-            nuevoWall.tipo = tipo; // Copiar tipo en lugar de esPuerta
+            // Si el nuevo prefab no tiene Wall, agregarlo
+            nuevoWall = nuevo.AddComponent<Wall>();
         }
 
-        // Destruir el actual
+        // Transferir todo el estado
+        nuevoWall.fila = fila;
+        nuevoWall.columna = columna;
+        nuevoWall.direccion = direccion;
+        nuevoWall.tipo = tipo;
+        nuevoWall.vidaActual = vidaActual;
+        nuevoWall.vidaMaxima = vidaMaxima;
+        nuevoWall.estaDestruida = estaDestruida;
+        nuevoWall.estaAbierta = estaAbierta;
+        
+        // Transferir referencias de prefabs
+        nuevoWall.prefabNormal = prefabNormal;
+        nuevoWall.prefabDanado = prefabDanado;
+        nuevoWall.prefabDestruido = prefabDestruido;
+
+        Debug.Log($"🔄 Prefab cambiado para {(tipo == TipoPared.Puerta ? "puerta" : "pared")} en ({fila},{columna}) {direccion}");
+
+        // Destruir el objeto actual
         Destroy(gameObject);
     }
 

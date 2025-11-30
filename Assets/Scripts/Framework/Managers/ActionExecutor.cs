@@ -153,6 +153,7 @@ public class ActionExecutor : MonoBehaviour
                 yield return RomperPared(astronauta, accion);
                 break;
 
+            case "danar_pared":
             case "atacar_pared":
             case "attack_wall":
                 yield return AtacarPared(astronauta, accion);
@@ -234,13 +235,18 @@ public class ActionExecutor : MonoBehaviour
     /// </summary>
     IEnumerator RomperPared(GameObject astronauta, AccionData accion)
     {
-        if (accion.pared == null)
+        // Obtener fila, columna, direccion desde pared o directamente
+        int fila = accion.pared != null ? accion.pared.fila : accion.fila;
+        int columna = accion.pared != null ? accion.pared.columna : accion.columna;
+        string direccion = accion.pared != null ? accion.pared.direccion : accion.direccion;
+        
+        if (string.IsNullOrEmpty(direccion))
         {
-            Debug.LogWarning("⚠️ Acción romper_pared sin datos de pared");
+            Debug.LogWarning("⚠️ Acción romper_pared sin dirección especificada");
             yield break;
         }
 
-        string keyPared = GenerarKeyPared(accion.pared.fila, accion.pared.columna, accion.pared.direccion);
+        string keyPared = GenerarKeyPared(fila, columna, direccion);
         
         if (!paredesCache.ContainsKey(keyPared))
         {
@@ -254,7 +260,7 @@ public class ActionExecutor : MonoBehaviour
         if (wallController != null)
         {
             if (mostrarDebugLogs)
-                Debug.Log($"🔨 Astronauta {accion.astronautaID} ROMPE pared en ({accion.pared.fila},{accion.pared.columna}) {accion.pared.direccion}");
+                Debug.Log($"💥 Astronauta {accion.astronautaID} ROMPE pared en ({fila},{columna}) {direccion}");
 
             wallController.Romper(); // 2 de daño
         }
@@ -267,13 +273,18 @@ public class ActionExecutor : MonoBehaviour
     /// </summary>
     IEnumerator AtacarPared(GameObject astronauta, AccionData accion)
     {
-        if (accion.pared == null)
+        // Obtener fila, columna, direccion desde pared o directamente
+        int fila = accion.pared != null ? accion.pared.fila : accion.fila;
+        int columna = accion.pared != null ? accion.pared.columna : accion.columna;
+        string direccion = accion.pared != null ? accion.pared.direccion : accion.direccion;
+        
+        if (string.IsNullOrEmpty(direccion))
         {
-            Debug.LogWarning("⚠️ Acción atacar_pared sin datos de pared");
+            Debug.LogWarning("⚠️ Acción atacar_pared/danar_pared sin dirección especificada");
             yield break;
         }
 
-        string keyPared = GenerarKeyPared(accion.pared.fila, accion.pared.columna, accion.pared.direccion);
+        string keyPared = GenerarKeyPared(fila, columna, direccion);
         
         if (!paredesCache.ContainsKey(keyPared))
         {
@@ -287,7 +298,7 @@ public class ActionExecutor : MonoBehaviour
         if (wallController != null)
         {
             if (mostrarDebugLogs)
-                Debug.Log($"⚔️ Astronauta {accion.astronautaID} ATACA pared en ({accion.pared.fila},{accion.pared.columna}) {accion.pared.direccion}");
+                Debug.Log($"⚔️ Astronauta {accion.astronautaID} ATACA pared en ({fila},{columna}) {direccion}");
 
             wallController.Atacar(); // 1 de daño
         }
@@ -300,13 +311,18 @@ public class ActionExecutor : MonoBehaviour
     /// </summary>
     IEnumerator AbrirPuerta(GameObject astronauta, AccionData accion)
     {
-        if (accion.pared == null)
+        // Obtener fila, columna, direccion desde pared o directamente
+        int fila = accion.pared != null ? accion.pared.fila : accion.fila;
+        int columna = accion.pared != null ? accion.pared.columna : accion.columna;
+        string direccion = accion.pared != null ? accion.pared.direccion : accion.direccion;
+        
+        if (string.IsNullOrEmpty(direccion))
         {
-            Debug.LogWarning("⚠️ Acción abrir_puerta sin datos de pared");
+            Debug.LogWarning("⚠️ Acción abrir_puerta sin dirección especificada");
             yield break;
         }
 
-        string keyPared = GenerarKeyPared(accion.pared.fila, accion.pared.columna, accion.pared.direccion);
+        string keyPared = GenerarKeyPared(fila, columna, direccion);
         
         if (!paredesCache.ContainsKey(keyPared))
         {
@@ -320,7 +336,7 @@ public class ActionExecutor : MonoBehaviour
         if (wallController != null && wallController.tipo == TipoPared.Puerta)
         {
             if (mostrarDebugLogs)
-                Debug.Log($"🚪 Astronauta {accion.astronautaID} abre puerta en ({accion.pared.fila},{accion.pared.columna}) {accion.pared.direccion}");
+                Debug.Log($"🚪 Astronauta {accion.astronautaID} abre puerta en ({fila},{columna}) {direccion}");
 
             wallController.AbrirPuerta();
         }
@@ -482,6 +498,11 @@ public class AccionData
     public ParedAccionData pared;
     public PosicionData celda; // Para acciones como apagar_fuego, atacar_arana
     public int costo;
+    
+    // Propiedades directas para acciones de pared (compatibilidad JSON plano)
+    public int fila;
+    public int columna;
+    public string direccion;
 }
 
 /// <summary>

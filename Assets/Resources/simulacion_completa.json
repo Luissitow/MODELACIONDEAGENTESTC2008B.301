@@ -45,10 +45,11 @@
         },
         {
           "astronautaID": 1,
-          "tipo": "mover",
-          "desde": {"fila": 2, "columna": 1},
-          "hacia": {"fila": 2, "columna": 2},
-          "costo": 1
+          "tipo": "danar_pared",
+          "fila": 2,
+          "columna": 1,
+          "direccion": "norte",
+          "costo": 2
         },
         {
           "astronautaID": 2,
@@ -73,16 +74,17 @@
       "acciones": [
         {
           "astronautaID": 1,
-          "tipo": "mover",
-          "desde": {"fila": 2, "columna": 2},
-          "hacia": {"fila": 2, "columna": 3},
-          "costo": 1
+          "tipo": "danar_pared",
+          "fila": 2,
+          "columna": 1,
+          "direccion": "norte",
+          "costo": 2
         },
         {
           "astronautaID": 1,
           "tipo": "mover",
-          "desde": {"fila": 2, "columna": 3},
-          "hacia": {"fila": 3, "columna": 3},
+          "desde": {"fila": 2, "columna": 1},
+          "hacia": {"fila": 2, "columna": 2},
           "costo": 1
         },
         {
@@ -94,9 +96,10 @@
         },
         {
           "astronautaID": 2,
-          "tipo": "mover",
-          "desde": {"fila": 3, "columna": 6},
-          "hacia": {"fila": 3, "columna": 5},
+          "tipo": "abrir_puerta",
+          "fila": 3,
+          "columna": 6,
+          "direccion": "oeste",
           "costo": 1
         }
       ],
@@ -109,30 +112,32 @@
         {
           "astronautaID": 1,
           "tipo": "mover",
-          "desde": {"fila": 3, "columna": 3},
-          "hacia": {"fila": 4, "columna": 3},
+          "desde": {"fila": 2, "columna": 2},
+          "hacia": {"fila": 3, "columna": 2},
           "costo": 1
         },
         {
           "astronautaID": 1,
-          "tipo": "mover",
-          "desde": {"fila": 4, "columna": 3},
-          "hacia": {"fila": 4, "columna": 2},
-          "costo": 1
+          "tipo": "romper_pared",
+          "fila": 3,
+          "columna": 2,
+          "direccion": "este",
+          "costo": 3
         },
         {
           "astronautaID": 2,
           "tipo": "mover",
-          "desde": {"fila": 3, "columna": 5},
-          "hacia": {"fila": 4, "columna": 5},
+          "desde": {"fila": 3, "columna": 6},
+          "hacia": {"fila": 3, "columna": 5},
           "costo": 1
         },
         {
           "astronautaID": 2,
-          "tipo": "mover",
-          "desde": {"fila": 4, "columna": 5},
-          "hacia": {"fila": 5, "columna": 5},
-          "costo": 1
+          "tipo": "danar_pared",
+          "fila": 3,
+          "columna": 5,
+          "direccion": "sur",
+          "costo": 2
         }
       ],
       "estado_despues": null

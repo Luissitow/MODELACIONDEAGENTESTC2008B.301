@@ -17,6 +17,20 @@ public class ControladorJuego : MonoBehaviour
     
     void Start()
     {
+        // Si no está asignado, buscar en la escena
+        if (constructorTablero == null)
+        {
+            constructorTablero = FindFirstObjectByType<ConstructorTablero>();
+            
+            if (constructorTablero == null)
+            {
+                Debug.LogError("❌ No se encontró ConstructorTablero en la escena. Asegúrate de tener un GameObject con ese componente.");
+                return;
+            }
+            
+            Debug.Log("✅ ConstructorTablero encontrado automáticamente");
+        }
+        
         CargarEscenario();
         ConstruirTablero();
     }

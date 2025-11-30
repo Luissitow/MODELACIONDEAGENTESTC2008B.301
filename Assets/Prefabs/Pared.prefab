@@ -131,8 +131,8 @@ MonoBehaviour:
   vidaMaxima: 2
   alturaAbrirPuerta: 3
   velocidadAperturaPuerta: 2
-  prefabNormal: {fileID: 0}
-  prefabDanado: {fileID: 0}
+  prefabNormal: {fileID: 6139706247697841255}
+  prefabDanado: {fileID: 4018630134313780547, guid: a33fcb71ea84ffb43a86ddd845e169d8, type: 3}
   prefabDestruido: {fileID: 0}
   materialIntacto: {fileID: 0}
   materialDanado: {fileID: 0}
