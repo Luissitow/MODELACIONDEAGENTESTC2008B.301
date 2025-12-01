@@ -172,6 +172,7 @@ GameObject:
   - component: {fileID: 2539912321318918757}
   - component: {fileID: 4955082306953453588}
   - component: {fileID: 4399684190544592259}
+  - component: {fileID: 5597870593040443250}
   m_Layer: 0
   m_Name: Tripulacion
   m_TagString: Untagged
@@ -243,6 +244,21 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.25, z: -0.1}
+--- !u!114 &5597870593040443250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2310233727754471534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c14709e66c01ab54e9949f548056a040, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Crew
+  indicadorVictima: {fileID: 0}
+  alturaIndicador: 1.5
+  escalaIndicador: 0.5
 --- !u!1 &2469165103490669536
 GameObject:
   m_ObjectHideFlags: 0

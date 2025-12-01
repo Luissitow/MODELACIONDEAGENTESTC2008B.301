@@ -188,6 +188,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7407010708586464027}
   - component: {fileID: 6206785530818087346}
+  - component: {fileID: 1738663642062671092}
   m_Layer: 0
   m_Name: puerta
   m_TagString: Wall
@@ -234,3 +235,17 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 8d020aa1e97cab14883e2dc80d518ad7, type: 3}
+--- !u!114 &1738663642062671092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9200774962426434170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1993b20f6472c48a4decf2f93d90fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Door
+  abierta: 0
+  velocidadApertura: 2

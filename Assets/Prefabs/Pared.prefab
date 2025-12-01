@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6026292785518123723}
   - component: {fileID: 3562000263961363707}
   - component: {fileID: 8734373165691825969}
-  - component: {fileID: 5592197589271704696}
+  - component: {fileID: 6527025023519726963}
   m_Layer: 0
   m_Name: Pared
   m_TagString: Wall
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 6139706247697841255}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -112,7 +112,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5592197589271704696
+--- !u!114 &6527025023519726963
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,22 +121,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 6139706247697841255}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccb1e844f7e45f2459ecac5cbe0ce35e, type: 3}
+  m_Script: {fileID: 11500000, guid: 505f5df27d950874c81918c8bcac7495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Wall
-  fila: 0
-  columna: 0
-  direccion: 
-  tipo: 0
-  vidaMaxima: 2
-  alturaAbrirPuerta: 3
-  velocidadAperturaPuerta: 2
-  prefabNormal: {fileID: 6139706247697841255}
-  prefabDanado: {fileID: 4018630134313780547, guid: a33fcb71ea84ffb43a86ddd845e169d8, type: 3}
-  prefabDestruido: {fileID: 0}
-  materialIntacto: {fileID: 0}
-  materialDanado: {fileID: 0}
-  meshRenderer: {fileID: 0}
-  vidaActual: 0
-  estaDestruida: 0
-  estaAbierta: 0
+  materialNormal: {fileID: 2100000, guid: f250a754966718643b502708bf12fce5, type: 2}
+  materialDanada: {fileID: 2100000, guid: c3ab780e2cf64a243b7a0782f87643c6, type: 2}

@@ -9,8 +9,29 @@
 
 ---
 
+## 🆕 **ACTUALIZACIÓN: Sistema de Paredes Funcional** (29 Nov 2025)
+
+### ⚡ Inicio Rápido
+**¿Primera vez configurando?** → Lee [`INICIO_RAPIDO.md`](INICIO_RAPIDO.md) (10 minutos)
+
+### 📚 Documentación del Sistema de Paredes
+- 🚀 [`INICIO_RAPIDO.md`](INICIO_RAPIDO.md) - Configuración en 3 pasos
+- 📖 [`GUIA_CONFIGURACION_PAREDES.md`](GUIA_CONFIGURACION_PAREDES.md) - Guía detallada
+- 📊 [`RESUMEN_EJECUTIVO.md`](RESUMEN_EJECUTIVO.md) - Visión general técnica
+- 🔧 [`RESUMEN_MEJORAS_PAREDES.md`](RESUMEN_MEJORAS_PAREDES.md) - Cambios implementados
+
+### ✅ Características Nuevas
+- ✅ **3 estados visuales** de paredes: Normal → Dañada → Destruida
+- ✅ **Puertas que se abren** hacia arriba
+- ✅ **Herramienta de validación** integrada en Unity
+- ✅ **Creación automática** de prefabs placeholder
+- ✅ **Logs descriptivos** con emojis para debugging fácil
+
+---
+
 ## 📋 Índice
 
+- [Configuración Rápida](#-actualización-sistema-de-paredes-funcional-29-nov-2025)
 - [Características](#-características)
 - [Instalación](#-instalación)
 - [Uso](#-uso)

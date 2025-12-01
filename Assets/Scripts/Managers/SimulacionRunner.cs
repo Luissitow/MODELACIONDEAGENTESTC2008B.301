@@ -1,0 +1,614 @@
+using UnityEngine;
+using System.Collections;
+
+public class SimulacionRunner : MonoBehaviour
+{
+    [Header("Configuración")]
+    [Tooltip("Pausa entre turnos (segundos)")]
+    public float tiempoEntreTurnos = 0.5f;
+    [Tooltip("Pausa entre acciones individuales (segundos)")]
+    public float tiempoEntreAcciones = 0.2f;
+    
+    private EscenarioData escenario;
+    
+    /// <summary>
+    /// Inicia la simulación ejecutando todos los turnos secuencialmente
+    /// </summary>
+    public void IniciarSimulacion(EscenarioData escenarioData)
+    {
+        if (escenarioData == null || escenarioData.turnos == null)
+        {
+            Debug.LogError("Escenario inválido para simulación");
+            return;
+        }
+        
+        escenario = escenarioData;
+        
+        Debug.Log($"🎮 Iniciando simulación con {escenario.turnos.Length} turnos");
+        
+        StartCoroutine(EjecutarSimulacion());
+    }
+    
+    private IEnumerator EjecutarSimulacion()
+    {
+        foreach (TurnoData turno in escenario.turnos)
+        {
+            yield return StartCoroutine(EjecutarTurno(turno));
+            yield return new WaitForSeconds(tiempoEntreTurnos);
+        }
+        
+        Debug.Log("✅ Simulación completada");
+        MostrarResultadoFinal();
+    }
+    
+    private IEnumerator EjecutarTurno(TurnoData turno)
+    {
+        Debug.Log($"--- TURNO {turno.numero_turno} ---");
+        
+        // Fase 1: Dados (propagación)
+        if (turno.fase_dados != null)
+        {
+            yield return StartCoroutine(EjecutarFaseDados(turno.fase_dados));
+        }
+        
+        // Fase 2: Acciones de jugadores
+        if (turno.fase_accion != null)
+        {
+            yield return StartCoroutine(EjecutarFaseAccion(turno.fase_accion));
+        }
+        
+        // Fase 3: Aplicar cambios del mapa
+        if (turno.cambios_mapa != null)
+        {
+            yield return StartCoroutine(AplicarCambiosMapa(turno.cambios_mapa));
+        }
+        
+        // Mostrar estado del juego
+        if (turno.estado_juego != null)
+        {
+            MostrarEstadoJuego(turno.estado_juego);
+        }
+    }
+    
+    private IEnumerator EjecutarFaseDados(FaseDadosData fase)
+    {
+        Debug.Log("🎲 Fase de dados - Propagación");
+        
+        foreach (var tirada in fase.tiradas)
+        {
+            Debug.Log($"Dado en ({tirada.fila},{tirada.columna}): {tirada.estado_anterior} → {tirada.estado_nuevo}");
+            
+            // Procesar según el tipo de evento
+            switch (tirada.estado_nuevo.ToLower())
+            {
+                case "huevo":
+                    // Aparecer nuevo huevo
+                    yield return StartCoroutine(AparecerHuevo(tirada.fila, tirada.columna));
+                    break;
+                    
+                case "araña":
+                case "arana":
+                    // Evolucionar huevo a araña
+                    yield return StartCoroutine(EvolucionarHuevo(tirada.fila, tirada.columna));
+                    break;
+                    
+                case "explosion":
+                case "explosión":
+                    // Araña explota
+                    yield return StartCoroutine(ExplotarSpider(tirada.fila, tirada.columna));
+                    break;
+                    
+                default:
+                    Debug.LogWarning($"⚠️ Estado de dado desconocido: {tirada.estado_nuevo}");
+                    break;
+            }
+            
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+    
+    private IEnumerator EjecutarFaseAccion(FaseAccionData fase)
+    {
+        Debug.Log("⚡ Fase de acción");
+        
+        foreach (var accion in fase.acciones)
+        {
+            yield return StartCoroutine(EjecutarAccion(accion));
+            yield return new WaitForSeconds(tiempoEntreAcciones);
+        }
+    }
+    
+    private IEnumerator EjecutarAccion(AccionData accion)
+    {
+        GameObject crew = TableroBuilder.ObtenerTripulacion(accion.tripulacion_id);
+        
+        if (crew == null)
+        {
+            Debug.LogWarning($"Tripulación {accion.tripulacion_id} no encontrada");
+            yield break;
+        }
+        
+        Debug.Log($"Crew {accion.tripulacion_id} ejecuta: {accion.tipo}");
+        
+        switch (accion.tipo)
+        {
+            case "mover":
+                yield return StartCoroutine(AnimarMovimiento(crew, accion.hacia));
+                break;
+                
+            case "apagar_fuego":
+                yield return StartCoroutine(AnimarApagarFuego(accion.hacia));
+                break;
+                
+            case "revelar_poi":
+                yield return StartCoroutine(AnimarRevelarPOI(accion.poi_id));
+                break;
+                
+            case "recoger_victima":
+            case "cargar_victima":
+                yield return StartCoroutine(AnimarCargarVictima(accion.tripulacion_id, accion.desde));
+                break;
+                
+            case "depositar_victima":
+            case "dejar_victima_en_entrada":
+                yield return StartCoroutine(AnimarDepositarVictima(accion.tripulacion_id, accion.hacia));
+                break;
+                
+            case "abrir_puerta":
+                // No hacer nada aquí, los cambios se aplican después
+                break;
+                
+            case "eliminar_araña":
+                yield return StartCoroutine(AnimarEliminarSpider(accion.desde));
+                break;
+                
+            case "eliminar_huevo":
+                yield return StartCoroutine(AnimarEliminarHuevo(accion.desde));
+                break;
+                
+            case "danar_pared":
+                yield return StartCoroutine(AnimarDanarPared(accion.hacia));
+                break;
+        }
+        
+        // Aplicar cambios de esta acción específica
+        if (accion.cambios != null)
+        {
+            yield return StartCoroutine(AplicarCambiosMapa(accion.cambios));
+        }
+    }
+    
+    private IEnumerator AplicarCambiosMapa(CambiosMapaData cambios)
+    {
+        Debug.Log("🗺️ Aplicando cambios al mapa");
+        
+        // Remover huevos apagados
+        if (cambios.huevos_removidos != null)
+        {
+            foreach (var pos in cambios.huevos_removidos)
+            {
+                GameObject huevo = TableroBuilder.ObtenerHuevo(pos.fila, pos.columna);
+                if (huevo != null)
+                {
+                    Destroy(huevo);
+                    Debug.Log($"Huevo apagado en ({pos.fila},{pos.columna})");
+                }
+            }
+        }
+        
+        // Remover spiders apagadas
+        if (cambios.arañas_removidas != null)
+        {
+            foreach (var pos in cambios.arañas_removidas)
+            {
+                GameObject spider = TableroBuilder.ObtenerSpider(pos.fila, pos.columna);
+                if (spider != null)
+                {
+                    Destroy(spider);
+                    Debug.Log($"Spider apagada en ({pos.fila},{pos.columna})");
+                }
+            }
+        }
+        
+        // Dañar paredes
+        if (cambios.paredes_dañadas != null)
+        {
+            foreach (var pared in cambios.paredes_dañadas)
+            {
+                GameObject paredObj = TableroBuilder.ObtenerPared(pared.fila, pared.columna, pared.direccion);
+                if (paredObj != null)
+                {
+                    var wallComponent = paredObj.GetComponent<Wall>();
+                    if (wallComponent != null)
+                    {
+                        string estado = pared.nuevo_estado?.ToLower() ?? "dañada";
+                        
+                        // Determinar cantidad de daño basado en el estado
+                        if (estado == "destruida" || estado == "destruído")
+                        {
+                            // Aplicar daño suficiente para destruir (2 puntos)
+                            wallComponent.AplicarDano(2);
+                            Debug.Log($"💥 Pared ({pared.fila},{pared.columna},{pared.direccion}) → DESTRUIDA");
+                        }
+                        else if (estado == "dañada" || estado == "danada")
+                        {
+                            // Aplicar 1 punto de daño
+                            bool destruida = wallComponent.AplicarDano(1);
+                            if (destruida)
+                            {
+                                Debug.Log($"💥 Pared ({pared.fila},{pared.columna},{pared.direccion}) → DESTRUIDA (acumuló 2+ daños)");
+                            }
+                            else
+                            {
+                                Debug.Log($"🧱 Pared ({pared.fila},{pared.columna},{pared.direccion}) → Dañada (grietas)");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"⚠️ Pared en ({pared.fila},{pared.columna},{pared.direccion}) no tiene componente Wall");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"⚠️ No se encontró pared en ({pared.fila},{pared.columna},{pared.direccion})");
+                }
+            }
+        }
+        
+        // Abrir puertas
+        if (cambios.puertas_abiertas != null)
+        {
+            foreach (var puerta in cambios.puertas_abiertas)
+            {
+                GameObject puertaObj = TableroBuilder.ObtenerPuerta(puerta.fila, puerta.columna, puerta.direccion);
+                if (puertaObj != null)
+                {
+                    var doorComponent = puertaObj.GetComponent<Door>();
+                    if (doorComponent != null)
+                    {
+                        doorComponent.Abrir();
+                        Debug.Log($"Puerta abierta en ({puerta.fila},{puerta.columna},{puerta.direccion})");
+                    }
+                }
+            }
+        }
+        
+        // Revelar POIs
+        if (cambios.pois_revelados != null)
+        {
+            foreach (var poi in cambios.pois_revelados)
+            {
+                GameObject poiObj = TableroBuilder.ObtenerPOI(poi.poi_id);
+                if (poiObj != null)
+                {
+                    var poiComponent = poiObj.GetComponent<POI>();
+                    if (poiComponent != null)
+                    {
+                        poiComponent.Revelar(poi.tipo_revelado);
+                        Debug.Log($"POI {poi.poi_id} revelado como {poi.tipo_revelado}");
+                    }
+                }
+            }
+        }
+        
+        yield return new WaitForSeconds(0.5f);
+    }
+    
+    // Animaciones simples
+    private IEnumerator AnimarMovimiento(GameObject crew, PosicionData destino)
+    {
+        Vector3 posInicial = crew.transform.position;
+        Vector3 posFinal = CoordenadasHelper.JSONaPosicionUnity(destino.fila, destino.columna);
+        posFinal.y = 1f;
+        
+        float tiempo = 0;
+        float duracion = 1f;
+        
+        while (tiempo < duracion)
+        {
+            crew.transform.position = Vector3.Lerp(posInicial, posFinal, tiempo / duracion);
+            tiempo += Time.deltaTime;
+            yield return null;
+        }
+        
+        crew.transform.position = posFinal;
+    }
+    
+    private IEnumerator AnimarApagarFuego(PosicionData pos)
+    {
+        Debug.Log($"💧 Apagando fuego en ({pos.fila},{pos.columna})");
+        // TODO: Efecto de partículas de agua
+        yield return new WaitForSeconds(0.5f);
+    }
+    
+    private IEnumerator AnimarRevelarPOI(int poiId)
+    {
+        GameObject poiObj = TableroBuilder.ObtenerPOI(poiId);
+        
+        if (poiObj == null)
+        {
+            Debug.LogWarning($"⚠️ No se encontró POI con id {poiId}");
+            yield break;
+        }
+        
+        POI poiComponent = poiObj.GetComponent<POI>();
+        
+        if (poiComponent != null)
+        {
+            Debug.Log($"🔍 Revelando POI {poiId}");
+            
+            // El tipo se obtiene de los cambios del mapa, pero por ahora
+            // usamos una animación genérica. Se revelará correctamente en AplicarCambiosMapa
+            
+            // Animación visual simple: escalar y rotar
+            float duracion = 0.8f;
+            float tiempoTranscurrido = 0f;
+            Vector3 escalaOriginal = poiObj.transform.localScale;
+            
+            while (tiempoTranscurrido < duracion)
+            {
+                tiempoTranscurrido += Time.deltaTime;
+                float progreso = tiempoTranscurrido / duracion;
+                
+                // Pulsar
+                float pulso = 1f + Mathf.Sin(progreso * Mathf.PI * 4) * 0.2f;
+                poiObj.transform.localScale = escalaOriginal * pulso;
+                
+                // Rotar
+                poiObj.transform.Rotate(Vector3.up, Time.deltaTime * 180f);
+                
+                yield return null;
+            }
+            
+            poiObj.transform.localScale = escalaOriginal;
+        }
+        else
+        {
+            Debug.LogWarning($"⚠️ POI {poiId} no tiene componente POI");
+        }
+    }
+    
+    private IEnumerator AnimarAbrirPuerta(PosicionData pos)
+    {
+        Debug.Log($"🚪 Intentando abrir puerta en ({pos.fila},{pos.columna})");
+        
+        // Las puertas están en los cambios_mapa, necesitamos buscarlas ahí
+        yield return new WaitForSeconds(0.5f);
+    }
+    
+    // ========== Métodos de Fase de Dados ==========
+    
+    private IEnumerator AparecerHuevo(int fila, int columna)
+    {
+        Debug.Log($"🥚 Apareciendo nuevo huevo en ({fila},{columna})");
+        
+        TableroBuilder builder = FindObjectOfType<TableroBuilder>();
+        if (builder != null)
+        {
+            GameObject huevo = builder.CrearHuevoDinamico(fila, columna);
+            if (huevo != null)
+            {
+                // La animación de aparición se maneja automáticamente en Egg.Start()
+                yield return new WaitForSeconds(0.8f);
+            }
+        }
+        else
+        {
+            Debug.LogError("❌ No se encontró TableroBuilder en la escena");
+        }
+    }
+    
+    private IEnumerator EvolucionarHuevo(int fila, int columna)
+    {
+        Debug.Log($"🥚➡️🕷️ Evolucionando huevo en ({fila},{columna})");
+        
+        GameObject huevo = TableroBuilder.ObtenerHuevo(fila, columna);
+        
+        if (huevo != null)
+        {
+            Egg eggComponent = huevo.GetComponent<Egg>();
+            
+            if (eggComponent != null)
+            {
+                // Animar evolución
+                yield return StartCoroutine(eggComponent.Evolucionar());
+                
+                // Remover del diccionario
+                TableroBuilder.RemoverHuevoDelDiccionario(fila, columna);
+            }
+            else
+            {
+                Destroy(huevo);
+            }
+        }
+        
+        // Crear araña en su lugar
+        TableroBuilder builder = FindObjectOfType<TableroBuilder>();
+        if (builder != null)
+        {
+            builder.CrearSpiderDinamica(fila, columna);
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+    
+    private IEnumerator ExplotarSpider(int fila, int columna)
+    {
+        Debug.Log($"💥 Araña explotando en ({fila},{columna})");
+        
+        GameObject spider = TableroBuilder.ObtenerSpider(fila, columna);
+        
+        if (spider != null)
+        {
+            Spider spiderComponent = spider.GetComponent<Spider>();
+            
+            if (spiderComponent != null)
+            {
+                spiderComponent.Eliminar();
+                yield return new WaitForSeconds(1.5f);
+            }
+            else
+            {
+                Destroy(spider);
+            }
+            
+            TableroBuilder.RemoverSpiderDelDiccionario(fila, columna);
+        }
+        
+        // TODO: Agregar efecto de explosión visual
+        Debug.Log($"💥 ¡EXPLOSIÓN! Efectos de explosión pendientes");
+    }
+    
+    // ========== Métodos de Animación de Acciones ==========
+    
+    private IEnumerator AnimarDanarPared(PosicionData pos)
+    {
+        Debug.Log($"🔨 Dañando pared en ({pos.fila},{pos.columna})");
+        yield return new WaitForSeconds(0.5f);
+    }
+    
+    private IEnumerator AnimarEliminarSpider(PosicionData pos)
+    {
+        GameObject spider = TableroBuilder.ObtenerSpider(pos.fila, pos.columna);
+        
+        if (spider == null)
+        {
+            Debug.LogWarning($"⚠️ No se encontró araña en ({pos.fila},{pos.columna})");
+            yield break;
+        }
+        
+        Spider spiderComponent = spider.GetComponent<Spider>();
+        
+        if (spiderComponent != null)
+        {
+            Debug.Log($"🕷️💀 Eliminando araña en ({pos.fila},{pos.columna})");
+            spiderComponent.Eliminar();
+            
+            // Esperar a que termine la animación de eliminación
+            yield return new WaitForSeconds(1.5f);
+        }
+        else
+        {
+            Debug.LogWarning($"⚠️ Araña en ({pos.fila},{pos.columna}) no tiene componente Spider");
+            Destroy(spider);
+        }
+    }
+    
+    private IEnumerator AnimarEliminarHuevo(PosicionData pos)
+    {
+        GameObject huevo = TableroBuilder.ObtenerHuevo(pos.fila, pos.columna);
+        
+        if (huevo == null)
+        {
+            Debug.LogWarning($"⚠️ No se encontró huevo en ({pos.fila},{pos.columna})");
+            yield break;
+        }
+        
+        Egg eggComponent = huevo.GetComponent<Egg>();
+        
+        if (eggComponent != null)
+        {
+            Debug.Log($"🥚💥 Eliminando huevo en ({pos.fila},{pos.columna})");
+            eggComponent.Eliminar();
+            
+            // Esperar a que termine la animación de eliminación
+            yield return new WaitForSeconds(0.8f);
+        }
+        else
+        {
+            Debug.LogWarning($"⚠️ Huevo en ({pos.fila},{pos.columna}) no tiene componente Egg");
+            Destroy(huevo);
+        }
+    }
+    
+    private void MostrarEstadoJuego(EstadoJuegoData estado)
+    {
+        Debug.Log($"📊 Estado: Víctimas rescatadas: {estado.victimas_rescatadas}/{estado.victimas_perdidas} | Daño edificio: {estado.daño_edificio}/24");
+        
+        if (estado.juego_terminado)
+        {
+            Debug.Log($"🎯 JUEGO TERMINADO: {estado.resultado.ToUpper()}");
+        }
+    }
+    
+    private void MostrarResultadoFinal()
+    {
+        if (escenario.turnos.Length > 0)
+        {
+            var ultimoTurno = escenario.turnos[escenario.turnos.Length - 1];
+            if (ultimoTurno.estado_juego != null)
+            {
+                string resultado = ultimoTurno.estado_juego.resultado ?? "desconocido";
+                Debug.Log($"=== RESULTADO FINAL: {resultado.ToUpper()} ===");
+                Debug.Log($"Víctimas rescatadas: {ultimoTurno.estado_juego.victimas_rescatadas}");
+                Debug.Log($"Víctimas perdidas: {ultimoTurno.estado_juego.victimas_perdidas}");
+                Debug.Log($"Falsas alarmas: {ultimoTurno.estado_juego.falsas_alarmas}");
+                Debug.Log($"Daño al edificio: {ultimoTurno.estado_juego.daño_edificio}/24");
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Anima cuando un crew recoge una víctima
+    /// </summary>
+    private IEnumerator AnimarCargarVictima(int crewId, PosicionData posicion)
+    {
+        // Obtener GameObject del crew
+        GameObject crew = TableroBuilder.ObtenerTripulacion(crewId);
+        if (crew == null)
+        {
+            Debug.LogWarning($"⚠️ No se encontró crew {crewId}");
+            yield break;
+        }
+        
+        // Obtener componente Crew
+        Crew crewComponent = crew.GetComponent<Crew>();
+        if (crewComponent == null)
+        {
+            Debug.LogWarning($"⚠️ Crew {crewId} no tiene componente Crew.cs");
+            yield break;
+        }
+        
+        // Activar indicador visual y cambiar color a VERDE
+        crewComponent.CargarVictima();
+        
+        // ELIMINAR GameObject de la víctima POI
+        GameObject poi = TableroBuilder.ObtenerPOIPorPosicion(posicion.fila, posicion.columna);
+        if (poi != null)
+        {
+            Debug.Log($"🗑️ Eliminando POI víctima en ({posicion.fila},{posicion.columna})");
+            Destroy(poi);
+        }
+        
+        yield return new WaitForSeconds(0.5f);
+    }
+    
+    /// <summary>
+    /// Anima cuando un crew deposita una víctima
+    /// </summary>
+    private IEnumerator AnimarDepositarVictima(int crewId, PosicionData posicion)
+    {
+        // Obtener GameObject del crew
+        GameObject crew = TableroBuilder.ObtenerTripulacion(crewId);
+        if (crew == null)
+        {
+            Debug.LogWarning($"⚠️ No se encontró crew {crewId}");
+            yield break;
+        }
+        
+        // Obtener componente Crew
+        Crew crewComponent = crew.GetComponent<Crew>();
+        if (crewComponent == null)
+        {
+            Debug.LogWarning($"⚠️ Crew {crewId} no tiene componente Crew.cs");
+            yield break;
+        }
+        
+        // Desactivar indicador visual y restaurar color original
+        crewComponent.DepositarVictima();
+        
+        Debug.Log($"✅ Crew {crewId} depositó víctima en ({posicion.fila},{posicion.columna}) - ¡RESCATADA!");
+        
+        yield return new WaitForSeconds(0.5f);
+    }
+}

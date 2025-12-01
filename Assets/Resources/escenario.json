@@ -1,85 +1,529 @@
 {
-  "fila": 6,
-  "columna": 8,
-  "celdas": [
-    "1100", "1000", "1001", "1100", "1001", "0100", "1000", "1001",
+  "tablero": {
+    "fila": 6,
+    "columna": 8,
+    "celdas": [
+    "1100", "1000", "1001", "1100", "1001", "1100", "1000", "1001",
     "0100", "0000", "0011", "0110", "0010", "0110", "0010", "0011",
-    "0000", "0001", "1100", "1000", "1000", "1001", "1100", "1001",
-    "0110", "0011", "0110", "0010", "0010", "0011", "0110", "0010",
+    "0100", "0001", "1100", "1000", "1000", "1001", "1100", "1001",
+    "0110", "0011", "0110", "0010", "0010", "0011", "0110", "0011",
     "1100", "1000", "1000", "1000", "1001", "1100", "1001", "1101",
-    "0110", "0010", "0000", "0010", "0011", "0110", "0011", "0111"
-  ],
-  "victimas": [
-    {"row": 2, "col": 4, "type": "victima"},
-    {"row": 5, "col": 8, "type": "victima"}
-  ],
-  "falsasAlarmas": [
-    {"row": 5, "col": 1, "type": "falsaalarma"}
-  ],
-  "tripulacion": [
+    "0110", "0010", "0010", "0010", "0011", "0110", "0011", "0111"
+    ] 
+  },
+  "estado_inicial": {
+    "tripulacion": [
+      {"id": 1, "tipo": "jugador", "fila": 1, "columna": 1, "puntos_accion": 4, "cargando_victima": false},
+      {"id": 2, "tipo": "jugador", "fila": 1, "columna": 8, "puntos_accion": 4, "cargando_victima": false}
+    ],
+    "puntosInteres": [
+      {"id": 1, "fila": 2, "columna": 4, "revelado": false, "tipo": "victima"},
+      {"id": 2, "fila": 5, "columna": 1, "revelado": false, "tipo": "falsa_alarma"},
+      {"id": 3, "fila": 5, "columna": 8, "revelado": false, "tipo": "victima"}
+    ],
+    "arañas": [
+      {"fila": 1, "columna": 2},
+      {"fila": 1, "columna": 3},
+      {"fila": 2, "columna": 2},
+      {"fila": 2, "columna": 3},
+      {"fila": 3, "columna": 2},
+      {"fila": 3, "columna": 3},
+      {"fila": 3, "columna": 4},
+      {"fila": 3, "columna": 5},
+      {"fila": 4, "columna": 4},
+      {"fila": 5, "columna": 6},
+      {"fila": 5, "columna": 7},
+      {"fila": 6, "columna": 6}
+    ],
+    "huevos": [
+      {"fila": 1, "columna": 1},
+      {"fila": 4, "columna": 5}
+    ],
+    "puertas": [
+      {"fila": 1, "columna": 3, "direccion": "este", "abierta": false},
+      {"fila": 2, "columna": 5, "direccion": "este", "abierta": false},
+      {"fila": 2, "columna": 8, "direccion": "sur", "abierta": false},
+      {"fila": 3, "columna": 2, "direccion": "este", "abierta": false},
+      {"fila": 4, "columna": 4, "direccion": "sur", "abierta": false},
+      {"fila": 4, "columna": 6, "direccion": "este", "abierta": false},
+      {"fila": 6, "columna": 5, "direccion": "este", "abierta": false},
+      {"fila": 6, "columna": 7, "direccion": "este", "abierta": false}
+    ],
+    "entradas": [
+      {"fila": 1, "columna": 6, "direccion": "norte"},
+      {"fila": 3, "columna": 1, "direccion": "oeste"},
+      {"fila": 4, "columna": 8, "direccion": "este"},
+      {"fila": 6, "columna": 3, "direccion": "sur"}
+    ],
+    "contador_colapso_edificio": 0
+  },
+  "turnos": [
     {
-      "row": 3,
-      "col": 1,
-      "tipo": "astronauta",
-      "id": 1,
-      "esJugador": true,
-      "movimientos": [
-        {"tipo": "mover", "destino": {"row": 2, "col": 1}},
-        {"tipo": "abrir_puerta", "direccion": "este"},
-        {"tipo": "mover", "destino": {"row": 2, "col": 2}}
-      ]
+      "numero_turno": 1,
+      "fase_dados": {
+        "tiradas": [
+          {
+            "fila": 3,
+            "columna": 6,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {
+              "huevos_nuevos": [{"fila": 3, "columna": 6}]
+            }
+          }
+        ]
+      },
+      "fase_accion": {
+        "acciones": [
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 1, "columna": 1},
+            "hacia": {"fila": 2, "columna": 1},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 2, "columna": 1},
+            "hacia": {"fila": 2, "columna": 2},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 2, "columna": 2},
+            "hacia": {"fila": 2, "columna": 3},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 2, "columna": 3},
+            "hacia": {"fila": 2, "columna": 4},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "mover",
+            "desde": {"fila": 1, "columna": 8},
+            "hacia": {"fila": 2, "columna": 8},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "abrir_puerta",
+            "desde": {"fila": 2, "columna": 8},
+            "hacia": {"fila": 3, "columna": 8},
+            "costo_ap": 1,
+            "cambios": {
+              "puertas_abiertas": [{"fila": 2, "columna": 8, "direccion": "sur"}]
+            }
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "mover",
+            "desde": {"fila": 2, "columna": 8},
+            "hacia": {"fila": 3, "columna": 8},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "revelar_poi",
+            "desde": {"fila": 3, "columna": 8},
+            "hacia": {"fila": 5, "columna": 8},
+            "poi_id": 3,
+            "resultado": "victima",
+            "costo_ap": 1,
+            "cambios": {
+              "pois_revelados": [{"id": 3, "tipo": "victima"}]
+            }
+          }
+        ]
+      },
+      "estado_juego": {
+        "victimas_rescatadas": 0,
+        "victimas_perdidas": 0,
+        "falsas_alarmas": 0,
+        "daño_edificio": 0,
+        "juego_terminado": false,
+        "resultado": "en_progreso",
+        "mensaje": "Turno 1: Nuevo huevo aparece en (3,6). Víctima revelada en (5,8)."
+      }
     },
     {
-      "row": 6,
-      "col": 8,
-      "tipo": "astronauta",
-      "id": 2,
-      "esJugador": false,
-      "movimientos": [
-        {"tipo": "mover", "destino": {"row": 5, "col": 8}},
-        {"tipo": "danar_pared", "direccion": "norte"},
-        {"tipo": "mover", "destino": {"row": 4, "col": 8}}
-      ]
+      "numero_turno": 2,
+      "fase_dados": {
+        "tiradas": [
+          {
+            "fila": 1,
+            "columna": 1,
+            "estado_anterior": "huevo",
+            "estado_nuevo": "araña",
+            "cambios": {
+              "huevos_removidos": [{"fila": 1, "columna": 1}],
+              "arañas_nuevas": [{"fila": 1, "columna": 1}]
+            }
+          }
+        ]
+      },
+      "fase_accion": {
+        "acciones": [
+          {
+            "tripulacion_id": 1,
+            "tipo": "revelar_poi",
+            "desde": {"fila": 2, "columna": 4},
+            "hacia": {"fila": 2, "columna": 4},
+            "poi_id": 1,
+            "resultado": "victima",
+            "costo_ap": 1,
+            "cambios": {
+              "pois_revelados": [{"id": 1, "tipo": "victima"}]
+            }
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "recoger_victima",
+            "desde": {"fila": 2, "columna": 4},
+            "hacia": {"fila": 2, "columna": 4},
+            "poi_id": 1,
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 2, "columna": 4},
+            "hacia": {"fila": 2, "columna": 3},
+            "costo_ap": 2,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "mover",
+            "desde": {"fila": 3, "columna": 8},
+            "hacia": {"fila": 4, "columna": 8},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "mover",
+            "desde": {"fila": 4, "columna": 8},
+            "hacia": {"fila": 5, "columna": 8},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "recoger_victima",
+            "desde": {"fila": 5, "columna": 8},
+            "hacia": {"fila": 5, "columna": 8},
+            "poi_id": 3,
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "mover",
+            "desde": {"fila": 5, "columna": 8},
+            "hacia": {"fila": 4, "columna": 8},
+            "costo_ap": 2,
+            "cambios": {}
+          }
+        ]
+      },
+      "estado_juego": {
+        "victimas_rescatadas": 0,
+        "victimas_perdidas": 0,
+        "falsas_alarmas": 0,
+        "daño_edificio": 0,
+        "juego_terminado": false,
+        "resultado": "en_progreso",
+        "mensaje": "Turno 2: Huevo en (1,1) evoluciona a araña. Ambos jugadores recogen víctimas."
+      }
+    },
+    {
+      "numero_turno": 3,
+      "fase_dados": {
+        "tiradas": [
+          {
+            "fila": 2,
+            "columna": 2,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "arañas_removidas": [{"fila": 2, "columna": 2}],
+              "explosiones": [{"fila": 2, "columna": 2}],
+              "paredes_dañadas": [
+                {"fila": 2, "columna": 2, "direccion": "oeste", "nuevo_estado": "dañada"}
+              ]
+            }
+          }
+        ]
+      },
+      "fase_accion": {
+        "acciones": [
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 2, "columna": 3},
+            "hacia": {"fila": 1, "columna": 3},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "abrir_puerta",
+            "desde": {"fila": 1, "columna": 3},
+            "hacia": {"fila": 1, "columna": 4},
+            "costo_ap": 1,
+            "cambios": {
+              "puertas_abiertas": [{"fila": 1, "columna": 3, "direccion": "este"}]
+            }
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 1, "columna": 3},
+            "hacia": {"fila": 1, "columna": 4},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 1, "columna": 4},
+            "hacia": {"fila": 1, "columna": 5},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "mover",
+            "desde": {"fila": 4, "columna": 8},
+            "hacia": {"fila": 4, "columna": 7},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "abrir_puerta",
+            "desde": {"fila": 4, "columna": 7},
+            "hacia": {"fila": 4, "columna": 6},
+            "costo_ap": 1,
+            "cambios": {
+              "puertas_abiertas": [{"fila": 4, "columna": 6, "direccion": "este"}]
+            }
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "mover",
+            "desde": {"fila": 4, "columna": 7},
+            "hacia": {"fila": 4, "columna": 6},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "mover",
+            "desde": {"fila": 4, "columna": 6},
+            "hacia": {"fila": 4, "columna": 5},
+            "costo_ap": 1,
+            "cambios": {}
+          }
+        ]
+      },
+      "estado_juego": {
+        "victimas_rescatadas": 0,
+        "victimas_perdidas": 0,
+        "falsas_alarmas": 0,
+        "daño_edificio": 1,
+        "juego_terminado": false,
+        "resultado": "en_progreso",
+        "mensaje": "Turno 3: ¡EXPLOSIÓN en (2,2)! Pared oeste dañada. Jugadores avanzan abriendo puertas."
+      }
+    },
+    {
+      "numero_turno": 4,
+      "fase_dados": {
+        "tiradas": [
+          {
+            "fila": 4,
+            "columna": 5,
+            "estado_anterior": "huevo",
+            "estado_nuevo": "araña",
+            "cambios": {
+              "huevos_removidos": [{"fila": 4, "columna": 5}],
+              "arañas_nuevas": [{"fila": 4, "columna": 5}]
+            }
+          }
+        ]
+      },
+      "fase_accion": {
+        "acciones": [
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 1, "columna": 5},
+            "hacia": {"fila": 1, "columna": 6},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "depositar_victima",
+            "desde": {"fila": 1, "columna": 6},
+            "hacia": {"fila": 1, "columna": 6},
+            "poi_id": 1,
+            "resultado": "rescatada",
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 1, "columna": 6},
+            "hacia": {"fila": 1, "columna": 5},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 1, "columna": 5},
+            "hacia": {"fila": 2, "columna": 5},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "mover",
+            "desde": {"fila": 4, "columna": 5},
+            "hacia": {"fila": 5, "columna": 5},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "mover",
+            "desde": {"fila": 5, "columna": 5},
+            "hacia": {"fila": 5, "columna": 6},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "eliminar_araña",
+            "desde": {"fila": 5, "columna": 6},
+            "hacia": {"fila": 5, "columna": 6},
+            "costo_ap": 2,
+            "cambios": {
+              "arañas_removidas": [{"fila": 5, "columna": 6}]
+            }
+          }
+        ]
+      },
+      "estado_juego": {
+        "victimas_rescatadas": 1,
+        "victimas_perdidas": 0,
+        "falsas_alarmas": 0,
+        "daño_edificio": 1,
+        "juego_terminado": false,
+        "resultado": "en_progreso",
+        "mensaje": "Turno 4: ¡Primera víctima rescatada! Huevo (4,5) evoluciona a araña. Jugador 2 elimina araña (5,6)."
+      }
+    },
+    {
+      "numero_turno": 5,
+      "fase_dados": {
+        "tiradas": [
+          {
+            "fila": 3,
+            "columna": 6,
+            "estado_anterior": "huevo",
+            "estado_nuevo": "araña",
+            "cambios": {
+              "huevos_removidos": [{"fila": 3, "columna": 6}],
+              "arañas_nuevas": [{"fila": 3, "columna": 6}]
+            }
+          }
+        ]
+      },
+      "fase_accion": {
+        "acciones": [
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 2, "columna": 5},
+            "hacia": {"fila": 2, "columna": 6},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "mover",
+            "desde": {"fila": 2, "columna": 6},
+            "hacia": {"fila": 3, "columna": 6},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 1,
+            "tipo": "eliminar_araña",
+            "desde": {"fila": 3, "columna": 6},
+            "hacia": {"fila": 3, "columna": 6},
+            "costo_ap": 2,
+            "cambios": {
+              "arañas_removidas": [{"fila": 3, "columna": 6}]
+            }
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "mover",
+            "desde": {"fila": 5, "columna": 6},
+            "hacia": {"fila": 5, "columna": 7},
+            "costo_ap": 1,
+            "cambios": {}
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "eliminar_araña",
+            "desde": {"fila": 5, "columna": 7},
+            "hacia": {"fila": 5, "columna": 7},
+            "costo_ap": 2,
+            "cambios": {
+              "arañas_removidas": [{"fila": 5, "columna": 7}]
+            }
+          },
+          {
+            "tripulacion_id": 2,
+            "tipo": "depositar_victima",
+            "desde": {"fila": 5, "columna": 7},
+            "hacia": {"fila": 4, "columna": 8},
+            "poi_id": 3,
+            "resultado": "rescatada",
+            "costo_ap": 1,
+            "cambios": {}
+          }
+        ]
+      },
+      "estado_juego": {
+        "victimas_rescatadas": 2,
+        "victimas_perdidas": 0,
+        "falsas_alarmas": 0,
+        "daño_edificio": 1,
+        "juego_terminado": true,
+        "resultado": "victoria",
+        "mensaje": "Turno 5: ¡VICTORIA! Segunda víctima rescatada. Arañas eliminadas en (3,6) y (5,7)."
+      }
     }
-  ],
-  "arañas": [
-    {"row": 1, "col": 2},
-    {"row": 1, "col": 3},
-    {"row": 2, "col": 2},
-    {"row": 2, "col": 3},
-    {"row": 3, "col": 2},
-    {"row": 3, "col": 3},
-    {"row": 3, "col": 4},
-    {"row": 3, "col": 5},
-    {"row": 4, "col": 4},
-    {"row": 5, "col": 6},
-    {"row": 5, "col": 7},
-    {"row": 6, "col": 6}
-  ],
-  "huevos": [ 
-    {"row": 1, "col": 1},
-    {"row": 4, "col": 5}
-  ],
-  "puertas": [
-    {"r1": 1, "c1": 3, "r2": 1, "c2": 4},
-    {"r1": 2, "c1": 5, "r2": 2, "c2": 6},
-    {"r1": 2, "c1": 8, "r2": 3, "c2": 8},
-    {"r1": 3, "c1": 2, "r2": 3, "c2": 3},
-    
-    {"r1": 4, "c1": 4, "r2": 5, "c2": 4},
-    {"r1": 4, "c1": 6, "r2": 4, "c2": 7},
-    {"r1": 6, "c1": 5, "r2": 6, "c2": 6},
-    {"r1": 6, "c1": 7, "r2": 6, "c2": 8}
-  ],
-  "entradas": [
-    {"row": 1, "col": 6},
-    {"row": 3, "col": 1},
-    {"row": 4, "col": 8},
-    {"row": 6, "col": 3}
-  ],
-  "puntosInteres": [],
-  "paredesEspeciales": [
-    {"fila": 0, "col": 0, "direccion": "norte", "tipo": "puerta", "estado": 1},
-    {"fila": 1, "col": 1, "direccion": "oeste", "tipo": "entrada", "estado": 1}
   ]
 }
+  

@@ -1,0 +1,344 @@
+{
+  "tablero": {
+    "fila": 6,
+    "columna": 8,
+    "celdas": [
+      "1100", "1000", "1001", "1100", "1001", "1100", "1000", "1001",
+      "0100", "0000", "0011", "0110", "0010", "0110", "0010", "0011",
+      "0100", "0001", "1100", "1000", "1000", "1001", "1100", "1001",
+      "0110", "0011", "0110", "0010", "0010", "0011", "0110", "0011",
+      "1100", "1000", "1000", "1000", "1001", "1100", "1001", "1101",
+      "0110", "0010", "0010", "0010", "0011", "0110", "0011", "0111"
+    ]
+  },
+  "estado_inicial": {
+    "tripulacion": [
+      {"id": 1, "tipo": "bombero", "fila": 3, "columna": 1, "puntos_accion": 4, "cargando_victima": false},
+      {"id": 2, "tipo": "bombero", "fila": 6, "columna": 8, "puntos_accion": 4, "cargando_victima": false},
+      {"id": 3, "tipo": "bombero", "fila": 1, "columna": 6, "puntos_accion": 4, "cargando_victima": false},
+      {"id": 4, "tipo": "bombero", "fila": 6, "columna": 3, "puntos_accion": 4, "cargando_victima": false}
+    ],
+    "puntosInteres": [
+      {"id": 1, "fila": 2, "columna": 4, "revelado": false, "tipo": ""},
+      {"id": 2, "fila": 5, "columna": 1, "revelado": false, "tipo": ""},
+      {"id": 3, "fila": 5, "columna": 8, "revelado": false, "tipo": ""},
+      {"id": 4, "fila": 1, "columna": 5, "revelado": false, "tipo": ""},
+      {"id": 5, "fila": 4, "columna": 2, "revelado": false, "tipo": ""},
+      {"id": 6, "fila": 6, "columna": 7, "revelado": false, "tipo": ""}
+    ],
+    "arañas": [
+      {"fila": 2, "columna": 3},
+      {"fila": 3, "columna": 5}
+    ],
+    "huevos": [
+      {"fila": 2, "columna": 2},
+      {"fila": 4, "columna": 5}
+    ],
+    "puertas": [
+      {"fila": 1, "columna": 3, "direccion": "este", "abierta": false},
+      {"fila": 2, "columna": 5, "direccion": "este", "abierta": false},
+      {"fila": 2, "columna": 8, "direccion": "sur", "abierta": false},
+      {"fila": 3, "columna": 2, "direccion": "este", "abierta": false},
+      {"fila": 4, "columna": 4, "direccion": "sur", "abierta": false},
+      {"fila": 4, "columna": 6, "direccion": "este", "abierta": false},
+      {"fila": 6, "columna": 5, "direccion": "este", "abierta": false},
+      {"fila": 6, "columna": 7, "direccion": "este", "abierta": false}
+    ],
+    "entradas": [
+      {"fila": 1, "columna": 6, "direccion": "norte"},
+      {"fila": 3, "columna": 1, "direccion": "oeste"},
+      {"fila": 4, "columna": 8, "direccion": "este"},
+      {"fila": 6, "columna": 3, "direccion": "sur"}
+    ],
+    "contador_colapso_edificio": 0
+  },
+  "turnos": [
+    {
+      "numero": 1,
+      "dado_cayo_en": {"fila": 3, "columna": 4},
+      "que_paso": "habia_nada_poner_huevo",
+      "cambios_mapa": {
+        "huevos_nuevos": [{"row": 3, "col": 4}],
+        "huevos_removidos": [],
+        "arañas_nuevas": [],
+        "arañas_removidas": [],
+        "explosiones": [],
+        "paredes_dañadas": [],
+        "puertas_abiertas": [],
+        "pois_revelados": []
+      },
+      "contador_dano_edificio": 0,
+      "jugador_decidio": {
+        "astronauta": 1,
+        "acciones": [
+          {"accion": "mover", "desde": {"row": 3, "col": 1}, "hacia": {"row": 2, "col": 1}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 2, "col": 1}, "hacia": {"row": 2, "col": 2}, "costo_ap": 1},
+          {"accion": "apagar_fuego", "celda": {"row": 2, "col": 2}, "costo_ap": 1}
+        ],
+        "ap_usados": 3,
+        "ap_guardados": 1
+      },
+      "estado_juego": {"victimas_rescatadas": 0, "victimas_perdidas": 0, "edificio_colapsado": false}
+    },
+    {
+      "numero": 2,
+      "dado_cayo_en": {"fila": 2, "columna": 4},
+      "que_paso": "habia_poi_revelar",
+      "cambios_mapa": {
+        "huevos_nuevos": [],
+        "huevos_removidos": [],
+        "arañas_nuevas": [],
+        "arañas_removidas": [],
+        "explosiones": [],
+        "paredes_dañadas": [],
+        "puertas_abiertas": [],
+        "pois_revelados": [{"row": 2, "col": 4, "resultado": "victima"}]
+      },
+      "contador_dano_edificio": 0,
+      "jugador_decidio": {
+        "astronauta": 3,
+        "acciones": [
+          {"accion": "mover", "desde": {"row": 1, "col": 6}, "hacia": {"row": 1, "col": 5}, "costo_ap": 1},
+          {"accion": "revelar_poi", "celda": {"row": 1, "col": 5}, "resultado": "falsa_alarma", "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 1, "col": 5}, "hacia": {"row": 1, "col": 4}, "costo_ap": 1}
+        ],
+        "ap_usados": 3,
+        "ap_guardados": 1
+      },
+      "estado_juego": {"victimas_rescatadas": 0, "victimas_perdidas": 0, "edificio_colapsado": false}
+    },
+    {
+      "numero": 3,
+      "dado_cayo_en": {"fila": 2, "columna": 3},
+      "que_paso": "habia_arana_explosion",
+      "cambios_mapa": {
+        "huevos_nuevos": [],
+        "huevos_removidos": [],
+        "arañas_nuevas": [],
+        "arañas_removidas": [{"row": 2, "col": 3}],
+        "explosiones": [{"row": 2, "col": 3}],
+        "paredes_dañadas": [
+          {"celda": {"row": 2, "col": 3}, "direccion": "norte", "estado_anterior": "normal", "estado_nuevo": "dañada"},
+          {"celda": {"row": 2, "col": 3}, "direccion": "sur", "estado_anterior": "normal", "estado_nuevo": "dañada"}
+        ],
+        "puertas_abiertas": [],
+        "pois_revelados": []
+      },
+      "contador_dano_edificio": 2,
+      "jugador_decidio": {
+        "astronauta": 1,
+        "acciones": [
+          {"accion": "mover", "desde": {"row": 2, "col": 2}, "hacia": {"row": 2, "col": 3}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 2, "col": 3}, "hacia": {"row": 2, "col": 4}, "costo_ap": 1},
+          {"accion": "cargar_victima", "celda": {"row": 2, "col": 4}, "costo_ap": 1}
+        ],
+        "ap_usados": 3,
+        "ap_guardados": 1
+      },
+      "estado_juego": {"victimas_rescatadas": 0, "victimas_perdidas": 0, "edificio_colapsado": false}
+    },
+    {
+      "numero": 4,
+      "dado_cayo_en": {"fila": 4, "columna": 5},
+      "que_paso": "habia_huevo_poner_arana",
+      "cambios_mapa": {
+        "huevos_nuevos": [],
+        "huevos_removidos": [{"row": 4, "col": 5}],
+        "arañas_nuevas": [{"row": 4, "col": 5}],
+        "arañas_removidas": [],
+        "explosiones": [],
+        "paredes_dañadas": [],
+        "puertas_abiertas": [{"r1": 2, "c1": 5, "r2": 2, "c2": 6}],
+        "pois_revelados": []
+      },
+      "contador_dano_edificio": 2,
+      "jugador_decidio": {
+        "astronauta": 2,
+        "acciones": [
+          {"accion": "mover", "desde": {"row": 6, "col": 8}, "hacia": {"row": 5, "col": 8}, "costo_ap": 1},
+          {"accion": "revelar_poi", "celda": {"row": 5, "col": 8}, "resultado": "victima", "costo_ap": 1},
+          {"accion": "cargar_victima", "celda": {"row": 5, "col": 8}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 5, "col": 8}, "hacia": {"row": 4, "col": 8}, "costo_ap": 1}
+        ],
+        "ap_usados": 4,
+        "ap_guardados": 0
+      },
+      "estado_juego": {"victimas_rescatadas": 0, "victimas_perdidas": 0, "edificio_colapsado": false}
+    },
+    {
+      "numero": 5,
+      "dado_cayo_en": {"fila": 3, "columna": 4},
+      "que_paso": "habia_huevo_poner_arana",
+      "cambios_mapa": {
+        "huevos_nuevos": [],
+        "huevos_removidos": [{"row": 3, "col": 4}],
+        "arañas_nuevas": [{"row": 3, "col": 4}],
+        "arañas_removidas": [],
+        "explosiones": [],
+        "paredes_dañadas": [],
+        "puertas_abiertas": [],
+        "pois_revelados": []
+      },
+      "contador_dano_edificio": 2,
+      "jugador_decidio": {
+        "astronauta": 1,
+        "acciones": [
+          {"accion": "mover", "desde": {"row": 2, "col": 4}, "hacia": {"row": 2, "col": 5}, "costo_ap": 1},
+          {"accion": "abrir_puerta", "entre": {"r1": 2, "c1": 5, "r2": 2, "c2": 6}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 2, "col": 5}, "hacia": {"row": 2, "col": 6}, "costo_ap": 1}
+        ],
+        "ap_usados": 3,
+        "ap_guardados": 1
+      },
+      "estado_juego": {"victimas_rescatadas": 0, "victimas_perdidas": 0, "edificio_colapsado": false}
+    },
+    {
+      "numero": 6,
+      "dado_cayo_en": {"fila": 3, "columna": 5},
+      "que_paso": "habia_arana_explosion",
+      "cambios_mapa": {
+        "huevos_nuevos": [],
+        "huevos_removidos": [],
+        "arañas_nuevas": [],
+        "arañas_removidas": [{"row": 3, "col": 5}],
+        "explosiones": [{"row": 3, "col": 5}],
+        "paredes_dañadas": [
+          {"celda": {"row": 3, "col": 5}, "direccion": "norte", "estado_anterior": "normal", "estado_nuevo": "dañada"},
+          {"celda": {"row": 3, "col": 5}, "direccion": "este", "estado_anterior": "normal", "estado_nuevo": "dañada"},
+          {"celda": {"row": 3, "col": 5}, "direccion": "oeste", "estado_anterior": "normal", "estado_nuevo": "dañada"}
+        ],
+        "puertas_abiertas": [],
+        "pois_revelados": []
+      },
+      "contador_dano_edificio": 5,
+      "jugador_decidio": {
+        "astronauta": 4,
+        "acciones": [
+          {"accion": "mover", "desde": {"row": 6, "col": 3}, "hacia": {"row": 5, "col": 3}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 5, "col": 3}, "hacia": {"row": 5, "col": 2}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 5, "col": 2}, "hacia": {"row": 5, "col": 1}, "costo_ap": 1},
+          {"accion": "revelar_poi", "celda": {"row": 5, "col": 1}, "resultado": "victima", "costo_ap": 1}
+        ],
+        "ap_usados": 4,
+        "ap_guardados": 0
+      },
+      "estado_juego": {"victimas_rescatadas": 0, "victimas_perdidas": 0, "edificio_colapsado": false}
+    },
+    {
+      "numero": 7,
+      "dado_cayo_en": {"fila": 4, "columna": 2},
+      "que_paso": "habia_poi_revelar",
+      "cambios_mapa": {
+        "huevos_nuevos": [],
+        "huevos_removidos": [],
+        "arañas_nuevas": [],
+        "arañas_removidas": [],
+        "explosiones": [],
+        "paredes_dañadas": [],
+        "puertas_abiertas": [],
+        "pois_revelados": [{"row": 4, "col": 2, "resultado": "victima"}]
+      },
+      "contador_dano_edificio": 5,
+      "jugador_decidio": {
+        "astronauta": 2,
+        "acciones": [
+          {"accion": "dejar_victima_en_entrada", "celda": {"row": 4, "col": 8}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 4, "col": 8}, "hacia": {"row": 4, "col": 7}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 4, "col": 7}, "hacia": {"row": 4, "col": 6}, "costo_ap": 1}
+        ],
+        "ap_usados": 3,
+        "ap_guardados": 1
+      },
+      "estado_juego": {"victimas_rescatadas": 1, "victimas_perdidas": 0, "edificio_colapsado": false}
+    },
+    {
+      "numero": 8,
+      "dado_cayo_en": {"fila": 3, "columna": 4},
+      "que_paso": "habia_arana_explosion",
+      "cambios_mapa": {
+        "huevos_nuevos": [],
+        "huevos_removidos": [],
+        "arañas_nuevas": [],
+        "arañas_removidas": [{"row": 3, "col": 4}],
+        "explosiones": [{"row": 3, "col": 4}],
+        "paredes_dañadas": [
+          {"celda": {"row": 3, "col": 4}, "direccion": "norte", "estado_anterior": "normal", "estado_nuevo": "dañada"},
+          {"celda": {"row": 3, "col": 4}, "direccion": "este", "estado_anterior": "normal", "estado_nuevo": "dañada"}
+        ],
+        "puertas_abiertas": [],
+        "pois_revelados": []
+      },
+      "contador_dano_edificio": 7,
+      "jugador_decidio": {
+        "astronauta": 1,
+        "acciones": [
+          {"accion": "mover", "desde": {"row": 2, "col": 6}, "hacia": {"row": 1, "col": 6}, "costo_ap": 1},
+          {"accion": "dejar_victima_en_entrada", "celda": {"row": 1, "col": 6}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 1, "col": 6}, "hacia": {"row": 2, "col": 6}, "costo_ap": 1}
+        ],
+        "ap_usados": 3,
+        "ap_guardados": 1
+      },
+      "estado_juego": {"victimas_rescatadas": 2, "victimas_perdidas": 0, "edificio_colapsado": false}
+    },
+    {
+      "numero": 9,
+      "dado_cayo_en": {"fila": 4, "columna": 5},
+      "que_paso": "habia_arana_explosion",
+      "cambios_mapa": {
+        "huevos_nuevos": [],
+        "huevos_removidos": [],
+        "arañas_nuevas": [],
+        "arañas_removidas": [{"row": 4, "col": 5}],
+        "explosiones": [{"row": 4, "col": 5}],
+        "paredes_dañadas": [
+          {"celda": {"row": 4, "col": 5}, "direccion": "norte", "estado_anterior": "normal", "estado_nuevo": "dañada"},
+          {"celda": {"row": 4, "col": 5}, "direccion": "sur", "estado_anterior": "normal", "estado_nuevo": "dañada"}
+        ],
+        "puertas_abiertas": [],
+        "pois_revelados": []
+      },
+      "contador_dano_edificio": 9,
+      "jugador_decidio": {
+        "astronauta": 4,
+        "acciones": [
+          {"accion": "cargar_victima", "celda": {"row": 5, "col": 1}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 5, "col": 1}, "hacia": {"row": 6, "col": 1}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 6, "col": 1}, "hacia": {"row": 6, "col": 2}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 6, "col": 2}, "hacia": {"row": 6, "col": 3}, "costo_ap": 1}
+        ],
+        "ap_usados": 4,
+        "ap_guardados": 0
+      },
+      "estado_juego": {"victimas_rescatadas": 2, "victimas_perdidas": 0, "edificio_colapsado": false}
+    },
+    {
+      "numero": 10,
+      "dado_cayo_en": {"fila": 6, "columna": 7},
+      "que_paso": "habia_poi_revelar",
+      "cambios_mapa": {
+        "huevos_nuevos": [],
+        "huevos_removidos": [],
+        "arañas_nuevas": [],
+        "arañas_removidas": [],
+        "explosiones": [],
+        "paredes_dañadas": [],
+        "puertas_abiertas": [],
+        "pois_revelados": [{"row": 6, "col": 7, "resultado": "falsa_alarma"}]
+      },
+      "contador_dano_edificio": 9,
+      "jugador_decidio": {
+        "astronauta": 4,
+        "acciones": [
+          {"accion": "dejar_victima_en_entrada", "celda": {"row": 6, "col": 3}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 6, "col": 3}, "hacia": {"row": 5, "col": 3}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 5, "col": 3}, "hacia": {"row": 4, "col": 3}, "costo_ap": 1},
+          {"accion": "mover", "desde": {"row": 4, "col": 3}, "hacia": {"row": 4, "col": 2}, "costo_ap": 1}
+        ],
+        "ap_usados": 4,
+        "ap_guardados": 0
+      },
+      "estado_juego": {"victimas_rescatadas": 3, "victimas_perdidas": 0, "edificio_colapsado": false}
+    }
+  ]
+}
