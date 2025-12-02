@@ -1,13 +1,18 @@
 using UnityEngine;
 using System.Collections;
+using FireRescue.Components;
 
 public class SimulacionRunner : MonoBehaviour
 {
     [Header("Configuración")]
     [Tooltip("Pausa entre turnos (segundos)")]
-    public float tiempoEntreTurnos = 0.5f;
+    public float tiempoEntreTurnos = 0.1f;
     [Tooltip("Pausa entre acciones individuales (segundos)")]
-    public float tiempoEntreAcciones = 0.2f;
+    public float tiempoEntreAcciones = 0.05f;
+    
+    [Header("Prefabs de Efectos")]
+    [Tooltip("Prefab opcional para explosión (si no se asigna, usa esfera simple)")]
+    public GameObject explosionPrefab;
     
     private EscenarioData escenario;
     
@@ -103,7 +108,13 @@ public class SimulacionRunner : MonoBehaviour
                     break;
             }
             
-            yield return new WaitForSeconds(0.5f);
+            // Aplicar cambios de esta tirada (ej: explosiones dañan paredes)
+            if (tirada.cambios != null)
+            {
+                yield return StartCoroutine(AplicarCambiosMapa(tirada.cambios));
+            }
+            
+            yield return new WaitForSeconds(0.1f);
         }
     }
     
@@ -167,7 +178,14 @@ public class SimulacionRunner : MonoBehaviour
                 break;
                 
             case "danar_pared":
-                yield return StartCoroutine(AnimarDanarPared(accion.hacia));
+            case "dañar_pared":
+                // Los cambios se aplican en AplicarCambiosMapa
+                Debug.Log($"💥 Pared dañada en ({accion.desde.fila},{accion.desde.columna}) dirección {accion.direccion}");
+                break;
+                
+            case "destruir_pared":
+                // Los cambios se aplican en AplicarCambiosMapa
+                Debug.Log($"💀 Pared destruida en ({accion.desde.fila},{accion.desde.columna}) dirección {accion.direccion}");
                 break;
         }
         
@@ -221,27 +239,31 @@ public class SimulacionRunner : MonoBehaviour
                     var wallComponent = paredObj.GetComponent<Wall>();
                     if (wallComponent != null)
                     {
-                        string estado = pared.nuevo_estado?.ToLower() ?? "dañada";
-                        
-                        // Determinar cantidad de daño basado en el estado
-                        if (estado == "destruida" || estado == "destruído")
+                        // Priorizar nivel_dano si existe, sino usar nuevo_estado
+                        int danoAplicar = 1;
+                        if (pared.nivel_dano > 0)
                         {
-                            // Aplicar daño suficiente para destruir (2 puntos)
-                            wallComponent.AplicarDano(2);
-                            Debug.Log($"💥 Pared ({pared.fila},{pared.columna},{pared.direccion}) → DESTRUIDA");
+                            danoAplicar = pared.nivel_dano;
                         }
-                        else if (estado == "dañada" || estado == "danada")
+                        else
                         {
-                            // Aplicar 1 punto de daño
-                            bool destruida = wallComponent.AplicarDano(1);
-                            if (destruida)
+                            string estado = pared.nuevo_estado?.ToLower() ?? "dañada";
+                            if (estado == "destruida" || estado == "destruído")
                             {
-                                Debug.Log($"💥 Pared ({pared.fila},{pared.columna},{pared.direccion}) → DESTRUIDA (acumuló 2+ daños)");
+                                danoAplicar = 2;
                             }
-                            else
-                            {
-                                Debug.Log($"🧱 Pared ({pared.fila},{pared.columna},{pared.direccion}) → Dañada (grietas)");
-                            }
+                        }
+                        
+                        // Aplicar daño
+                        bool destruida = wallComponent.AplicarDano(danoAplicar);
+                        
+                        if (destruida)
+                        {
+                            Debug.Log($"💥💀 Pared ({pared.fila},{pared.columna},{pared.direccion}) → DESTRUIDA (nivel {danoAplicar})");
+                        }
+                        else
+                        {
+                            Debug.Log($"🧱 Pared ({pared.fila},{pared.columna},{pared.direccion}) → Dañada (grietas, nivel {danoAplicar})");
                         }
                     }
                     else
@@ -251,7 +273,31 @@ public class SimulacionRunner : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"⚠️ No se encontró pared en ({pared.fila},{pared.columna},{pared.direccion})");
+                    // La pared no existe en el tablero (probablemente la celda no tiene pared en esa dirección)
+                    Debug.Log($"ℹ️ No hay pared en ({pared.fila},{pared.columna},{pared.direccion}) - celda sin pared en esa dirección");
+                }
+            }
+        }
+        
+        // Destruir paredes (aplicar daño fatal directamente)
+        if (cambios.paredes_destruidas != null)
+        {
+            foreach (var pared in cambios.paredes_destruidas)
+            {
+                GameObject paredObj = TableroBuilder.ObtenerPared(pared.fila, pared.columna, pared.direccion);
+                if (paredObj != null)
+                {
+                    var wallComponent = paredObj.GetComponent<Wall>();
+                    if (wallComponent != null)
+                    {
+                        // Aplicar daño suficiente para destruir completamente (3 puntos por seguridad)
+                        wallComponent.AplicarDano(3);
+                        Debug.Log($"💀 Pared ({pared.fila},{pared.columna},{pared.direccion}) → DESTRUIDA completamente");
+                    }
+                }
+                else
+                {
+                    Debug.Log($"ℹ️ No hay pared en ({pared.fila},{pared.columna},{pared.direccion}) - ya destruida o inexistente");
                 }
             }
         }
@@ -292,7 +338,7 @@ public class SimulacionRunner : MonoBehaviour
             }
         }
         
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
     }
     
     // Animaciones simples
@@ -319,7 +365,7 @@ public class SimulacionRunner : MonoBehaviour
     {
         Debug.Log($"💧 Apagando fuego en ({pos.fila},{pos.columna})");
         // TODO: Efecto de partículas de agua
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
     }
     
     private IEnumerator AnimarRevelarPOI(int poiId)
@@ -374,7 +420,7 @@ public class SimulacionRunner : MonoBehaviour
         Debug.Log($"🚪 Intentando abrir puerta en ({pos.fila},{pos.columna})");
         
         // Las puertas están en los cambios_mapa, necesitamos buscarlas ahí
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
     }
     
     // ========== Métodos de Fase de Dados ==========
@@ -383,14 +429,14 @@ public class SimulacionRunner : MonoBehaviour
     {
         Debug.Log($"🥚 Apareciendo nuevo huevo en ({fila},{columna})");
         
-        TableroBuilder builder = FindObjectOfType<TableroBuilder>();
+        TableroBuilder builder = FindFirstObjectByType<TableroBuilder>();
         if (builder != null)
         {
             GameObject huevo = builder.CrearHuevoDinamico(fila, columna);
             if (huevo != null)
             {
                 // La animación de aparición se maneja automáticamente en Egg.Start()
-                yield return new WaitForSeconds(0.8f);
+                yield return new WaitForSeconds(0.2f);
             }
         }
         else
@@ -424,11 +470,11 @@ public class SimulacionRunner : MonoBehaviour
         }
         
         // Crear araña en su lugar
-        TableroBuilder builder = FindObjectOfType<TableroBuilder>();
+        TableroBuilder builder = FindFirstObjectByType<TableroBuilder>();
         if (builder != null)
         {
             builder.CrearSpiderDinamica(fila, columna);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.1f);
         }
     }
     
@@ -437,6 +483,10 @@ public class SimulacionRunner : MonoBehaviour
         Debug.Log($"💥 Araña explotando en ({fila},{columna})");
         
         GameObject spider = TableroBuilder.ObtenerSpider(fila, columna);
+        Vector3 posicionExplosion = CoordenadasHelper.JSONaPosicionUnity(fila, columna);
+        
+        // Crear efecto visual de explosión
+        GameObject explosionVisual = Explosion.Crear(posicionExplosion + Vector3.up * 1.5f, explosionPrefab);
         
         if (spider != null)
         {
@@ -445,7 +495,7 @@ public class SimulacionRunner : MonoBehaviour
             if (spiderComponent != null)
             {
                 spiderComponent.Eliminar();
-                yield return new WaitForSeconds(1.5f);
+                yield return new WaitForSeconds(0.3f);
             }
             else
             {
@@ -455,8 +505,76 @@ public class SimulacionRunner : MonoBehaviour
             TableroBuilder.RemoverSpiderDelDiccionario(fila, columna);
         }
         
-        // TODO: Agregar efecto de explosión visual
-        Debug.Log($"💥 ¡EXPLOSIÓN! Efectos de explosión pendientes");
+        // Procesar efectos de explosión en celdas adyacentes
+        ProcesarEfectosExplosion(fila, columna);
+        
+        Debug.Log($"💥 ¡EXPLOSIÓN en ({fila},{columna})! Efectos aplicados a celdas adyacentes");
+        
+        // Esperar un momento para que se vea la explosión
+        yield return new WaitForSeconds(0.5f);
+    }
+    
+    private void ProcesarEfectosExplosion(int fila, int columna)
+    {
+        // Obtener referencia a TableroBuilder
+        TableroBuilder builder = FindFirstObjectByType<TableroBuilder>();
+        if (builder == null)
+        {
+            Debug.LogError("❌ No se encontró TableroBuilder para procesar efectos de explosión");
+            return;
+        }
+        
+        // Direcciones cardinales: Norte, Sur, Este, Oeste
+        (int, int, string)[] direcciones = new[]
+        {
+            (fila - 1, columna, "sur"),    // Celda norte (la pared que nos conecta está al sur de esa celda)
+            (fila + 1, columna, "norte"),  // Celda sur (la pared que nos conecta está al norte de esa celda)
+            (fila, columna + 1, "oeste"),  // Celda este (la pared que nos conecta está al oeste de esa celda)
+            (fila, columna - 1, "este")    // Celda oeste (la pared que nos conecta está al este de esa celda)
+        };
+        
+        foreach (var (filaAdyacente, colAdyacente, direccionPared) in direcciones)
+        {
+            // Verificar límites del tablero
+            if (filaAdyacente < 1 || filaAdyacente > 6 || colAdyacente < 1 || colAdyacente > 8)
+            {
+                continue; // Fuera de límites
+            }
+            
+            // Buscar pared entre celda actual y adyacente
+            GameObject paredObj = TableroBuilder.ObtenerPared(filaAdyacente, colAdyacente, direccionPared);
+            
+            if (paredObj != null)
+            {
+                // HAY PARED: Dañar la pared (1 punto de daño por explosión)
+                var wallComponent = paredObj.GetComponent<Wall>();
+                if (wallComponent != null)
+                {
+                    wallComponent.AplicarDano(1);
+                    Debug.Log($"💥🧱 Explosión daña pared en ({filaAdyacente},{colAdyacente},{direccionPared})");
+                }
+            }
+            else
+            {
+                // NO HAY PARED: Spawn araña en celda adyacente si está vacía
+                GameObject spiderExistente = TableroBuilder.ObtenerSpider(filaAdyacente, colAdyacente);
+                
+                if (spiderExistente == null)
+                {
+                    // Celda vacía, spawn nueva araña
+                    GameObject nuevaSpider = builder.CrearSpiderDinamica(filaAdyacente, colAdyacente);
+                    
+                    if (nuevaSpider != null)
+                    {
+                        Debug.Log($"💥🕷️ Explosión genera nueva araña en ({filaAdyacente},{colAdyacente})");
+                    }
+                }
+                else
+                {
+                    Debug.Log($"💥⚠️ Explosión intenta spawn araña en ({filaAdyacente},{colAdyacente}) pero ya hay una");
+                }
+            }
+        }
     }
     
     // ========== Métodos de Animación de Acciones ==========
@@ -464,7 +582,7 @@ public class SimulacionRunner : MonoBehaviour
     private IEnumerator AnimarDanarPared(PosicionData pos)
     {
         Debug.Log($"🔨 Dañando pared en ({pos.fila},{pos.columna})");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
     }
     
     private IEnumerator AnimarEliminarSpider(PosicionData pos)
@@ -485,7 +603,7 @@ public class SimulacionRunner : MonoBehaviour
             spiderComponent.Eliminar();
             
             // Esperar a que termine la animación de eliminación
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(0.3f);
         }
         else
         {
@@ -512,7 +630,7 @@ public class SimulacionRunner : MonoBehaviour
             eggComponent.Eliminar();
             
             // Esperar a que termine la animación de eliminación
-            yield return new WaitForSeconds(0.8f);
+            yield return new WaitForSeconds(0.2f);
         }
         else
         {
@@ -580,7 +698,7 @@ public class SimulacionRunner : MonoBehaviour
             Destroy(poi);
         }
         
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
     }
     
     /// <summary>
@@ -609,6 +727,6 @@ public class SimulacionRunner : MonoBehaviour
         
         Debug.Log($"✅ Crew {crewId} depositó víctima en ({posicion.fila},{posicion.columna}) - ¡RESCATADA!");
         
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
     }
 }

@@ -10,9 +10,10 @@ public class Wall : MonoBehaviour
     [Header("Materiales (Opcional)")]
     [SerializeField] private Material materialNormal;
     [SerializeField] private Material materialDanada;
+    [SerializeField] private Material materialDestruida; // Material vacío/transparente
     
     [Header("Configuración")]
-    [SerializeField] private float duracionDestruccion = 1f;
+    [SerializeField] private float duracionTransicion = 0.5f;
     
     private Renderer rendererPared;
     private int nivelDano = 0;
@@ -38,13 +39,13 @@ public class Wall : MonoBehaviour
         
         if (nivelDano >= 2)
         {
-            // Destruir pared
-            StartCoroutine(AnimarDestruccion());
+            // Destruir pared (cambiar a material vacío)
+            CambiarEstado("destruida");
             return true;
         }
         else if (nivelDano == 1)
         {
-            // Dañar visualmente
+            // Dañar visualmente (grietas)
             CambiarEstado("dañada");
             return false;
         }
@@ -97,7 +98,21 @@ public class Wall : MonoBehaviour
                 break;
                 
             case "destruida":
-                StartCoroutine(AnimarDestruccion());
+                if (materialDestruida != null)
+                {
+                    StartCoroutine(AnimarDestruccion());
+                }
+                else
+                {
+                    // Si no hay material vacío, hacer transparente
+                    if (rendererPared.material != null)
+                    {
+                        Color color = rendererPared.material.color;
+                        color.a = 0f; // Completamente transparente
+                        rendererPared.material.color = color;
+                    }
+                    Debug.Log($"💀 Pared {gameObject.name} → Destruida (invisible)");
+                }
                 break;
                 
             default:
@@ -107,38 +122,42 @@ public class Wall : MonoBehaviour
     }
     
     /// <summary>
-    /// Anima el colapso y destrucción de la pared
+    /// Anima la transición a pared destruida (material vacío)
     /// </summary>
     private IEnumerator AnimarDestruccion()
     {
-        estadoActual = "destruida";
-        Debug.Log($"💥🧱 Pared {gameObject.name} → ¡DESTRUIDA! (colapsando)");
+        Debug.Log($"💥🧱 Pared {gameObject.name} → ¡DESTRUIDA! (desvaneciendo)");
         
+        Material materialOriginal = rendererPared.material;
         float tiempoTranscurrido = 0f;
-        Vector3 escalaOriginal = transform.localScale;
-        Vector3 posicionOriginal = transform.position;
         
-        while (tiempoTranscurrido < duracionDestruccion)
+        // Transición gradual al material vacío
+        while (tiempoTranscurrido < duracionTransicion)
         {
             tiempoTranscurrido += Time.deltaTime;
-            float progreso = tiempoTranscurrido / duracionDestruccion;
+            float progreso = tiempoTranscurrido / duracionTransicion;
             
-            // Caer hacia abajo
-            transform.position = posicionOriginal + Vector3.down * progreso * 2f;
-            
-            // Encogerse
-            transform.localScale = Vector3.Lerp(escalaOriginal, Vector3.zero, progreso);
-            
-            // Rotar aleatoriamente
-            transform.Rotate(Vector3.forward, Time.deltaTime * 360f);
+            // Desvanecer el material actual solo si tiene la propiedad _Color
+            if (materialOriginal != null && materialOriginal.HasProperty("_Color"))
+            {
+                Color color = materialOriginal.color;
+                color.a = Mathf.Lerp(1f, 0f, progreso);
+                materialOriginal.color = color;
+            }
             
             yield return null;
         }
         
-        Debug.Log($"✅ Pared destruida completamente: {gameObject.name}");
-        
-        // Destruir el GameObject
-        Destroy(gameObject);
+        // Cambiar al material vacío/destruido
+        if (materialDestruida != null)
+        {
+            rendererPared.material = materialDestruida;
+            Debug.Log($"✅ Pared {gameObject.name} → Material vacío aplicado");
+        }
+        else
+        {
+            Debug.LogWarning($"⚠️ Pared {gameObject.name} no tiene Material Destruida asignado en el Inspector");
+        }
     }
     
     /// <summary>

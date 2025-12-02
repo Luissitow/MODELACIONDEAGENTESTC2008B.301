@@ -108,6 +108,7 @@ public class TiradaDadoData
     public int columna;
     public string estado_anterior;
     public string estado_nuevo;
+    public CambiosMapaData cambios;  // Cambios causados por esta tirada (ej: explosiones dañan paredes)
 }
 
 [System.Serializable]
@@ -126,6 +127,7 @@ public class AccionData
     public int poi_id;
     public string resultado;
     public int costo_ap;
+    public string direccion;  // Para acciones de puertas y paredes
     public CambiosMapaData cambios;  // Cambios específicos de esta acción
 }
 
@@ -145,6 +147,7 @@ public class CambiosMapaData
     public PosicionData[] arañas_removidas;
     public ExplosionData[] explosiones;
     public ParedDanadaData[] paredes_dañadas;
+    public ParedDestruidaData[] paredes_destruidas;
     public PuertaAbiertaData[] puertas_abiertas;
     public PoiReveladoData[] pois_revelados;
 }
@@ -163,6 +166,15 @@ public class ParedDanadaData
     public int columna;
     public string direccion;
     public string nuevo_estado;
+    public int nivel_dano;  // Nivel de daño (1, 2, etc.)
+}
+
+[System.Serializable]
+public class ParedDestruidaData
+{
+    public int fila;
+    public int columna;
+    public string direccion;
 }
 
 [System.Serializable]
@@ -176,8 +188,12 @@ public class PuertaAbiertaData
 [System.Serializable]
 public class PoiReveladoData
 {
-    public int poi_id;
-    public string tipo_revelado;
+    public int id;           // El JSON usa "id" no "poi_id"
+    public string tipo;      // El JSON usa "tipo" no "tipo_revelado"
+    
+    // Propiedades compatibles con código anterior
+    public int poi_id => id;
+    public string tipo_revelado => tipo;
 }
 
 [System.Serializable]
@@ -199,10 +215,13 @@ public class EstadoJuegoData
 public static class CoordenadasHelper
 {
     public const float TAMANO_CELDA = 3f;
+    public const int TOTAL_COLUMNAS = 8;
     
     public static Vector3 JSONaPosicionUnity(int fila, int columna)
     {
-        float x = (columna - 1) * TAMANO_CELDA;
+        // Invertir X para que columna 1 esté a la derecha y columna 8 a la izquierda
+        // Esto corrige la inversión horizontal del tablero
+        float x = (TOTAL_COLUMNAS - columna) * TAMANO_CELDA;
         float z = (fila - 1) * TAMANO_CELDA;
         return new Vector3(x, 0, z);
     }
@@ -213,8 +232,8 @@ public static class CoordenadasHelper
         {
             case "norte": return Quaternion.Euler(0, 0, 0);
             case "sur": return Quaternion.Euler(0, 180, 0);
-            case "este": return Quaternion.Euler(0, 90, 0);
-            case "oeste": return Quaternion.Euler(0, 270, 0);
+            case "este": return Quaternion.Euler(0, 270, 0);   // Invertido por espejo X
+            case "oeste": return Quaternion.Euler(0, 90, 0);   // Invertido por espejo X
             default: return Quaternion.identity;
         }
     }
@@ -224,10 +243,10 @@ public static class CoordenadasHelper
         float mitad = TAMANO_CELDA / 2f;
         switch(direccion.ToLower())
         {
-            case "norte": return new Vector3(0, 0, -mitad);  // Hacia arriba en grid (menor Z en vista desde arriba)
-            case "sur": return new Vector3(0, 0, mitad);     // Hacia abajo en grid (mayor Z en vista desde arriba)
-            case "este": return new Vector3(mitad, 0, 0);    // Hacia derecha (mayor X)
-            case "oeste": return new Vector3(-mitad, 0, 0);  // Hacia izquierda (menor X)
+            case "norte": return new Vector3(0, 0, -mitad);  // Hacia arriba en grid (menor Z)
+            case "sur": return new Vector3(0, 0, mitad);     // Hacia abajo en grid (mayor Z)
+            case "este": return new Vector3(-mitad, 0, 0);   // Invertido: este ahora es menor X
+            case "oeste": return new Vector3(mitad, 0, 0);   // Invertido: oeste ahora es mayor X
             default: return Vector3.zero;
         }
     }

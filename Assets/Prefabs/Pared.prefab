@@ -126,3 +126,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Wall
   materialNormal: {fileID: 2100000, guid: f250a754966718643b502708bf12fce5, type: 2}
   materialDanada: {fileID: 2100000, guid: c3ab780e2cf64a243b7a0782f87643c6, type: 2}
+  materialDestruida: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  duracionTransicion: 0.5

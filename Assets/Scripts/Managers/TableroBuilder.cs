@@ -104,6 +104,12 @@ public class TableroBuilder : MonoBehaviour
             return;
         }
         
+        // Verificar si la pared ya existe (puede haber sido creada desde la celda adyacente)
+        if (paredes.ContainsKey(key))
+        {
+            return; // La pared ya existe, no duplicar
+        }
+        
         Vector3 posBase = CoordenadasHelper.JSONaPosicionUnity(fila, columna);
         Vector3 offset = CoordenadasHelper.ObtenerOffsetPared(direccion);
         Quaternion rotacion = CoordenadasHelper.ObtenerRotacionDireccion(direccion);
@@ -114,8 +120,13 @@ public class TableroBuilder : MonoBehaviour
         GameObject pared = Instantiate(paredPrefab, posicionPared, rotacion, transform);
         pared.name = $"Pared_{fila}_{columna}_{direccion}";
         
-        // Guardar referencia
+        // Guardar referencia con la clave actual
         paredes[key] = pared;
+        
+        // TAMBIÉN guardar con la clave del lado opuesto (misma pared, 2 referencias)
+        var (filaOpuesta, colOpuesta, dirOpuesta) = ObtenerLadoOpuesto(fila, columna, direccion);
+        string keyOpuesta = CoordenadasHelper.GenerarKey(filaOpuesta, colOpuesta, dirOpuesta);
+        paredes[keyOpuesta] = pared; // Misma pared, accesible desde ambos lados
     }
     
     private void RegistrarPosicionesBloqueadas(EstadoInicial estado)
@@ -187,7 +198,7 @@ public class TableroBuilder : MonoBehaviour
         {
             CrearPOI(poi);
         }
-        
+         
         // Crear spiders
         foreach (var spider in estado.arañas)
         {

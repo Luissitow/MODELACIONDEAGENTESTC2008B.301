@@ -44,18 +44,34 @@ public class POI : MonoBehaviour
         {
             case "victima":
             case "víctima":
-                // Cambiar a VERDE (víctima)
-                rendererPOI.material.color = Color.green;
+                // Cambiar a material de víctima
+                if (materialVictima != null)
+                {
+                    rendererPOI.material = materialVictima;
+                }
+                else
+                {
+                    // Fallback: color verde
+                    rendererPOI.material.color = Color.green;
+                }
                 estadoActual = "victima";
-                Debug.Log($"🆘 POI {gameObject.name} → ¡Víctima encontrada! (VERDE)");
+                Debug.Log($"🆘 POI {gameObject.name} → ¡Víctima encontrada!");
                 break;
                 
             case "falsa_alarma":
             case "falsa alarma":
-                // Cambiar a NEGRO (falsa alarma)
-                rendererPOI.material.color = Color.black;
+                // Cambiar a material de falsa alarma
+                if (materialFalsaAlarma != null)
+                {
+                    rendererPOI.material = materialFalsaAlarma;
+                }
+                else
+                {
+                    // Fallback: color negro
+                    rendererPOI.material.color = Color.black;
+                }
                 estadoActual = "falsa_alarma";
-                Debug.Log($"❌ POI {gameObject.name} → Falsa alarma (NEGRO)");
+                Debug.Log($"❌ POI {gameObject.name} → Falsa alarma");
                 
                 // Destruir después de la animación
                 StartCoroutine(DestruirDespuesDePausa());
