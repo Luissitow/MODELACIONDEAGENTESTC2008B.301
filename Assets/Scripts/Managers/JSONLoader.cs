@@ -3,24 +3,25 @@ using UnityEngine;
 public static class JSONLoader
 {
     /// <summary>
-    /// Carga el escenario desde Resources/[nombreArchivo].json
+    /// Carga el escenario desde Assets/Scripts/Domain/[nombreArchivo].json
     /// </summary>
-    /// <param name="nombreArchivo">Nombre del archivo sin extensión (ej: "escenario" o "simulacion_completa")</param>
-    public static EscenarioData CargarEscenario(string nombreArchivo = "escenario")
+    /// <param name="nombreArchivo">Nombre del archivo sin extensión (ej: "simulacion")</param>
+    public static EscenarioData CargarEscenario(string nombreArchivo = "simulacion")
     {
-        // Modo Local: Lee desde Resources
-        TextAsset jsonFile = Resources.Load<TextAsset>(nombreArchivo);
+        // Ruta al archivo JSON en Assets/Scripts/Domain/
+        string rutaCompleta = System.IO.Path.Combine(Application.dataPath, "Scripts", "Domain", nombreArchivo + ".json");
         
-        if (jsonFile == null)
+        if (!System.IO.File.Exists(rutaCompleta))
         {
-            Debug.LogError($"❌ No se pudo cargar Resources/{nombreArchivo}.json");
+            Debug.LogError($"❌ No se pudo encontrar el archivo: {rutaCompleta}");
             return null;
         }
         
-        Debug.Log($"📄 Archivo cargado: {nombreArchivo}.json ({jsonFile.text.Length} caracteres)");
+        string jsonContent = System.IO.File.ReadAllText(rutaCompleta);
+        Debug.Log($"📄 Archivo cargado: {nombreArchivo}.json ({jsonContent.Length} caracteres)");
         
         // Deserializa JSON a objeto C#
-        return ParsearJSON(jsonFile.text);
+        return ParsearJSON(jsonContent);
     }
     
     /// <summary>

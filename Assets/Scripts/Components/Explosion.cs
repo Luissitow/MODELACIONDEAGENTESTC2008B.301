@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 
 namespace FireRescue.Components
-{
+{ 
     /// <summary>
     /// Componente para efectos visuales de explosión.
     /// Se instancia temporalmente en el centro de una celda cuando una araña explota.

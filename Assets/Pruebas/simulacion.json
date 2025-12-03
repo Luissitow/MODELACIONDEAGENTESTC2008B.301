@@ -1,0 +1,3280 @@
+{
+  "inicial": {
+    "tablero": {
+      "filas": 6,
+      "columnas": 8,
+      "celdas": [
+        "1100",
+        "1000",
+        "1001",
+        "1100",
+        "1001",
+        "1100",
+        "1000",
+        "1001",
+        "0100",
+        "0000",
+        "0011",
+        "0110",
+        "0011",
+        "0110",
+        "0010",
+        "0011",
+        "0100",
+        "0001",
+        "1100",
+        "1000",
+        "1000",
+        "1001",
+        "1100",
+        "1001",
+        "0110",
+        "0011",
+        "0110",
+        "0010",
+        "0010",
+        "0011",
+        "0110",
+        "0011",
+        "1100",
+        "1000",
+        "1000",
+        "1000",
+        "1001",
+        "1100",
+        "1001",
+        "1101",
+        "0110",
+        "0010",
+        "0010",
+        "0010",
+        "0011",
+        "0110",
+        "0011",
+        "0111"
+      ]
+    },
+    "entradas": [
+      {
+        "fila": 3,
+        "columna": 1
+      },
+      {
+        "fila": 1,
+        "columna": 6
+      },
+      {
+        "fila": 4,
+        "columna": 8
+      },
+      {
+        "fila": 6,
+        "columna": 3
+      }
+    ],
+    "estrategia": "inteligente",
+    "agentes": 6
+  },
+  "turnos": [
+    {
+      "turno": 1,
+      "dados": [
+        {
+          "dado_rojo": 6,
+          "dado_negro": 2,
+          "fila": 6,
+          "columna": 2,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 1,
+          "dado_negro": 5,
+          "fila": 1,
+          "columna": 5,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 2,
+          "dado_negro": 4,
+          "fila": 2,
+          "columna": 4,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 2,
+          "dado_negro": 2,
+          "fila": 2,
+          "columna": 2,
+          "estado_anterior": "fuego",
+          "estado_nuevo": "explosion",
+          "cambios": {
+            "paredes_danadas": [],
+            "fuego_propagado": [
+              [
+                1,
+                0
+              ],
+              [
+                1,
+                2
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "knockdowns": [
+              0
+            ]
+          }
+        },
+        {
+          "dado_rojo": 6,
+          "dado_negro": 2,
+          "fila": 6,
+          "columna": 2,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 5,
+          "dado_negro": 7,
+          "fila": 5,
+          "columna": 7,
+          "estado_anterior": "fuego",
+          "estado_nuevo": "explosion",
+          "cambios": {
+            "paredes_danadas": [
+              {
+                "dir": "N",
+                "dano": 1
+              },
+              {
+                "dir": "E",
+                "dano": 1
+              }
+            ],
+            "fuego_propagado": [
+              [
+                6,
+                5
+              ]
+            ],
+            "knockdowns": []
+          }
+        }
+      ],
+      "acciones": [
+        {
+          "tripulacion_id": 1,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 2
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "mover",
+          "desde": {
+            "fila": 1,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 6
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "abrir_puerta",
+          "desde": {
+            "fila": 2,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 5
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 5
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 5
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 4
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "revelar_poi",
+          "desde": {
+            "fila": 2,
+            "columna": 4
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 4
+          },
+          "costo_ap": 0,
+          "cambios": {
+            "resultado": "falsa_alarma"
+          }
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 4,
+            "columna": 8
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 7
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "abrir_puerta",
+          "desde": {
+            "fila": 4,
+            "columna": 7
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 6
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 4,
+            "columna": 7
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 6
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 4,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 5
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "mover",
+          "desde": {
+            "fila": 6,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 6,
+            "columna": 2
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "mover",
+          "desde": {
+            "fila": 6,
+            "columna": 2
+          },
+          "hacia": {
+            "fila": 6,
+            "columna": 1
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "mover",
+          "desde": {
+            "fila": 6,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 5,
+            "columna": 1
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "revelar_poi",
+          "desde": {
+            "fila": 5,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 5,
+            "columna": 1
+          },
+          "costo_ap": 0,
+          "cambios": {
+            "resultado": "victima"
+          }
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "recoger_victima",
+          "desde": {
+            "fila": 5,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 5,
+            "columna": 1
+          },
+          "costo_ap": 0,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 1
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 6,
+          "tipo": "mover",
+          "desde": {
+            "fila": 1,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 6
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 6,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 5
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        }
+      ],
+      "estado": {
+        "tripulacion": [
+          {
+            "id": 1,
+            "fila": 3,
+            "columna": 1,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          },
+          {
+            "id": 2,
+            "fila": 2,
+            "columna": 4,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": null
+          },
+          {
+            "id": 3,
+            "fila": 4,
+            "columna": 5,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          },
+          {
+            "id": 4,
+            "fila": 5,
+            "columna": 1,
+            "ap": 0,
+            "victima": true,
+            "vivo": true,
+            "tarea": "llevar_victima"
+          },
+          {
+            "id": 5,
+            "fila": 2,
+            "columna": 1,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          },
+          {
+            "id": 6,
+            "fila": 2,
+            "columna": 5,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          }
+        ],
+        "pois": [
+          {
+            "fila": 1,
+            "columna": 1,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 5,
+            "columna": 4,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 5,
+            "columna": 8,
+            "revelado": false,
+            "tipo": "v"
+          }
+        ],
+        "fuegos": [
+          {
+            "fila": 1,
+            "columna": 2
+          },
+          {
+            "fila": 2,
+            "columna": 2
+          },
+          {
+            "fila": 2,
+            "columna": 3
+          },
+          {
+            "fila": 3,
+            "columna": 2
+          },
+          {
+            "fila": 3,
+            "columna": 3
+          },
+          {
+            "fila": 3,
+            "columna": 4
+          },
+          {
+            "fila": 3,
+            "columna": 5
+          },
+          {
+            "fila": 4,
+            "columna": 4
+          },
+          {
+            "fila": 5,
+            "columna": 6
+          },
+          {
+            "fila": 5,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 6
+          },
+          {
+            "fila": 6,
+            "columna": 7
+          }
+        ],
+        "humos": [
+          {
+            "fila": 6,
+            "columna": 2
+          }
+        ],
+        "dano": 4,
+        "rescatadas": 0,
+        "perdidas": 0
+      },
+      "logs": [
+        "[SUBASTA] === SUBASTA DE TAREAS ===",
+        "[SUBASTA] Agente 3 -> investigar_poi en (0, 4) (oferta: 3 AP)",
+        "[SUBASTA] Agente 1 -> investigar_poi en (3, 1) (oferta: 5 AP)",
+        "[SUBASTA] Agente 2 -> investigar_poi en (7, 4) (oferta: 39 AP)",
+        "[SUBASTA] Agente 0 -> apagar_fuego en (1, 2) (oferta: 11 AP)",
+        "[SUBASTA] Agente 4 -> apagar_fuego en (1, 1) (oferta: 12 AP)",
+        "[SUBASTA] Agente 5 -> apagar_fuego en (2, 1) (oferta: 20 AP)",
+        "Agent-0: Turno | Pos: (0,2) | AP: 4 | Tarea: apagar_fuego))",
+        "Agent-0: Apago fuego adyacente (1,2) [-2 AP])",
+        "Agent-0: Apago humo adyacente (1,2) [-1 AP])",
+        "Agent-0: Movio (0, 2) -> (1,2) [-1 AP])",
+        "Dados: 6,2 -> (1,5)",
+        "Agent-1: Turno | Pos: (5,0) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-1: Movio (5, 0) -> (5,1) [-1 AP])",
+        "Agent-1: Abrio puerta [-1 AP])",
+        "Agent-1: Movio (5, 1) -> (4,1) [-1 AP])",
+        "Agent-1: Movio (4, 1) -> (3,1) [-1 AP])",
+        "Agent-1: Revelo POI: Falsa alarma!)",
+        "Dados: 1,5 -> (4,0)",
+        "Agent-2: Turno | Pos: (7,3) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-2: Movio (7, 3) -> (6,3) [-1 AP])",
+        "Agent-2: Abrio puerta [-1 AP])",
+        "Agent-2: Movio (6, 3) -> (5,3) [-1 AP])",
+        "Agent-2: Movio (5, 3) -> (4,3) [-1 AP])",
+        "Dados: 2,4 -> (3,1)",
+        "Agent-3: Turno | Pos: (2,5) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-3: Apago humo adyacente (1,5) [-1 AP])",
+        "Agent-3: Movio (2, 5) -> (1,5) [-1 AP])",
+        "Agent-3: Movio (1, 5) -> (0,5) [-1 AP])",
+        "Agent-3: Movio (0, 5) -> (0,4) [-1 AP])",
+        "Agent-3: Revelo POI: VICTIMA!)",
+        "Agent-3: Cargo victima)",
+        "Dados: 2,2 -> (1,1)",
+        "*** EXPLOSION (1,1) ***",
+        "  Agente 0 alcanzado por fuego de explosion!",
+        "Agent-0: KNOCKDOWN! (1/2))",
+        "Agent-0: Reubicado en salida (0,2))",
+        "Dano: 1/24",
+        "Agent-4: Turno | Pos: (0,2) | AP: 4 | Tarea: apagar_fuego))",
+        "Agent-4: Apago fuego adyacente (0,1) [-2 AP])",
+        "Agent-4: Apago humo adyacente (0,1) [-1 AP])",
+        "Agent-4: Movio (0, 2) -> (0,1) [-1 AP])",
+        "Dados: 6,2 -> (1,5)",
+        "Agent-5: Turno | Pos: (5,0) | AP: 4 | Tarea: apagar_fuego))",
+        "Agent-5: Movio (5, 0) -> (5,1) [-1 AP])",
+        "Agent-5: Movio (5, 1) -> (4,1) [-1 AP])",
+        "Agent-5: Apago humo adyacente (4,0) [-1 AP])",
+        "Agent-5: Apago humo adyacente (3,1) [-1 AP])",
+        "Dados: 5,7 -> (6,4)",
+        "*** EXPLOSION (6,4) ***",
+        "Dano: 4/24",
+        "Nuevo POI en (0,0)",
+        "Nuevo POI en (3,4)"
+      ]
+    },
+    {
+      "turno": 2,
+      "dados": [
+        {
+          "dado_rojo": 5,
+          "dado_negro": 4,
+          "fila": 5,
+          "columna": 4,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 6,
+          "dado_negro": 7,
+          "fila": 6,
+          "columna": 7,
+          "estado_anterior": "fuego",
+          "estado_nuevo": "explosion",
+          "cambios": {
+            "paredes_danadas": [
+              {
+                "dir": "S",
+                "dano": 1
+              },
+              {
+                "dir": "E",
+                "estado": "destruida"
+              }
+            ],
+            "fuego_propagado": [],
+            "knockdowns": []
+          }
+        },
+        {
+          "dado_rojo": 2,
+          "dado_negro": 8,
+          "fila": 2,
+          "columna": 8,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 5,
+          "dado_negro": 5,
+          "fila": 5,
+          "columna": 5,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 1,
+          "dado_negro": 3,
+          "fila": 1,
+          "columna": 3,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 6,
+          "dado_negro": 7,
+          "fila": 6,
+          "columna": 7,
+          "estado_anterior": "fuego",
+          "estado_nuevo": "explosion",
+          "cambios": {
+            "paredes_danadas": [
+              {
+                "dir": "S",
+                "dano": 2
+              }
+            ],
+            "fuego_propagado": [
+              [
+                7,
+                5
+              ]
+            ],
+            "knockdowns": []
+          }
+        }
+      ],
+      "acciones": [
+        {
+          "tripulacion_id": 1,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 2
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 4
+          },
+          "hacia": {
+            "fila": 1,
+            "columna": 4
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "abrir_puerta",
+          "desde": {
+            "fila": 1,
+            "columna": 4
+          },
+          "hacia": {
+            "fila": 1,
+            "columna": 3
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "mover",
+          "desde": {
+            "fila": 1,
+            "columna": 4
+          },
+          "hacia": {
+            "fila": 1,
+            "columna": 3
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "mover",
+          "desde": {
+            "fila": 5,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 6,
+            "columna": 1
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "mover",
+          "desde": {
+            "fila": 6,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 6,
+            "columna": 2
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 1,
+            "columna": 1
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "revelar_poi",
+          "desde": {
+            "fila": 1,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 1,
+            "columna": 1
+          },
+          "costo_ap": 0,
+          "cambios": {
+            "resultado": "victima"
+          }
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "recoger_victima",
+          "desde": {
+            "fila": 1,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 1,
+            "columna": 1
+          },
+          "costo_ap": 0,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 6,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 5
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 6
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 6,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 7
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 6,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 7
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 8
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        }
+      ],
+      "estado": {
+        "tripulacion": [
+          {
+            "id": 1,
+            "fila": 3,
+            "columna": 2,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          },
+          {
+            "id": 2,
+            "fila": 1,
+            "columna": 3,
+            "ap": 1,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          },
+          {
+            "id": 3,
+            "fila": 4,
+            "columna": 5,
+            "ap": 1,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          },
+          {
+            "id": 4,
+            "fila": 6,
+            "columna": 2,
+            "ap": 0,
+            "victima": true,
+            "vivo": true,
+            "tarea": "llevar_victima"
+          },
+          {
+            "id": 5,
+            "fila": 1,
+            "columna": 1,
+            "ap": 0,
+            "victima": true,
+            "vivo": true,
+            "tarea": "llevar_victima"
+          },
+          {
+            "id": 6,
+            "fila": 2,
+            "columna": 8,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          }
+        ],
+        "pois": [
+          {
+            "fila": 3,
+            "columna": 6,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 5,
+            "columna": 4,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 5,
+            "columna": 8,
+            "revelado": false,
+            "tipo": "v"
+          }
+        ],
+        "fuegos": [
+          {
+            "fila": 1,
+            "columna": 2
+          },
+          {
+            "fila": 1,
+            "columna": 3
+          },
+          {
+            "fila": 2,
+            "columna": 3
+          },
+          {
+            "fila": 3,
+            "columna": 3
+          },
+          {
+            "fila": 3,
+            "columna": 4
+          },
+          {
+            "fila": 4,
+            "columna": 4
+          },
+          {
+            "fila": 5,
+            "columna": 6
+          },
+          {
+            "fila": 5,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 6
+          },
+          {
+            "fila": 6,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 8
+          }
+        ],
+        "humos": [
+          {
+            "fila": 5,
+            "columna": 4
+          },
+          {
+            "fila": 5,
+            "columna": 5
+          },
+          {
+            "fila": 6,
+            "columna": 2
+          }
+        ],
+        "dano": 10,
+        "rescatadas": 0,
+        "perdidas": 0
+      },
+      "logs": [
+        "[SUBASTA] === SUBASTA DE TAREAS ===",
+        "[SUBASTA] Agente 3 -> llevar_victima [FORZADO] (costo: 6 AP)",
+        "[SUBASTA] Agente 4 -> investigar_poi en (0, 0) (oferta: 1 AP)",
+        "[SUBASTA] Agente 2 -> investigar_poi en (3, 4) (oferta: 14 AP)",
+        "[SUBASTA] Agente 5 -> investigar_poi en (7, 4) (oferta: 54 AP)",
+        "[SUBASTA] Agente 0 -> apagar_fuego en (1, 2) (oferta: 11 AP)",
+        "[SUBASTA] Agente 1 -> apagar_fuego en (1, 0) (oferta: 15 AP)",
+        "Agent-0: Turno | Pos: (0,2) | AP: 4 | Tarea: apagar_fuego))",
+        "Agent-0: Apago fuego adyacente (1,2) [-2 AP])",
+        "Agent-0: Apago humo adyacente (1,2) [-1 AP])",
+        "Agent-0: Movio (0, 2) -> (1,2) [-1 AP])",
+        "Dados: 5,4 -> (3,4)",
+        "Agent-1: Turno | Pos: (3,1) | AP: 4 | Tarea: apagar_fuego))",
+        "Agent-1: Movio (3, 1) -> (3,0) [-1 AP])",
+        "Agent-1: Abrio puerta [-1 AP])",
+        "Agent-1: Movio (3, 0) -> (2,0) [-1 AP])",
+        "Dados: 6,7 -> (6,5)",
+        "*** EXPLOSION (6,5) ***",
+        "Dano: 7/24",
+        "Agent-2: Turno | Pos: (4,3) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-2: Apago fuego adyacente (4,2) [-2 AP])",
+        "Agent-2: Apago humo adyacente (4,2) [-1 AP])",
+        "Dados: 2,8 -> (7,1)",
+        "Agent-3: Turno | Pos: (0,4) | AP: 4 | Tarea: llevar_victima))",
+        "Agent-3: Movio (0, 4) -> (0,5) [-2 AP])",
+        "Agent-3: Movio (0, 5) -> (1,5) [-2 AP])",
+        "Dados: 5,5 -> (4,4)",
+        "Agent-4: Turno | Pos: (0,1) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-4: Apago fuego adyacente (1,1) [-2 AP])",
+        "Agent-4: Apago humo adyacente (1,1) [-1 AP])",
+        "Agent-4: Movio (0, 1) -> (0,0) [-1 AP])",
+        "Agent-4: Revelo POI: VICTIMA!)",
+        "Agent-4: Cargo victima)",
+        "Dados: 1,3 -> (2,0)",
+        "Agent-5: Turno | Pos: (4,1) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-5: Movio (4, 1) -> (5,1) [-1 AP])",
+        "Agent-5: Movio (5, 1) -> (6,1) [-1 AP])",
+        "Agent-5: Apago humo adyacente (7,1) [-1 AP])",
+        "Agent-5: Movio (6, 1) -> (7,1) [-1 AP])",
+        "Dados: 6,7 -> (6,5)",
+        "*** EXPLOSION (6,5) ***",
+        "Dano: 10/24",
+        "Nuevo POI en (5,2)"
+      ]
+    },
+    {
+      "turno": 3,
+      "dados": [
+        {
+          "dado_rojo": 3,
+          "dado_negro": 2,
+          "fila": 3,
+          "columna": 2,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 1,
+          "dado_negro": 7,
+          "fila": 1,
+          "columna": 7,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 1,
+          "dado_negro": 6,
+          "fila": 1,
+          "columna": 6,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 3,
+          "dado_negro": 5,
+          "fila": 3,
+          "columna": 5,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 1,
+          "dado_negro": 8,
+          "fila": 1,
+          "columna": 8,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 5,
+          "dado_negro": 2,
+          "fila": 5,
+          "columna": 2,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        }
+      ],
+      "acciones": [
+        {
+          "tripulacion_id": 1,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 2
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 2
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "extinguir_fuego",
+          "desde": {
+            "fila": 1,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 1,
+            "columna": 3
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "extinguir_humo",
+          "desde": {
+            "fila": 1,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 1,
+            "columna": 3
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 4,
+            "columna": 5
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 5
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 5
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 6
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "revelar_poi",
+          "desde": {
+            "fila": 3,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 6
+          },
+          "costo_ap": 0,
+          "cambios": {
+            "resultado": "victima"
+          }
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "recoger_victima",
+          "desde": {
+            "fila": 3,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 6
+          },
+          "costo_ap": 0,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "mover",
+          "desde": {
+            "fila": 6,
+            "columna": 2
+          },
+          "hacia": {
+            "fila": 6,
+            "columna": 3
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "depositar_victima",
+          "desde": {
+            "fila": 6,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 6,
+            "columna": 3
+          },
+          "costo_ap": 0,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "mover",
+          "desde": {
+            "fila": 6,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 5,
+            "columna": 3
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "mover",
+          "desde": {
+            "fila": 1,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 1
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 1
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 6,
+          "tipo": "abrir_puerta",
+          "desde": {
+            "fila": 2,
+            "columna": 8
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 8
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 6,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 8
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 8
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 6,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 8
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 7
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        }
+      ],
+      "estado": {
+        "tripulacion": [
+          {
+            "id": 1,
+            "fila": 2,
+            "columna": 2,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          },
+          {
+            "id": 2,
+            "fila": 1,
+            "columna": 3,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          },
+          {
+            "id": 3,
+            "fila": 3,
+            "columna": 6,
+            "ap": 0,
+            "victima": true,
+            "vivo": true,
+            "tarea": "llevar_victima"
+          },
+          {
+            "id": 4,
+            "fila": 5,
+            "columna": 3,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          },
+          {
+            "id": 5,
+            "fila": 3,
+            "columna": 1,
+            "ap": 0,
+            "victima": true,
+            "vivo": true,
+            "tarea": "llevar_victima"
+          },
+          {
+            "id": 6,
+            "fila": 3,
+            "columna": 7,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          }
+        ],
+        "pois": [
+          {
+            "fila": 5,
+            "columna": 4,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 5,
+            "columna": 8,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 6,
+            "columna": 5,
+            "revelado": false,
+            "tipo": "v"
+          }
+        ],
+        "fuegos": [
+          {
+            "fila": 3,
+            "columna": 3
+          },
+          {
+            "fila": 3,
+            "columna": 4
+          },
+          {
+            "fila": 3,
+            "columna": 5
+          },
+          {
+            "fila": 5,
+            "columna": 6
+          },
+          {
+            "fila": 5,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 6
+          },
+          {
+            "fila": 6,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 8
+          }
+        ],
+        "humos": [
+          {
+            "fila": 1,
+            "columna": 6
+          },
+          {
+            "fila": 1,
+            "columna": 7
+          },
+          {
+            "fila": 2,
+            "columna": 3
+          },
+          {
+            "fila": 3,
+            "columna": 2
+          },
+          {
+            "fila": 5,
+            "columna": 2
+          },
+          {
+            "fila": 5,
+            "columna": 4
+          },
+          {
+            "fila": 5,
+            "columna": 5
+          }
+        ],
+        "dano": 10,
+        "rescatadas": 1,
+        "perdidas": 0
+      },
+      "logs": [
+        "[SUBASTA] === SUBASTA DE TAREAS ===",
+        "[SUBASTA] Agente 3 -> llevar_victima [FORZADO] (costo: 2 AP)",
+        "[SUBASTA] Agente 4 -> llevar_victima [FORZADO] (costo: 4 AP)",
+        "[SUBASTA] Agente 2 -> investigar_poi en (5, 2) (oferta: 2 AP)",
+        "[SUBASTA] Agente 5 -> investigar_poi en (3, 4) (oferta: 21 AP)",
+        "[SUBASTA] Agente 1 -> investigar_poi en (7, 4) (oferta: 65 AP)",
+        "[SUBASTA] Agente 0 -> apagar_fuego en (1, 0) (oferta: 12 AP)",
+        "Agent-0: Turno | Pos: (1,2) | AP: 4 | Tarea: apagar_fuego))",
+        "Agent-0: Movio (1, 2) -> (1,1) [-1 AP])",
+        "Agent-0: Apago fuego adyacente (1,0) [-2 AP])",
+        "Agent-0: Apago humo adyacente (1,0) [-1 AP])",
+        "Dados: 3,2 -> (1,2)",
+        "Agent-1: Turno | Pos: (2,0) | AP: 5 | Tarea: investigar_poi))",
+        "Agent-1: Apago fuego -> humo [-2 AP])",
+        "Agent-1: Apago humo [-1 AP])",
+        "Agent-1: Apago fuego adyacente (2,1) [-2 AP])",
+        "Dados: 1,7 -> (6,0)",
+        "Agent-2: Turno | Pos: (4,3) | AP: 5 | Tarea: investigar_poi))",
+        "Agent-2: Apago fuego adyacente (3,3) [-2 AP])",
+        "Agent-2: Apago humo adyacente (3,3) [-1 AP])",
+        "Agent-2: Movio (4, 3) -> (4,2) [-1 AP])",
+        "Agent-2: Movio (4, 2) -> (5,2) [-1 AP])",
+        "Agent-2: Revelo POI: VICTIMA!)",
+        "Agent-2: Cargo victima)",
+        "Dados: 1,6 -> (5,0)",
+        "Agent-3: Turno | Pos: (1,5) | AP: 4 | Tarea: llevar_victima))",
+        "Agent-3: Movio (1, 5) -> (2,5) [-2 AP])",
+        "Agent-3: *** VICTIMA RESCATADA! Total: 1/7 ***)",
+        "Agent-3: Apago humo adyacente (1,5) [-1 AP])",
+        "Agent-3: Movio (2, 5) -> (2,4) [-1 AP])",
+        "Dados: 3,5 -> (4,2)",
+        "Agent-4: Turno | Pos: (0,0) | AP: 4 | Tarea: llevar_victima))",
+        "Agent-4: Movio (0, 0) -> (0,1) [-2 AP])",
+        "Agent-4: Movio (0, 1) -> (0,2) [-2 AP])",
+        "Dados: 1,8 -> (7,0)",
+        "Agent-5: Turno | Pos: (7,1) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-5: Apago humo adyacente (7,0) [-1 AP])",
+        "Agent-5: Abrio puerta [-1 AP])",
+        "Agent-5: Movio (7, 1) -> (7,2) [-1 AP])",
+        "Agent-5: Movio (7, 2) -> (6,2) [-1 AP])",
+        "Dados: 5,2 -> (1,4)",
+        "Nuevo POI en (4,5)"
+      ]
+    },
+    {
+      "turno": 4,
+      "dados": [
+        {
+          "dado_rojo": 3,
+          "dado_negro": 4,
+          "fila": 3,
+          "columna": 4,
+          "estado_anterior": "fuego",
+          "estado_nuevo": "explosion",
+          "cambios": {
+            "paredes_danadas": [
+              {
+                "dir": "N",
+                "dano": 1
+              }
+            ],
+            "fuego_propagado": [
+              [
+                3,
+                3
+              ],
+              [
+                5,
+                2
+              ]
+            ],
+            "knockdowns": []
+          }
+        },
+        {
+          "dado_rojo": 6,
+          "dado_negro": 2,
+          "fila": 6,
+          "columna": 2,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 1,
+          "dado_negro": 4,
+          "fila": 1,
+          "columna": 4,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 3,
+          "dado_negro": 2,
+          "fila": 3,
+          "columna": 2,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 2,
+          "dado_negro": 2,
+          "fila": 2,
+          "columna": 2,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 4,
+          "dado_negro": 5,
+          "fila": 4,
+          "columna": 5,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        }
+      ],
+      "acciones": [
+        {
+          "tripulacion_id": 1,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 2
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 2
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "mover",
+          "desde": {
+            "fila": 1,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 1,
+            "columna": 4
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "mover",
+          "desde": {
+            "fila": 1,
+            "columna": 4
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 4
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 4
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 5
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 5
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 6
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 6
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 4,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 7
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "mover",
+          "desde": {
+            "fila": 5,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 5,
+            "columna": 4
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "revelar_poi",
+          "desde": {
+            "fila": 5,
+            "columna": 4
+          },
+          "hacia": {
+            "fila": 5,
+            "columna": 4
+          },
+          "costo_ap": 0,
+          "cambios": {
+            "resultado": "victima"
+          }
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "recoger_victima",
+          "desde": {
+            "fila": 5,
+            "columna": 4
+          },
+          "hacia": {
+            "fila": 5,
+            "columna": 4
+          },
+          "costo_ap": 0,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "depositar_victima",
+          "desde": {
+            "fila": 3,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 1
+          },
+          "costo_ap": 0,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 1
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 2
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 2
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 2
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 2
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 3
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 6,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 7
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 7
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 6,
+          "tipo": "mover",
+          "desde": {
+            "fila": 4,
+            "columna": 7
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 6
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        }
+      ],
+      "estado": {
+        "tripulacion": [
+          {
+            "id": 1,
+            "fila": 3,
+            "columna": 2,
+            "ap": 1,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          },
+          {
+            "id": 2,
+            "fila": 2,
+            "columna": 6,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          },
+          {
+            "id": 3,
+            "fila": 4,
+            "columna": 7,
+            "ap": 0,
+            "victima": true,
+            "vivo": true,
+            "tarea": "llevar_victima"
+          },
+          {
+            "id": 4,
+            "fila": 5,
+            "columna": 4,
+            "ap": 1,
+            "victima": true,
+            "vivo": true,
+            "tarea": "llevar_victima"
+          },
+          {
+            "id": 5,
+            "fila": 2,
+            "columna": 3,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          },
+          {
+            "id": 6,
+            "fila": 4,
+            "columna": 6,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          }
+        ],
+        "pois": [
+          {
+            "fila": 2,
+            "columna": 6,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 5,
+            "columna": 8,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 6,
+            "columna": 5,
+            "revelado": false,
+            "tipo": "v"
+          }
+        ],
+        "fuegos": [
+          {
+            "fila": 3,
+            "columna": 3
+          },
+          {
+            "fila": 3,
+            "columna": 4
+          },
+          {
+            "fila": 3,
+            "columna": 5
+          },
+          {
+            "fila": 3,
+            "columna": 6
+          },
+          {
+            "fila": 4,
+            "columna": 4
+          },
+          {
+            "fila": 4,
+            "columna": 5
+          },
+          {
+            "fila": 5,
+            "columna": 6
+          },
+          {
+            "fila": 5,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 6
+          },
+          {
+            "fila": 6,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 8
+          }
+        ],
+        "humos": [
+          {
+            "fila": 1,
+            "columna": 4
+          },
+          {
+            "fila": 1,
+            "columna": 6
+          },
+          {
+            "fila": 1,
+            "columna": 7
+          },
+          {
+            "fila": 2,
+            "columna": 2
+          },
+          {
+            "fila": 5,
+            "columna": 5
+          },
+          {
+            "fila": 6,
+            "columna": 2
+          }
+        ],
+        "dano": 12,
+        "rescatadas": 2,
+        "perdidas": 0
+      },
+      "logs": [
+        "[SUBASTA] === SUBASTA DE TAREAS ===",
+        "[SUBASTA] Agente 2 -> llevar_victima [FORZADO] (costo: 6 AP)",
+        "[SUBASTA] Agente 4 -> llevar_victima [FORZADO] (costo: 0 AP)",
+        "[SUBASTA] Agente 3 -> investigar_poi en (3, 4) (oferta: 1 AP)",
+        "[SUBASTA] Agente 5 -> investigar_poi en (4, 5) (oferta: 9 AP)",
+        "[SUBASTA] Agente 1 -> investigar_poi en (7, 4) (oferta: 53 AP)",
+        "[SUBASTA] Agente 0 -> apagar_fuego en (2, 2) (oferta: 14 AP)",
+        "Agent-0: Turno | Pos: (1,1) | AP: 4 | Tarea: apagar_fuego))",
+        "Agent-0: Apago humo adyacente (1,2) [-1 AP])",
+        "Agent-0: Apago humo adyacente (2,1) [-1 AP])",
+        "Agent-0: Movio (1, 1) -> (1,2) [-1 AP])",
+        "Dados: 3,4 -> (3,2)",
+        "*** EXPLOSION (3,2) ***",
+        "Dano: 12/24",
+        "Agent-1: Turno | Pos: (2,0) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-1: Movio (2, 0) -> (3,0) [-1 AP])",
+        "Agent-1: Movio (3, 0) -> (3,1) [-1 AP])",
+        "Agent-1: Movio (3, 1) -> (4,1) [-1 AP])",
+        "Agent-1: Movio (4, 1) -> (5,1) [-1 AP])",
+        "Dados: 6,2 -> (1,5)",
+        "Agent-2: Turno | Pos: (5,2) | AP: 4 | Tarea: llevar_victima))",
+        "Agent-2: Movio (5, 2) -> (5,3) [-2 AP])",
+        "Agent-2: Movio (5, 3) -> (6,3) [-2 AP])",
+        "Dados: 1,4 -> (3,0)",
+        "Agent-3: Turno | Pos: (2,4) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-3: Apago humo adyacente (3,4) [-1 AP])",
+        "Agent-3: Apago humo adyacente (1,4) [-1 AP])",
+        "Agent-3: Movio (2, 4) -> (3,4) [-1 AP])",
+        "Agent-3: Revelo POI: VICTIMA!)",
+        "Agent-3: Cargo victima)",
+        "Dados: 3,2 -> (1,2)",
+        "Agent-4: Turno | Pos: (0,2) | AP: 4 | Tarea: llevar_victima))",
+        "Agent-4: *** VICTIMA RESCATADA! Total: 2/7 ***)",
+        "Agent-4: Apago humo adyacente (1,2) [-1 AP])",
+        "Agent-4: Movio (0, 2) -> (1,2) [-1 AP])",
+        "Agent-4: Movio (1, 2) -> (1,1) [-1 AP])",
+        "Agent-4: Movio (1, 1) -> (2,1) [-1 AP])",
+        "Dados: 2,2 -> (1,1)",
+        "Agent-5: Turno | Pos: (6,2) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-5: Movio (6, 2) -> (6,3) [-1 AP])",
+        "Agent-5: Movio (6, 3) -> (5,3) [-1 AP])",
+        "Agent-5: Apago fuego adyacente (5,2) [-2 AP])",
+        "Dados: 4,5 -> (4,3)",
+        "Nuevo POI en (5,1)"
+      ]
+    },
+    {
+      "turno": 5,
+      "dados": [
+        {
+          "dado_rojo": 2,
+          "dado_negro": 5,
+          "fila": 2,
+          "columna": 5,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 6,
+          "dado_negro": 2,
+          "fila": 6,
+          "columna": 2,
+          "estado_anterior": "humo",
+          "estado_nuevo": "fuego",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 5,
+          "dado_negro": 3,
+          "fila": 5,
+          "columna": 3,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 5,
+          "dado_negro": 4,
+          "fila": 5,
+          "columna": 4,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 2,
+          "dado_negro": 8,
+          "fila": 2,
+          "columna": 8,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 4,
+          "dado_negro": 5,
+          "fila": 4,
+          "columna": 5,
+          "estado_anterior": "fuego",
+          "estado_nuevo": "explosion",
+          "cambios": {
+            "paredes_danadas": [
+              {
+                "dir": "S",
+                "dano": 1
+              }
+            ],
+            "fuego_propagado": [
+              [
+                5,
+                3
+              ],
+              [
+                2,
+                3
+              ]
+            ],
+            "knockdowns": [
+              5,
+              2
+            ]
+          }
+        }
+      ],
+      "acciones": [
+        {
+          "tripulacion_id": 1,
+          "tipo": "extinguir_fuego",
+          "desde": {
+            "fila": 3,
+            "columna": 2
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 3
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 1,
+          "tipo": "abrir_puerta",
+          "desde": {
+            "fila": 3,
+            "columna": 2
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 3
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 1,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 2
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 3
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "revelar_poi",
+          "desde": {
+            "fila": 2,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 6
+          },
+          "costo_ap": 0,
+          "cambios": {
+            "resultado": "victima"
+          }
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "recoger_victima",
+          "desde": {
+            "fila": 2,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 6
+          },
+          "costo_ap": 0,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 1,
+            "columna": 6
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "depositar_victima",
+          "desde": {
+            "fila": 1,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 1,
+            "columna": 6
+          },
+          "costo_ap": 0,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "extinguir_humo",
+          "desde": {
+            "fila": 1,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 1,
+            "columna": 6
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 4,
+            "columna": 7
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 8
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "depositar_victima",
+          "desde": {
+            "fila": 4,
+            "columna": 8
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 8
+          },
+          "costo_ap": 0,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 4,
+            "columna": 8
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 7
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 4,
+            "columna": 7
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 6
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "mover",
+          "desde": {
+            "fila": 5,
+            "columna": 4
+          },
+          "hacia": {
+            "fila": 5,
+            "columna": 3
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "mover",
+          "desde": {
+            "fila": 5,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 6,
+            "columna": 3
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "depositar_victima",
+          "desde": {
+            "fila": 6,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 6,
+            "columna": 3
+          },
+          "costo_ap": 0,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 2
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 2
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 2
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        }
+      ],
+      "estado": {
+        "tripulacion": [
+          {
+            "id": 1,
+            "fila": 3,
+            "columna": 3,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          },
+          {
+            "id": 2,
+            "fila": 1,
+            "columna": 6,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": null
+          },
+          {
+            "id": 3,
+            "fila": 4,
+            "columna": 8,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          },
+          {
+            "id": 4,
+            "fila": 6,
+            "columna": 3,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": null
+          },
+          {
+            "id": 5,
+            "fila": 3,
+            "columna": 2,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          },
+          {
+            "id": 6,
+            "fila": 4,
+            "columna": 8,
+            "ap": 1,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          }
+        ],
+        "pois": [
+          {
+            "fila": 5,
+            "columna": 8,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 6,
+            "columna": 4,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 6,
+            "columna": 5,
+            "revelado": false,
+            "tipo": "v"
+          }
+        ],
+        "fuegos": [
+          {
+            "fila": 3,
+            "columna": 3
+          },
+          {
+            "fila": 3,
+            "columna": 4
+          },
+          {
+            "fila": 3,
+            "columna": 5
+          },
+          {
+            "fila": 4,
+            "columna": 3
+          },
+          {
+            "fila": 4,
+            "columna": 4
+          },
+          {
+            "fila": 4,
+            "columna": 5
+          },
+          {
+            "fila": 4,
+            "columna": 6
+          },
+          {
+            "fila": 5,
+            "columna": 6
+          },
+          {
+            "fila": 5,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 2
+          },
+          {
+            "fila": 6,
+            "columna": 6
+          },
+          {
+            "fila": 6,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 8
+          }
+        ],
+        "humos": [
+          {
+            "fila": 1,
+            "columna": 4
+          },
+          {
+            "fila": 2,
+            "columna": 5
+          },
+          {
+            "fila": 2,
+            "columna": 8
+          },
+          {
+            "fila": 5,
+            "columna": 4
+          },
+          {
+            "fila": 5,
+            "columna": 5
+          }
+        ],
+        "dano": 14,
+        "rescatadas": 5,
+        "perdidas": 0
+      },
+      "logs": [
+        "[SUBASTA] === SUBASTA DE TAREAS ===",
+        "[SUBASTA] Agente 2 -> llevar_victima [FORZADO] (costo: 2 AP)",
+        "[SUBASTA] Agente 3 -> llevar_victima [FORZADO] (costo: 4 AP)",
+        "[SUBASTA] Agente 1 -> investigar_poi en (5, 1) (oferta: 0 AP)",
+        "[SUBASTA] Agente 5 -> investigar_poi en (4, 5) (oferta: 27 AP)",
+        "[SUBASTA] Agente 0 -> investigar_poi en (7, 4) (oferta: 66 AP)",
+        "[SUBASTA] Agente 4 -> apagar_fuego en (2, 2) (oferta: 15 AP)",
+        "Agent-0: Turno | Pos: (1,2) | AP: 5 | Tarea: investigar_poi))",
+        "Agent-0: Apago humo adyacente (1,1) [-1 AP])",
+        "Agent-0: Apago fuego en camino (2,2) [-2 AP])",
+        "Agent-0: Abrio puerta [-1 AP])",
+        "Agent-0: Movio (1, 2) -> (2,2) [-1 AP])",
+        "Dados: 2,5 -> (4,1)",
+        "Agent-1: Turno | Pos: (5,1) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-1: Revelo POI: VICTIMA!)",
+        "Agent-1: Cargo victima)",
+        "Agent-1: Movio (5, 1) -> (5,0) [-2 AP])",
+        "Agent-1: *** VICTIMA RESCATADA! Total: 3/7 ***)",
+        "Agent-1: Apago humo [-1 AP])",
+        "Agent-1: Apago humo adyacente (6,0) [-1 AP])",
+        "Dados: 6,2 -> (1,5)",
+        "Agent-2: Turno | Pos: (6,3) | AP: 4 | Tarea: llevar_victima))",
+        "Agent-2: Movio (6, 3) -> (7,3) [-2 AP])",
+        "Agent-2: *** VICTIMA RESCATADA! Total: 4/7 ***)",
+        "Agent-2: Movio (7, 3) -> (6,3) [-1 AP])",
+        "Agent-2: Movio (6, 3) -> (5,3) [-1 AP])",
+        "Dados: 5,3 -> (2,4)",
+        "Agent-3: Turno | Pos: (3,4) | AP: 5 | Tarea: llevar_victima))",
+        "Agent-3: Movio (3, 4) -> (2,4) [-2 AP])",
+        "Agent-3: Movio (2, 4) -> (2,5) [-2 AP])",
+        "Agent-3: *** VICTIMA RESCATADA! Total: 5/7 ***)",
+        "Agent-3: Apago humo adyacente (2,4) [-1 AP])",
+        "Dados: 5,4 -> (3,4)",
+        "Agent-4: Turno | Pos: (2,1) | AP: 4 | Tarea: apagar_fuego))",
+        "Agent-4: Movio (2, 1) -> (1,1) [-1 AP])",
+        "Agent-4: Movio (1, 1) -> (1,2) [-1 AP])",
+        "Agent-4: Apago fuego adyacente (2,2) [-2 AP])",
+        "Dados: 2,8 -> (7,1)",
+        "Agent-5: Turno | Pos: (5,3) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-5: Apago fuego adyacente (5,2) [-2 AP])",
+        "Agent-5: Apago humo adyacente (5,2) [-1 AP])",
+        "Dados: 4,5 -> (4,3)",
+        "*** EXPLOSION (4,3) ***",
+        "  Agente 5 alcanzado por fuego de explosion!",
+        "Agent-5: KNOCKDOWN! (1/2))",
+        "Agent-5: Reubicado en salida (7,3))",
+        "  Agente 2 alcanzado por fuego de explosion!",
+        "Agent-2: KNOCKDOWN! (1/2))",
+        "Agent-2: Reubicado en salida (7,3))",
+        "Dano: 14/24",
+        "Nuevo POI en (3,5)"
+      ]
+    },
+    {
+      "turno": 6,
+      "dados": [
+        {
+          "dado_rojo": 1,
+          "dado_negro": 4,
+          "fila": 1,
+          "columna": 4,
+          "estado_anterior": "humo",
+          "estado_nuevo": "fuego",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 1,
+          "dado_negro": 6,
+          "fila": 1,
+          "columna": 6,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        },
+        {
+          "dado_rojo": 4,
+          "dado_negro": 5,
+          "fila": 4,
+          "columna": 5,
+          "estado_anterior": "fuego",
+          "estado_nuevo": "explosion",
+          "cambios": {
+            "paredes_danadas": [
+              {
+                "dir": "S",
+                "dano": 2
+              }
+            ],
+            "fuego_propagado": [
+              [
+                6,
+                3
+              ]
+            ],
+            "knockdowns": []
+          }
+        },
+        {
+          "dado_rojo": 1,
+          "dado_negro": 4,
+          "fila": 1,
+          "columna": 4,
+          "estado_anterior": "fuego",
+          "estado_nuevo": "explosion",
+          "cambios": {
+            "paredes_danadas": [
+              {
+                "dir": "N",
+                "dano": 1
+              },
+              {
+                "dir": "O",
+                "dano": 1
+              }
+            ],
+            "fuego_propagado": [
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                0
+              ]
+            ],
+            "knockdowns": []
+          }
+        },
+        {
+          "dado_rojo": 5,
+          "dado_negro": 6,
+          "fila": 5,
+          "columna": 6,
+          "estado_anterior": "fuego",
+          "estado_nuevo": "explosion",
+          "cambios": {
+            "paredes_danadas": [
+              {
+                "dir": "N",
+                "dano": 1
+              },
+              {
+                "dir": "O",
+                "dano": 1
+              }
+            ],
+            "fuego_propagado": [],
+            "knockdowns": []
+          }
+        },
+        {
+          "dado_rojo": 2,
+          "dado_negro": 8,
+          "fila": 2,
+          "columna": 8,
+          "estado_anterior": "vacio",
+          "estado_nuevo": "humo",
+          "cambios": {}
+        }
+      ],
+      "acciones": [
+        {
+          "tripulacion_id": 1,
+          "tipo": "extinguir_fuego",
+          "desde": {
+            "fila": 3,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 3
+          },
+          "costo_ap": 2,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 1,
+          "tipo": "extinguir_humo",
+          "desde": {
+            "fila": 3,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 3
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "mover",
+          "desde": {
+            "fila": 1,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 6
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 2,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 6
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 7
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 4,
+            "columna": 8
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 8
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 8
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 8
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 8
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 7
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 3,
+          "tipo": "mover",
+          "desde": {
+            "fila": 2,
+            "columna": 7
+          },
+          "hacia": {
+            "fila": 2,
+            "columna": 6
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "mover",
+          "desde": {
+            "fila": 6,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 6,
+            "columna": 4
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "revelar_poi",
+          "desde": {
+            "fila": 6,
+            "columna": 4
+          },
+          "hacia": {
+            "fila": 6,
+            "columna": 4
+          },
+          "costo_ap": 0,
+          "cambios": {
+            "resultado": "victima"
+          }
+        },
+        {
+          "tripulacion_id": 4,
+          "tipo": "recoger_victima",
+          "desde": {
+            "fila": 6,
+            "columna": 4
+          },
+          "hacia": {
+            "fila": 6,
+            "columna": 4
+          },
+          "costo_ap": 0,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 5,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 2
+          },
+          "hacia": {
+            "fila": 3,
+            "columna": 3
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        },
+        {
+          "tripulacion_id": 6,
+          "tipo": "mover",
+          "desde": {
+            "fila": 4,
+            "columna": 8
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 7
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        }
+      ],
+      "estado": {
+        "tripulacion": [
+          {
+            "id": 1,
+            "fila": 3,
+            "columna": 3,
+            "ap": 1,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          },
+          {
+            "id": 2,
+            "fila": 2,
+            "columna": 7,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          },
+          {
+            "id": 3,
+            "fila": 2,
+            "columna": 6,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          },
+          {
+            "id": 4,
+            "fila": 6,
+            "columna": 4,
+            "ap": 0,
+            "victima": true,
+            "vivo": true,
+            "tarea": "llevar_victima"
+          },
+          {
+            "id": 5,
+            "fila": 3,
+            "columna": 3,
+            "ap": 0,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          },
+          {
+            "id": 6,
+            "fila": 4,
+            "columna": 7,
+            "ap": 1,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          }
+        ],
+        "pois": [
+          {
+            "fila": 2,
+            "columna": 5,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 5,
+            "columna": 8,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 6,
+            "columna": 5,
+            "revelado": false,
+            "tipo": "v"
+          }
+        ],
+        "fuegos": [
+          {
+            "fila": 1,
+            "columna": 4
+          },
+          {
+            "fila": 1,
+            "columna": 5
+          },
+          {
+            "fila": 2,
+            "columna": 4
+          },
+          {
+            "fila": 3,
+            "columna": 4
+          },
+          {
+            "fila": 3,
+            "columna": 5
+          },
+          {
+            "fila": 4,
+            "columna": 4
+          },
+          {
+            "fila": 4,
+            "columna": 5
+          },
+          {
+            "fila": 4,
+            "columna": 6
+          },
+          {
+            "fila": 5,
+            "columna": 4
+          },
+          {
+            "fila": 5,
+            "columna": 5
+          },
+          {
+            "fila": 5,
+            "columna": 6
+          },
+          {
+            "fila": 5,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 6
+          },
+          {
+            "fila": 6,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 8
+          }
+        ],
+        "humos": [
+          {
+            "fila": 1,
+            "columna": 6
+          },
+          {
+            "fila": 2,
+            "columna": 8
+          }
+        ],
+        "dano": 22,
+        "rescatadas": 5,
+        "perdidas": 0
+      },
+      "logs": [
+        "[SUBASTA] === SUBASTA DE TAREAS ===",
+        "[SUBASTA] Agente 3 -> investigar_poi en (3, 5) (oferta: 1 AP)",
+        "[SUBASTA] Agente 0 -> investigar_poi en (4, 5) (oferta: 27 AP)",
+        "[SUBASTA] Agente 1 -> apagar_fuego en (5, 3) (oferta: 17 AP)",
+        "[SUBASTA] Agente 2 -> apagar_fuego en (2, 2) (oferta: 22 AP)",
+        "[SUBASTA] Agente 4 -> apagar_fuego en (2, 3) (oferta: 22 AP)",
+        "[SUBASTA] Agente 5 -> apagar_fuego en (4, 3) (oferta: 23 AP)",
+        "Agent-0: Turno | Pos: (2,2) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-0: Apago fuego -> humo [-2 AP])",
+        "Agent-0: Apago humo [-1 AP])",
+        "Dados: 1,4 -> (3,0)",
+        "Agent-1: Turno | Pos: (5,0) | AP: 4 | Tarea: apagar_fuego))",
+        "Agent-1: Movio (5, 0) -> (5,1) [-1 AP])",
+        "Agent-1: Apago humo adyacente (4,1) [-1 AP])",
+        "Agent-1: Movio (5, 1) -> (6,1) [-1 AP])",
+        "Agent-1: Apago humo adyacente (7,1) [-1 AP])",
+        "Dados: 1,6 -> (5,0)",
+        "Agent-2: Turno | Pos: (7,3) | AP: 4 | Tarea: apagar_fuego))",
+        "Agent-2: Movio (7, 3) -> (7,2) [-1 AP])",
+        "Agent-2: Movio (7, 2) -> (7,1) [-1 AP])",
+        "Agent-2: Movio (7, 1) -> (6,1) [-1 AP])",
+        "Agent-2: Movio (6, 1) -> (5,1) [-1 AP])",
+        "Dados: 4,5 -> (4,3)",
+        "*** EXPLOSION (4,3) ***",
+        "Dano: 17/24",
+        "Agent-3: Turno | Pos: (2,5) | AP: 4 | Tarea: investigar_poi))",
+        "Agent-3: Apago fuego adyacente (1,5) [-2 AP])",
+        "Agent-3: Apago humo adyacente (1,5) [-1 AP])",
+        "Agent-3: Movio (2, 5) -> (3,5) [-1 AP])",
+        "Agent-3: Revelo POI: VICTIMA!)",
+        "Agent-3: Cargo victima)",
+        "Dados: 1,4 -> (3,0)",
+        "*** EXPLOSION (3,0) ***",
+        "Dano: 19/24",
+        "Agent-4: Turno | Pos: (1,2) | AP: 4 | Tarea: apagar_fuego))",
+        "Agent-4: Movio (1, 2) -> (2,2) [-1 AP])",
+        "Agent-4: Apago fuego adyacente (2,3) [-2 AP])",
+        "Agent-4: Apago humo adyacente (2,3) [-1 AP])",
+        "Dados: 5,6 -> (5,4)",
+        "*** EXPLOSION (5,4) ***",
+        "Dano: 22/24",
+        "Agent-5: Turno | Pos: (7,3) | AP: 5 | Tarea: apagar_fuego))",
+        "Agent-5: Apago fuego adyacente (6,3) [-2 AP])",
+        "Agent-5: Apago humo adyacente (6,3) [-1 AP])",
+        "Agent-5: Movio (7, 3) -> (6,3) [-1 AP])",
+        "Dados: 2,8 -> (7,1)",
+        "Nuevo POI en (4,1)"
+      ]
+    },
+    {
+      "turno": 7,
+      "dados": [
+        {
+          "dado_rojo": 5,
+          "dado_negro": 5,
+          "fila": 5,
+          "columna": 5,
+          "estado_anterior": "fuego",
+          "estado_nuevo": "explosion",
+          "cambios": {
+            "paredes_danadas": [
+              {
+                "dir": "E",
+                "dano": 2
+              }
+            ],
+            "fuego_propagado": [
+              [
+                4,
+                5
+              ],
+              [
+                2,
+                4
+              ]
+            ],
+            "knockdowns": []
+          }
+        }
+      ],
+      "acciones": [
+        {
+          "tripulacion_id": 1,
+          "tipo": "mover",
+          "desde": {
+            "fila": 3,
+            "columna": 3
+          },
+          "hacia": {
+            "fila": 4,
+            "columna": 3
+          },
+          "costo_ap": 1,
+          "cambios": {}
+        }
+      ],
+      "estado": {
+        "tripulacion": [
+          {
+            "id": 1,
+            "fila": 4,
+            "columna": 3,
+            "ap": 1,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          },
+          {
+            "id": 2,
+            "fila": 2,
+            "columna": 7,
+            "ap": 4,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          },
+          {
+            "id": 3,
+            "fila": 2,
+            "columna": 6,
+            "ap": 4,
+            "victima": false,
+            "vivo": true,
+            "tarea": "investigar_poi"
+          },
+          {
+            "id": 4,
+            "fila": 6,
+            "columna": 4,
+            "ap": 4,
+            "victima": true,
+            "vivo": true,
+            "tarea": "llevar_victima"
+          },
+          {
+            "id": 5,
+            "fila": 3,
+            "columna": 3,
+            "ap": 4,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          },
+          {
+            "id": 6,
+            "fila": 4,
+            "columna": 7,
+            "ap": 5,
+            "victima": false,
+            "vivo": true,
+            "tarea": "apagar_fuego"
+          }
+        ],
+        "pois": [
+          {
+            "fila": 2,
+            "columna": 5,
+            "revelado": false,
+            "tipo": "v"
+          },
+          {
+            "fila": 5,
+            "columna": 8,
+            "revelado": false,
+            "tipo": "v"
+          }
+        ],
+        "fuegos": [
+          {
+            "fila": 1,
+            "columna": 4
+          },
+          {
+            "fila": 1,
+            "columna": 5
+          },
+          {
+            "fila": 2,
+            "columna": 4
+          },
+          {
+            "fila": 3,
+            "columna": 5
+          },
+          {
+            "fila": 4,
+            "columna": 4
+          },
+          {
+            "fila": 4,
+            "columna": 5
+          },
+          {
+            "fila": 4,
+            "columna": 6
+          },
+          {
+            "fila": 5,
+            "columna": 3
+          },
+          {
+            "fila": 5,
+            "columna": 4
+          },
+          {
+            "fila": 5,
+            "columna": 5
+          },
+          {
+            "fila": 5,
+            "columna": 6
+          },
+          {
+            "fila": 5,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 5
+          },
+          {
+            "fila": 6,
+            "columna": 6
+          },
+          {
+            "fila": 6,
+            "columna": 7
+          },
+          {
+            "fila": 6,
+            "columna": 8
+          }
+        ],
+        "humos": [
+          {
+            "fila": 1,
+            "columna": 6
+          },
+          {
+            "fila": 2,
+            "columna": 8
+          }
+        ],
+        "dano": 24,
+        "rescatadas": 5,
+        "perdidas": 1
+      },
+      "logs": [
+        "[SUBASTA] === SUBASTA DE TAREAS ===",
+        "[SUBASTA] Agente 3 -> llevar_victima [FORZADO] (costo: 2 AP)",
+        "[SUBASTA] Agente 2 -> investigar_poi en (4, 1) (oferta: 1 AP)",
+        "[SUBASTA] Agente 0 -> investigar_poi en (4, 5) (oferta: 27 AP)",
+        "[SUBASTA] Agente 1 -> apagar_fuego en (4, 0) (oferta: 13 AP)",
+        "[SUBASTA] Agente 4 -> apagar_fuego en (3, 2) (oferta: 11 AP)",
+        "[SUBASTA] Agente 5 -> apagar_fuego en (5, 3) (oferta: 11 AP)",
+        "Agent-0: Turno | Pos: (2,2) | AP: 5 | Tarea: investigar_poi))",
+        "Agent-0: Apago fuego adyacente (3,2) [-2 AP])",
+        "Agent-0: Apago humo adyacente (3,2) [-1 AP])",
+        "Agent-0: Movio (2, 2) -> (2,3) [-1 AP])",
+        "Dados: 5,5 -> (4,4)",
+        "*** EXPLOSION (4,4) ***",
+        "Dano: 24/24",
+        "*** VICTIMA PERDIDA (4,5)! 1/4 ***"
+      ]
+    }
+  ]
+}
