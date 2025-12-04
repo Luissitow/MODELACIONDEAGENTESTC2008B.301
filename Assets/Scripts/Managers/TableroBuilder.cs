@@ -54,6 +54,13 @@ public class TableroBuilder : MonoBehaviour
         ConstruirEstadoInicial(escenario.estado_inicial);
         
         Debug.Log("✅ Tablero construido exitosamente");
+        
+        // 4. Inicializar cámaras después de crear agentes
+        CameraManager cameraManager = FindAnyObjectByType<CameraManager>();
+        if (cameraManager != null && tripulacion.Count > 0)
+        {
+            Debug.Log($"📹 Inicializando cámaras para {tripulacion.Count} agentes");
+        }
     }
     
     private void ConstruirTablero(TableroConfig tablero)
@@ -246,7 +253,14 @@ public class TableroBuilder : MonoBehaviour
             Debug.Log($"✅ Componente Crew.cs agregado a {crewObj.name}");
         }
         
-        tripulacion[crew.id] = crewObj;
+        tripulacion[crew.id] = crewObj;  
+        
+        // Notificar al CameraManager sobre el nuevo agente
+        CameraManager cameraManager = FindAnyObjectByType<CameraManager>();
+        if (cameraManager != null)
+        {
+            cameraManager.AgregarAgente(crewObj);
+        }
     }
     
     private void CrearPOI(PuntoInteresData poi)
