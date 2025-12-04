@@ -1,0 +1,1352 @@
+🎮 Cursor bloqueado - Tab para desbloquear
+UnityEngine.Debug:Log (object)
+CamaraLibre:BloquearCursor () (at Assets/Scripts/Camera/CamaraLibre.cs:91)
+CamaraLibre:Start () (at Assets/Scripts/Camera/CamaraLibre.cs:25)
+
+🌐 Modo Servidor: descargando simulacion_completa.json desde Python
+UnityEngine.Debug:Log (object)
+GameManager:IniciarJuego () (at Assets/Scripts/Managers/GameManager.cs:53)
+GameManager:Start () (at Assets/Scripts/Managers/GameManager.cs:44)
+
+🌐 Cargando escenario desde servidor Python (localhost:8585)...
+UnityEngine.Debug:Log (object)
+GameManager:IniciarDesdeServidor () (at Assets/Scripts/Managers/GameManager.cs:78)
+GameManager:IniciarJuego () (at Assets/Scripts/Managers/GameManager.cs:54)
+GameManager:Start () (at Assets/Scripts/Managers/GameManager.cs:44)
+
+📡 GET http://localhost:8585/simulation_data
+UnityEngine.Debug:Log (object)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:35)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+GameManager:IniciarDesdeServidor () (at Assets/Scripts/Managers/GameManager.cs:79)
+GameManager:IniciarJuego () (at Assets/Scripts/Managers/GameManager.cs:54)
+GameManager:Start () (at Assets/Scripts/Managers/GameManager.cs:44)
+
+✅ Recibidos 50640 bytes
+UnityEngine.Debug:Log (object)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:55)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+📄 JSON: {
+  "tablero": {
+    "fila": 6,
+    "columna": 8,
+    "celdas": [
+      "1100",
+      "1000",
+      "1001",
+      "1100",
+      "1001",
+      "1100",
+      "1000",
+      "1001",
+      "0100",
+      "0000",
+      "0011",
+      "0110",
+      "0011",
+      "0110",
+      "0010",
+      "0011",
+      "010...
+UnityEngine.Debug:Log (object)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:57)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🛰️ JSON recibido del servidor (50585 caracteres)
+UnityEngine.Debug:Log (object)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:81)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✅ Escenario parseado desde servidor: 7 turnos
+UnityEngine.Debug:Log (object)
+JSONLoader:ParsearJSON (string) (at Assets/Scripts/Managers/JSONLoader.cs:49)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:82)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✅ JSON parseado correctamente desde servidor
+UnityEngine.Debug:Log (object)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:85)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🏗️ Iniciando construcción del tablero...
+UnityEngine.Debug:Log (object)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:41)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✅ 23 posiciones bloqueadas (puertas+entradas, ambos lados)
+UnityEngine.Debug:Log (object)
+TableroBuilder:RegistrarPosicionesBloqueadas (EstadoInicial) (at Assets/Scripts/Managers/TableroBuilder.cs:164)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:44)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 1,3,este
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 1,4,oeste
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 1,6,norte
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 2,5,este
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 2,6,oeste
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 2,8,sur
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 3,1,oeste
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 3,2,este
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 3,3,oeste
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 3,8,norte
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 4,4,sur
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 4,6,este
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 4,7,oeste
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 4,8,este
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 5,4,norte
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 6,3,sur
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 6,5,este
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 6,6,oeste
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 6,7,este
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⛔ BLOQUEADA - No se crea pared en 6,8,oeste
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearPared (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:103)
+TableroBuilder:CrearParedes (int,int,string) (at Assets/Scripts/Managers/TableroBuilder.cs:90)
+TableroBuilder:ConstruirTablero (TableroConfig) (at Assets/Scripts/Managers/TableroBuilder.cs:73)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:47)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+📋 Leyendo 10 arañas del JSON...
+UnityEngine.Debug:Log (object)
+TableroBuilder:ConstruirEstadoInicial (EstadoInicial) (at Assets/Scripts/Managers/TableroBuilder.cs:203)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:50)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Creada araña F2C2 en posición Unity (18.0, 1.0, 3.0)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpider (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:278)
+TableroBuilder:ConstruirEstadoInicial (EstadoInicial) (at Assets/Scripts/Managers/TableroBuilder.cs:206)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:50)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Creada araña F2C3 en posición Unity (15.0, 1.0, 3.0)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpider (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:278)
+TableroBuilder:ConstruirEstadoInicial (EstadoInicial) (at Assets/Scripts/Managers/TableroBuilder.cs:206)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:50)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Creada araña F3C2 en posición Unity (18.0, 1.0, 6.0)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpider (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:278)
+TableroBuilder:ConstruirEstadoInicial (EstadoInicial) (at Assets/Scripts/Managers/TableroBuilder.cs:206)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:50)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Creada araña F3C3 en posición Unity (15.0, 1.0, 6.0)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpider (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:278)
+TableroBuilder:ConstruirEstadoInicial (EstadoInicial) (at Assets/Scripts/Managers/TableroBuilder.cs:206)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:50)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Creada araña F3C4 en posición Unity (12.0, 1.0, 6.0)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpider (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:278)
+TableroBuilder:ConstruirEstadoInicial (EstadoInicial) (at Assets/Scripts/Managers/TableroBuilder.cs:206)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:50)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Creada araña F3C5 en posición Unity (9.0, 1.0, 6.0)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpider (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:278)
+TableroBuilder:ConstruirEstadoInicial (EstadoInicial) (at Assets/Scripts/Managers/TableroBuilder.cs:206)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:50)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Creada araña F4C4 en posición Unity (12.0, 1.0, 9.0)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpider (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:278)
+TableroBuilder:ConstruirEstadoInicial (EstadoInicial) (at Assets/Scripts/Managers/TableroBuilder.cs:206)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:50)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Creada araña F5C6 en posición Unity (6.0, 1.0, 12.0)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpider (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:278)
+TableroBuilder:ConstruirEstadoInicial (EstadoInicial) (at Assets/Scripts/Managers/TableroBuilder.cs:206)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:50)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Creada araña F5C7 en posición Unity (3.0, 1.0, 12.0)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpider (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:278)
+TableroBuilder:ConstruirEstadoInicial (EstadoInicial) (at Assets/Scripts/Managers/TableroBuilder.cs:206)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:50)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Creada araña F6C6 en posición Unity (6.0, 1.0, 15.0)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpider (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:278)
+TableroBuilder:ConstruirEstadoInicial (EstadoInicial) (at Assets/Scripts/Managers/TableroBuilder.cs:206)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:50)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✅ Tablero construido exitosamente
+UnityEngine.Debug:Log (object)
+TableroBuilder:Construir (EscenarioData) (at Assets/Scripts/Managers/TableroBuilder.cs:52)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:186)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🎮 Iniciando simulación con 7 turnos
+UnityEngine.Debug:Log (object)
+SimulacionRunner:IniciarSimulacion (EscenarioData) (at Assets/Scripts/Managers/SimulacionRunner.cs:32)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:197)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+================================================================================
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:51)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner:IniciarSimulacion (EscenarioData) (at Assets/Scripts/Managers/SimulacionRunner.cs:34)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:197)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+TURNO 1 - INICIO
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:52)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner:IniciarSimulacion (EscenarioData) (at Assets/Scripts/Managers/SimulacionRunner.cs:34)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:197)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+================================================================================
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:53)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner:IniciarSimulacion (EscenarioData) (at Assets/Scripts/Managers/SimulacionRunner.cs:34)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:197)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+📊 ANTES del turno 1: 10 arañas, 0 huevos
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ContarEstadoActual (string) (at Assets/Scripts/Managers/SimulacionRunner.cs:104)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:56)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner:IniciarSimulacion (EscenarioData) (at Assets/Scripts/Managers/SimulacionRunner.cs:34)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:197)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🎲 FASE DE DADOS - 6 tiradas
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:61)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner:IniciarSimulacion (EscenarioData) (at Assets/Scripts/Managers/SimulacionRunner.cs:34)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:197)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🎲 Fase de dados - Propagación
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:109)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:62)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner:IniciarSimulacion (EscenarioData) (at Assets/Scripts/Managers/SimulacionRunner.cs:34)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:197)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Dado en (6,2): vacio → huevo
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:113)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:62)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner:IniciarSimulacion (EscenarioData) (at Assets/Scripts/Managers/SimulacionRunner.cs:34)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:197)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Apareciendo nuevo huevo en (6,2)
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:523)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:62)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner:IniciarSimulacion (EscenarioData) (at Assets/Scripts/Managers/SimulacionRunner.cs:34)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:197)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo creado dinámicamente en (6,2)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearHuevoDinamico (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:402)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:536)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:62)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner:IniciarSimulacion (EscenarioData) (at Assets/Scripts/Managers/SimulacionRunner.cs:34)
+GameManager:ConstruirYSimular (EscenarioData) (at Assets/Scripts/Managers/GameManager.cs:197)
+GameManager:<IniciarDesdeServidor>b__7_0 (string) (at Assets/Scripts/Managers/GameManager.cs:86)
+FireRescue.Networking.APIClient/<ObtenerSimulacion>d__3:MoveNext () (at Assets/Scripts/Networking/WebClient.cs:61)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🗺️ Aplicando cambios al mapa
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:230)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Dado en (1,5): vacio → huevo
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:113)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Apareciendo nuevo huevo en (1,5)
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:523)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo creado dinámicamente en (1,5)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearHuevoDinamico (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:402)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:536)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo apareció: Egg_6_2_dinamico
+UnityEngine.Debug:Log (object)
+Egg/<AnimarAparicion>d__7:MoveNext () (at Assets/Scripts/Components/Egg.cs:47)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Dado en (2,4): vacio → huevo
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:113)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Apareciendo nuevo huevo en (2,4)
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:523)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo creado dinámicamente en (2,4)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearHuevoDinamico (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:402)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:536)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo apareció: Egg_1_5_dinamico
+UnityEngine.Debug:Log (object)
+Egg/<AnimarAparicion>d__7:MoveNext () (at Assets/Scripts/Components/Egg.cs:47)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Dado en (2,2): araña → explosion
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:113)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥💥💥 EXPLOSIÓN en (2,2) 💥💥💥
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:584)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:132)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✓ Araña encontrada en (2,2), eliminándola...
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:594)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:132)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️💀 Eliminando araña: Spider_2_2
+UnityEngine.Debug:Log (object)
+Spider/<AnimarEliminacion>d__5:MoveNext () (at Assets/Scripts/Components/Spider.cs:37)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+Spider:Eliminar () (at Assets/Scripts/Components/Spider.cs:29)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:605)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:132)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✓ Araña en (2,2) eliminada del diccionario
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:614)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Araña creada dinámicamente en (1,2)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpiderDinamica (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:423)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:673)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥🕷️ Explosión genera nueva araña en (1,2)
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:677)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥⚠️ Explosión intenta spawn araña en (3,2) pero ya hay una
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:682)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥⚠️ Explosión intenta spawn araña en (2,3) pero ya hay una
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:682)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Araña creada dinámicamente en (2,1)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpiderDinamica (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:423)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:673)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥🕷️ Explosión genera nueva araña en (2,1)
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:677)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥 Explosión completada en (2,2)
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:619)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo apareció: Egg_2_4_dinamico
+UnityEngine.Debug:Log (object)
+Egg/<AnimarAparicion>d__7:MoveNext () (at Assets/Scripts/Components/Egg.cs:47)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Creando 3 arañas nuevas por explosión...
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:287)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+  ⚠️ Ya existe araña en (1,2), no se crea duplicada
+UnityEngine.Debug:LogWarning (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:302)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+  ⚠️ Ya existe araña en (3,2), no se crea duplicada
+UnityEngine.Debug:LogWarning (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:302)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+  ⚠️ Ya existe araña en (2,1), no se crea duplicada
+UnityEngine.Debug:LogWarning (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:302)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✓ 3 arañas nuevas procesadas
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:306)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✅ Araña eliminada completamente: Spider_2_2
+UnityEngine.Debug:Log (object)
+Spider/<AnimarEliminacion>d__5:MoveNext () (at Assets/Scripts/Components/Spider.cs:57)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥 Explosión completada - Destruyendo GameObject
+UnityEngine.Debug:Log (object)
+FireRescue.Components.Explosion/<AnimarExplosion>d__10:MoveNext () (at Assets/Scripts/Components/Explosion.cs:126)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Dado en (6,2): vacio → huevo
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:113)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Apareciendo nuevo huevo en (6,2)
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:523)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⚠️ Ya existe huevo en (6,2), no se crea duplicado
+UnityEngine.Debug:LogWarning (object)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:529)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Dado en (5,7): araña → explosion
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:113)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥💥💥 EXPLOSIÓN en (5,7) 💥💥💥
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:584)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:132)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✓ Araña encontrada en (5,7), eliminándola...
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:594)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:132)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️💀 Eliminando araña: Spider_5_7
+UnityEngine.Debug:Log (object)
+Spider/<AnimarEliminacion>d__5:MoveNext () (at Assets/Scripts/Components/Spider.cs:37)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+Spider:Eliminar () (at Assets/Scripts/Components/Spider.cs:29)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:605)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:132)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✓ Araña en (5,7) eliminada del diccionario
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:614)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🧱 Pared Pared_4_7_sur recibe 1 daño (total: 1)
+UnityEngine.Debug:Log (object)
+Wall:AplicarDano (int) (at Assets/Scripts/Components/Wall.cs:38)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:661)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥 Pared Pared_4_7_sur → Dañada (grietas)
+UnityEngine.Debug:Log (object)
+Wall:CambiarEstado (string) (at Assets/Scripts/Components/Wall.cs:97)
+Wall:AplicarDano (int) (at Assets/Scripts/Components/Wall.cs:49)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:661)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥🧱 Explosión daña pared en (4,7,sur)
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:662)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Araña creada dinámicamente en (6,7)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpiderDinamica (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:423)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:673)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥🕷️ Explosión genera nueva araña en (6,7)
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:677)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🧱 Pared Pared_5_7_este recibe 1 daño (total: 1)
+UnityEngine.Debug:Log (object)
+Wall:AplicarDano (int) (at Assets/Scripts/Components/Wall.cs:38)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:661)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥 Pared Pared_5_7_este → Dañada (grietas)
+UnityEngine.Debug:Log (object)
+Wall:CambiarEstado (string) (at Assets/Scripts/Components/Wall.cs:97)
+Wall:AplicarDano (int) (at Assets/Scripts/Components/Wall.cs:49)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:661)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥🧱 Explosión daña pared en (5,8,oeste)
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:662)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥⚠️ Explosión intenta spawn araña en (5,6) pero ya hay una
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:682)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥 Explosión completada en (5,7)
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:619)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Creando 1 arañas nuevas por explosión...
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:287)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+  ⚠️ Ya existe araña en (6,7), no se crea duplicada
+UnityEngine.Debug:LogWarning (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:302)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✓ 1 arañas nuevas procesadas
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:306)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+ℹ️ No hay pared en (0,0,norte) - celda sin pared en esa dirección
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:370)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+ℹ️ No hay pared en (0,0,este) - celda sin pared en esa dirección
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:370)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✅ Araña eliminada completamente: Spider_5_7
+UnityEngine.Debug:Log (object)
+Spider/<AnimarEliminacion>d__5:MoveNext () (at Assets/Scripts/Components/Spider.cs:57)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+📊 DESPUÉS de fase de dados: 11 arañas, 3 huevos
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ContarEstadoActual (string) (at Assets/Scripts/Managers/SimulacionRunner.cs:104)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:63)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⚡ FASE DE ACCIÓN - 18 acciones
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:69)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⚡ Fase de acción
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:152)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:70)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Crew 1 ejecuta: mover
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:171)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:70)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🗺️ Aplicando cambios al mapa
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:230)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:224)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Crew 2 ejecuta: mover
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:171)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🖱️ Cursor libre - Tab para bloquear
+UnityEngine.Debug:Log (object)
+CamaraLibre:DesbloquearCursor () (at Assets/Scripts/Camera/CamaraLibre.cs:99)
+CamaraLibre:Update () (at Assets/Scripts/Camera/CamaraLibre.cs:35)
+
+🎮 Cursor bloqueado - Tab para desbloquear
+UnityEngine.Debug:Log (object)
+CamaraLibre:BloquearCursor () (at Assets/Scripts/Camera/CamaraLibre.cs:91)
+CamaraLibre:Update () (at Assets/Scripts/Camera/CamaraLibre.cs:37)
+
+Crew 2 ejecuta: abrir_puerta
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:171)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🗺️ Aplicando cambios al mapa
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:230)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:224)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Crew 2 ejecuta: revelar_poi
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:171)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⚠️ No se encontró POI con id 0
+UnityEngine.Debug:LogWarning (object)
+SimulacionRunner/<AnimarRevelarPOI>d__14:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:470)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:184)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Crew 3 ejecuta: mover
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:171)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Crew 3 ejecuta: abrir_puerta
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:171)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Crew 4 ejecuta: mover
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:171)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Crew 4 ejecuta: revelar_poi
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:171)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Crew 4 ejecuta: recoger_victima
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:171)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🚀 Crew_4_jugador ahora CARGA una víctima (cambiando a VERDE)
+UnityEngine.Debug:Log (object)
+Crew:CargarVictima () (at Assets/Scripts/Components/Crew.cs:99)
+SimulacionRunner/<AnimarCargarVictima>d__25:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:799)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:189)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🗑️ Eliminando POI víctima en (5,1)
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AnimarCargarVictima>d__25:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:805)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:189)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Crew 5 ejecuta: mover
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:171)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Crew 6 ejecuta: mover
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarAccion>d__10:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:171)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseAccion>d__9:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:156)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+📊 DESPUÉS de fase de acción: 11 arañas, 3 huevos
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ContarEstadoActual (string) (at Assets/Scripts/Managers/SimulacionRunner.cs:104)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:71)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🗺️ Aplicando cambios al mapa
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:230)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:77)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+📊 Estado: Víctimas rescatadas: 0/0 | Daño edificio: 4/24
+UnityEngine.Debug:Log (object)
+SimulacionRunner:MostrarEstadoJuego (EstadoJuegoData) (at Assets/Scripts/Managers/SimulacionRunner.cs:752)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:83)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+================================================================================
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:86)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+TURNO 1 - FIN
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:87)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+================================================================================
+
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:88)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+================================================================================
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:51)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+TURNO 2 - INICIO
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:52)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+================================================================================
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:53)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+📊 ANTES del turno 2: 11 arañas, 3 huevos
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ContarEstadoActual (string) (at Assets/Scripts/Managers/SimulacionRunner.cs:104)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:56)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🎲 FASE DE DADOS - 6 tiradas
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:61)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🎲 Fase de dados - Propagación
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:109)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:62)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Dado en (5,4): vacio → huevo
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:113)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:62)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Apareciendo nuevo huevo en (5,4)
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:523)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:62)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo creado dinámicamente en (5,4)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearHuevoDinamico (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:402)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:536)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:62)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarSimulacion>d__5:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:41)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Dado en (6,7): araña → explosion
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:113)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥💥💥 EXPLOSIÓN en (6,7) 💥💥💥
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:584)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:132)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✓ Araña encontrada en (6,7), eliminándola...
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:594)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:132)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️💀 Eliminando araña: Spider_6_7_dinamico
+UnityEngine.Debug:Log (object)
+Spider/<AnimarEliminacion>d__5:MoveNext () (at Assets/Scripts/Components/Spider.cs:37)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+Spider:Eliminar () (at Assets/Scripts/Components/Spider.cs:29)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:605)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:132)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✓ Araña en (6,7) eliminada del diccionario
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:614)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Araña creada dinámicamente en (5,7)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpiderDinamica (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:423)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:673)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥🕷️ Explosión genera nueva araña en (5,7)
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:677)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🕷️ Araña creada dinámicamente en (6,8)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearSpiderDinamica (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:423)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:673)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥🕷️ Explosión genera nueva araña en (6,8)
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:677)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥⚠️ Explosión intenta spawn araña en (6,6) pero ya hay una
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ProcesarEfectosExplosion (int,int) (at Assets/Scripts/Managers/SimulacionRunner.cs:682)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:617)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+💥 Explosión completada en (6,7)
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:619)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo apareció: Egg_5_4_dinamico
+UnityEngine.Debug:Log (object)
+Egg/<AnimarAparicion>d__7:MoveNext () (at Assets/Scripts/Components/Egg.cs:47)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+ℹ️ No hay pared en (0,0,sur) - celda sin pared en esa dirección
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:370)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+✅ Araña eliminada completamente: Spider_6_7_dinamico
+UnityEngine.Debug:Log (object)
+Spider/<AnimarEliminacion>d__5:MoveNext () (at Assets/Scripts/Components/Spider.cs:57)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Dado en (2,8): vacio → huevo
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:113)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Apareciendo nuevo huevo en (2,8)
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:523)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo creado dinámicamente en (2,8)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearHuevoDinamico (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:402)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:536)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Dado en (5,5): vacio → huevo
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:113)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Apareciendo nuevo huevo en (5,5)
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:523)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo creado dinámicamente en (5,5)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearHuevoDinamico (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:402)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:536)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo apareció: Egg_2_8_dinamico
+UnityEngine.Debug:Log (object)
+Egg/<AnimarAparicion>d__7:MoveNext () (at Assets/Scripts/Components/Egg.cs:47)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+Dado en (1,3): vacio → huevo
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:113)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Apareciendo nuevo huevo en (1,3)
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:523)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo creado dinámicamente en (1,3)
+UnityEngine.Debug:Log (object)
+TableroBuilder:CrearHuevoDinamico (int,int) (at Assets/Scripts/Managers/TableroBuilder.cs:402)
+SimulacionRunner/<AparecerHuevo>d__16:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:536)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:120)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo apareció: Egg_5_5_dinamico
+UnityEngine.Debug:Log (object)
+Egg/<AnimarAparicion>d__7:MoveNext () (at Assets/Scripts/Components/Egg.cs:47)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+❌ ERROR: No hay araña en (6,7) para explotar!
+UnityEngine.Debug:LogError (object)
+SimulacionRunner/<ExplotarSpider>d__18:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:590)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:132)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+  ⚠️ Ya existe araña en (6,8), no se crea duplicada
+UnityEngine.Debug:LogWarning (object)
+SimulacionRunner/<AplicarCambiosMapa>d__11:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:302)
+UnityEngine.MonoBehaviour:StartCoroutine (System.Collections.IEnumerator)
+SimulacionRunner/<EjecutarFaseDados>d__8:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:143)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+📊 DESPUÉS de fase de dados: 12 arañas, 7 huevos
+UnityEngine.Debug:Log (object)
+SimulacionRunner:ContarEstadoActual (string) (at Assets/Scripts/Managers/SimulacionRunner.cs:104)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:63)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+⚡ FASE DE ACCIÓN - 12 acciones
+UnityEngine.Debug:Log (object)
+SimulacionRunner/<EjecutarTurno>d__6:MoveNext () (at Assets/Scripts/Managers/SimulacionRunner.cs:69)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+
+🥚 Huevo apareció: Egg_1_3_dinamico
+UnityEngine.Debug:Log (object)
+Egg/<AnimarAparicion>d__7:MoveNext () (at Assets/Scripts/Components/Egg.cs:47)
+UnityEngine.SetupCoroutine:InvokeMoveNext (System.Collections.IEnumerator,intptr)
+

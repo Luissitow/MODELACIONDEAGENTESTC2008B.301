@@ -6,8 +6,9 @@ using FireRescue.Networking;
 /// </summary>
 public enum FuenteDatos
 {
-    Servidor,    // Cargar simulacion_completa.json desde servidor Python (localhost:8585)
-    Local        // Cargar escenario.json desde Resources/ (JSON local original)
+    Servidor,      // Cargar simulacion_completa.json desde servidor Python (localhost:8585)
+    Local,         // Cargar escenario.json desde Resources/ (JSON local original)
+    LocalPython    // Cargar simulacion.json generado por multiagentes.py desde raíz del proyecto
 }
 
 /// <summary>
@@ -57,6 +58,11 @@ public class GameManager : MonoBehaviour
                 Debug.Log("📂 Modo Local: cargando escenario.json desde Resources/");
                 IniciarDesdeArchivoLocal("escenario");
                 break;
+            
+            case FuenteDatos.LocalPython:
+                Debug.Log("🐍 Modo LocalPython: cargando simulacion.json de multiagentes.py");
+                IniciarDesdePythonLocal();
+                break;
         }
     }
     
@@ -93,6 +99,47 @@ public class GameManager : MonoBehaviour
             }
         ));
     }
+    
+    void IniciarDesdePythonLocal()
+    {
+        // Cargar simulacion.json desde la raíz del proyecto Unity
+        string rutaArchivo = System.IO.Path.Combine(Application.dataPath, "..", "simulacion.json");
+        rutaArchivo = System.IO.Path.GetFullPath(rutaArchivo); // Normalizar ruta
+        
+        Debug.Log($"📂 Buscando archivo: {rutaArchivo}");
+        
+        if (!System.IO.File.Exists(rutaArchivo))
+        {
+            Debug.LogError($"❌ No se encontró simulacion.json en: {rutaArchivo}");
+            Debug.LogWarning("💡 Ejecuta 'python Assets/python/simulation/multiagentes.py' primero");
+            Debug.Log("📂 Fallback: usando escenario.json local");
+            IniciarDesdeArchivoLocal("escenario");
+            return;
+        }
+        
+        try
+        {
+            string jsonData = System.IO.File.ReadAllText(rutaArchivo);
+            Debug.Log($"✅ simulacion.json leído ({jsonData.Length} caracteres)");
+            
+            EscenarioData escenario = JSONLoader.ParsearJSON(jsonData);
+            if (escenario != null)
+            {
+                Debug.Log("✅ JSON parseado correctamente desde multiagentes.py");
+                ConstruirYSimular(escenario);
+            }
+            else
+            {
+                Debug.LogError("❌ Error parseando simulacion.json");
+                IniciarDesdeArchivoLocal("escenario");
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"❌ Error leyendo simulacion.json: {ex.Message}");
+            IniciarDesdeArchivoLocal("escenario");
+        }
+    }
 
     // Atajos en el menú contextual del Inspector
     [ContextMenu("🌐 Cargar desde Servidor (simulacion_completa.json)")]
@@ -106,6 +153,13 @@ public class GameManager : MonoBehaviour
     public void CargarLocalContext()
     {
         fuenteDatos = FuenteDatos.Local;
+        IniciarJuego();
+    }
+    
+    [ContextMenu("🐍 Cargar Python Local (simulacion.json)")]
+    public void CargarPythonLocalContext()
+    {
+        fuenteDatos = FuenteDatos.LocalPython;
         IniciarJuego();
     }
     

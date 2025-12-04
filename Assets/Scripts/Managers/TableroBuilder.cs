@@ -200,6 +200,7 @@ public class TableroBuilder : MonoBehaviour
         }
          
         // Crear spiders
+        Debug.Log($"📋 Leyendo {estado.arañas.Length} arañas del JSON...");
         foreach (var spider in estado.arañas)
         {
             CrearSpider(spider.fila, spider.columna);
@@ -259,7 +260,11 @@ public class TableroBuilder : MonoBehaviour
     
     private void CrearSpider(int fila, int columna)
     {
-        if (spiderPrefab == null) return;
+        if (spiderPrefab == null) 
+        {
+            Debug.LogError($"❌ CrearSpider({fila},{columna}): spiderPrefab es NULL!");
+            return;
+        }
         
         Vector3 posicion = CoordenadasHelper.JSONaPosicionUnity(fila, columna);
         posicion.y = 1f;
@@ -269,6 +274,8 @@ public class TableroBuilder : MonoBehaviour
         
         string key = $"{fila},{columna}";
         spiders[key] = spider;
+        
+        Debug.Log($"🕷️ Creada araña F{fila}C{columna} en posición Unity ({posicion.x:F1}, {posicion.y:F1}, {posicion.z:F1})");
     }
     
     private void CrearHuevo(int fila, int columna)

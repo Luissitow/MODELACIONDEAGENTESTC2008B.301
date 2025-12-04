@@ -880,6 +880,7 @@ class Nave(Model):
         self._dados_turno_actual = []
 
         self._todos_los_logs = []
+        self._estado_inicial_guardado = None
 
         if mapa_texto:
             self.cargar_desde_texto(mapa_texto)
@@ -887,6 +888,9 @@ class Nave(Model):
         self._vincular_paredes()
         self.auctioneer = AgenteSubasta(self)
         self._crear_agentes(num_agents)
+        
+        # Guardar estado inicial ANTES de cualquier turno
+        self._estado_inicial_guardado = self._construir_estado_inicial()
 
         # Initialize DataCollector
         self.datacollector = DataCollector(
@@ -925,6 +929,7 @@ class Nave(Model):
 
     def _registrar_accion(self, aid, tipo, desde, hacia, costo, extras=None):
         self._acciones_turno_actual.append({
+            "agente_id": aid,  # Para agrupar acciones por agente
             "tripulacion_id": aid + 1, "tipo": tipo,
             "desde": {"fila": desde[1] + 1, "columna": desde[0] + 1},
             "hacia": {"fila": hacia[1] + 1, "columna": hacia[0] + 1},
@@ -1269,7 +1274,7 @@ class Nave(Model):
         """
         return json.dumps({
             "tablero": self._construir_tablero(),
-            "estado_inicial": self._construir_estado_inicial(),
+            "estado_inicial": self._estado_inicial_guardado if self._estado_inicial_guardado else self._construir_estado_inicial(),
             "turnos": [self._construir_turno(t) for t in self.historial_turnos]
         }, indent=2, ensure_ascii=False)
 
@@ -1291,15 +1296,30 @@ class Nave(Model):
         # Mapeo de direcciones
         DIR = {'N': 'norte', 'S': 'sur', 'E': 'este', 'O': 'oeste'}
 
-        # Buscar puertas cerradas
+        # Buscar puertas cerradas (evitar duplicados)
+        puertas_vistas = set()
         puertas = []
         for (x, y), celda in self.cells.items():
             for d, pared in celda.walls.items():
                 if pared.door == 1:
-                    puertas.append({
-                        "fila": y + 1, "columna": x + 1,
-                        "direccion": DIR.get(d, d), "abierta": False
-                    })
+                    # Crear identificador único para la puerta
+                    if d == 'N':
+                        puerta_id = (x, y, 'N')
+                    elif d == 'S':
+                        puerta_id = (x, y+1, 'N')
+                    elif d == 'E':
+                        puerta_id = (x, y, 'E')
+                    elif d == 'O':
+                        puerta_id = (x-1, y, 'E')
+                    else:
+                        puerta_id = (x, y, d)
+                    
+                    if puerta_id not in puertas_vistas:
+                        puertas_vistas.add(puerta_id)
+                        puertas.append({
+                            "fila": y + 1, "columna": x + 1,
+                            "direccion": DIR.get(d, d), "abierta": False
+                        })
 
         # Entradas con dirección
         entradas = []
@@ -1320,11 +1340,37 @@ class Nave(Model):
                 "puntos_accion": 4, "cargando_victima": False
             })
 
+        # POIs iniciales (sin revelar)
+        puntos_interes = []
+        poi_id = 1
+        for (x, y), celda in self.cells.items():
+            if celda.poi > 0:
+                tipo = "victima" if celda.poi == 1 else "falsa_alarma"
+                puntos_interes.append({
+                    "id": poi_id,
+                    "fila": y + 1, "columna": x + 1,
+                    "revelado": celda.poi_revelado,
+                    "tipo": tipo
+                })
+                poi_id += 1
+
+        # Arañas iniciales (fuego)
+        aranas = []
+        for (x, y), celda in self.cells.items():
+            if celda.fire:
+                aranas.append({"fila": y + 1, "columna": x + 1})
+
+        # Huevos iniciales (humo)
+        huevos = []
+        for (x, y), celda in self.cells.items():
+            if celda.smoke:
+                huevos.append({"fila": y + 1, "columna": x + 1})
+
         return {
             "tripulacion": tripulacion,
-            "puntosInteres": [],  # Se llena dinámicamente
-            "arañas": [],         # fuegos iniciales
-            "huevos": [],         # humos iniciales
+            "puntosInteres": puntos_interes,
+            "arañas": aranas,
+            "huevos": huevos,
             "puertas": puertas,
             "entradas": entradas,
             "contador_colapso_edificio": 0
@@ -1332,18 +1378,59 @@ class Nave(Model):
 
 
     def _construir_turno(self, turno_data):
-        """Construye un turno completo"""
+        """
+        Construye un turno completo intercalando acciones y dados.
+        Formato: [acción jugador 1, dado 1, acción jugador 2, dado 2, ...]
+        """
         estado = turno_data.get("estado", {})
         es_final = turno_data["turno"] == self.turn
-
+        
+        # Obtener listas de acciones y dados
+        acciones_raw = turno_data.get("acciones", [])
+        dados_raw = turno_data.get("dados", [])
+        
+        # Agrupar acciones por jugador (asumiendo que vienen en orden)
+        acciones_por_jugador = []
+        jugador_actual = None
+        grupo_actual = []
+        
+        for accion in acciones_raw:
+            jugador_id = accion.get("agente_id")
+            if jugador_id != jugador_actual:
+                if grupo_actual:
+                    acciones_por_jugador.append(grupo_actual)
+                jugador_actual = jugador_id
+                grupo_actual = [accion]
+            else:
+                grupo_actual.append(accion)
+        
+        if grupo_actual:
+            acciones_por_jugador.append(grupo_actual)
+        
+        # Crear secuencia intercalada: acciones de jugador N → dado N
+        secuencias = []
+        num_jugadores = len(acciones_por_jugador)
+        num_dados = len(dados_raw)
+        
+        for i in range(max(num_jugadores, num_dados)):
+            # Agregar acciones del jugador i (si existen)
+            if i < num_jugadores:
+                secuencias.append({
+                    "tipo": "acciones_jugador",
+                    "jugador_id": acciones_por_jugador[i][0].get("agente_id"),
+                    "acciones": [self._convertir_accion(a) for a in acciones_por_jugador[i]]
+                })
+            
+            # Agregar tirada de dado i (si existe)
+            if i < num_dados:
+                secuencias.append({
+                    "tipo": "tirada_dado",
+                    "tirada": self._convertir_tirada(dados_raw[i])
+                })
+        
         return {
             "numero_turno": turno_data["turno"],
-            "fase_dados": {
-                "tiradas": [self._convertir_tirada(d) for d in turno_data.get("dados", [])]
-            },
-            "fase_accion": {
-                "acciones": [self._convertir_accion(a) for a in turno_data.get("acciones", [])]
-            },
+            "secuencia": secuencias,  # Nueva estructura intercalada
             "estado_juego": {
                 "victimas_rescatadas": estado.get("rescatadas", 0),
                 "victimas_perdidas": estado.get("perdidas", 0),
@@ -1520,12 +1607,112 @@ MAPA_EJEMPLO = """
 if __name__ == "__main__":
     random.seed(42)
     print("="*50 + "\n FLASH POINT: FIRE RESCUE\n" + "="*50)
+    
+    # Crear archivo de log detallado
+    log_file = open("simulacion_detallada.txt", "w", encoding='utf-8')
+    log_file.write("="*80 + "\n")
+    log_file.write("FLASH POINT: FIRE RESCUE - SIMULACIÓN DETALLADA\n")
+    log_file.write("="*80 + "\n\n")
+    
     model = Nave(num_agents=6, mapa_texto=MAPA_EJEMPLO, estrategia="inteligente")
-    for _ in range(20):
-        if not model.ejecutar_turno(): break
+    
+    # Guardar estado inicial en el log
+    log_file.write("\n" + "="*80 + "\n")
+    log_file.write("ESTADO INICIAL\n")
+    log_file.write("="*80 + "\n")
+    log_file.write(f"Dimensiones: {model.width}x{model.height}\n")
+    log_file.write(f"Agentes: {len(model.astronautas)}\n")
+    log_file.write(f"Estrategia: {model.estrategia}\n")
+    log_file.write(f"Entradas: {model.entradas}\n")
+    log_file.write(f"Salidas: {model.salidas}\n\n")
+    
+    # Guardar posiciones iniciales de POIs
+    log_file.write("POIs iniciales:\n")
+    for (x, y), celda in model.cells.items():
+        if celda.poi > 0:
+            tipo = "VICTIMA" if celda.poi == 1 else "FALSA ALARMA"
+            log_file.write(f"  - Posición ({x}, {y}): {tipo}\n")
+    
+    # Guardar fuegos iniciales
+    log_file.write("\nFuegos iniciales:\n")
+    for (x, y), celda in model.cells.items():
+        if celda.fire:
+            log_file.write(f"  - Posición ({x}, {y})\n")
+    
+    log_file.write("\n")
+    
+    # Ejecutar simulación
+    for turno in range(20):
+        if not model.ejecutar_turno(): 
+            break
+        
+        # Guardar todos los logs del turno en el archivo
+        log_file.write("\n" + "="*80 + "\n")
+        log_file.write(f"TURNO {model.turn} - RESUMEN\n")
+        log_file.write("="*80 + "\n")
+        
+        # Escribir todos los logs del turno actual
+        for log_msg in model._logs_turno_actual:
+            log_file.write(log_msg + "\n")
+        
+        # Estado al final del turno
+        log_file.write("\n--- ESTADO AL FINAL DEL TURNO ---\n")
+        log_file.write(f"Víctimas rescatadas: {model.victims_rescued}/7\n")
+        log_file.write(f"Víctimas perdidas: {model.victims_lost}/4\n")
+        log_file.write(f"Daño estructural: {model.damage_counter}/24\n")
+        log_file.write(f"Explosiones totales: {model.total_explosions}\n")
+        log_file.write(f"Flashovers totales: {model.total_flashovers}\n")
+        
+        # Posición de agentes
+        log_file.write("\nPosición de agentes:\n")
+        for a in model.astronautas:
+            if a.alive:
+                victima_str = " [CARGANDO VÍCTIMA]" if a.cargando_victima else ""
+                log_file.write(f"  Agente {a.unique_id}: ({a.x}, {a.y}) - AP: {a.ap}{victima_str}\n")
+            else:
+                log_file.write(f"  Agente {a.unique_id}: FUERA DE JUEGO\n")
+        
+        log_file.write("\n")
+    
+    # Resultado final
+    log_file.write("\n" + "="*80 + "\n")
+    log_file.write("RESULTADO FINAL\n")
+    log_file.write("="*80 + "\n")
+    log_file.write(f"Resultado: {model.resultado}\n")
+    log_file.write(f"Turnos jugados: {model.turn}\n")
+    log_file.write(f"Víctimas rescatadas: {model.victims_rescued}/7\n")
+    log_file.write(f"Víctimas perdidas: {model.victims_lost}/4\n")
+    log_file.write(f"Daño estructural: {model.damage_counter}/24\n")
+    log_file.write(f"Explosiones totales: {model.total_explosions}\n")
+    log_file.write(f"Flashovers totales: {model.total_flashovers}\n")
+    
+    # Estadísticas por agente
+    log_file.write("\n--- ESTADÍSTICAS POR AGENTE ---\n")
+    for a in model.astronautas:
+        log_file.write(f"\nAgente {a.unique_id}:\n")
+        log_file.write(f"  - Fuegos apagados: {a.fires_extinguished}\n")
+        log_file.write(f"  - Humos apagados: {a.smoke_extinguished}\n")
+        log_file.write(f"  - POIs revelados: {a.pois_revealed}\n")
+        log_file.write(f"  - Víctimas cargadas: {a.victims_carried}\n")
+        log_file.write(f"  - Knockdowns: {a.knockdowns}\n")
+        log_file.write(f"  - Estado: {'VIVO' if a.alive else 'FUERA DE JUEGO'}\n")
+    
+    log_file.write("\n" + "="*80 + "\n")
+    log_file.close()
+    
+    # Guardar JSON
     with open("simulacion.json", "w", encoding='utf-8') as f: 
-        f.write(model.generar_json_formato_ejemplo())  # ✅ Usar el formato correcto para Unity
+        json_content = model.generar_json_formato_ejemplo()
+        f.write(json_content)
+    
+    # Guardar copia del JSON con formato legible
+    with open("simulacion_legible.json", "w", encoding='utf-8') as f:
+        json_data = json.loads(json_content)
+        f.write(json.dumps(json_data, indent=2, ensure_ascii=False))
+    
     print(f"\n✓ JSON guardado (formato Unity) | Resultado: {model.resultado}")
+    print(f"✓ Log detallado guardado en: simulacion_detallada.txt")
+    print(f"✓ JSON legible guardado en: simulacion_legible.json")
 
     # Call the new export method
     model.exportar_stats_csv()
@@ -2369,6 +2556,9 @@ class Server(BaseHTTPRequestHandler):
     
     def _set_response(self, content_type='text/html'):
         self.send_response(200)
+        # Agregar charset UTF-8 para JSON
+        if content_type == 'application/json':
+            content_type = 'application/json; charset=utf-8'
         self.send_header('Content-type', content_type)
         self.end_headers()
         
@@ -2378,8 +2568,20 @@ class Server(BaseHTTPRequestHandler):
             json_file_path = "simulacion.json"
             if os.path.exists(json_file_path):
                 try:
-                    with open(json_file_path, 'r', encoding='utf-8') as f:
-                        json_content = f.read()
+                    # Intentar múltiples encodings como fallback
+                    json_content = None
+                    for encoding in ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']:
+                        try:
+                            with open(json_file_path, 'r', encoding=encoding) as f:
+                                json_content = f.read()
+                            logging.info(f"Successfully read {json_file_path} with encoding: {encoding}")
+                            break
+                        except (UnicodeDecodeError, UnicodeError):
+                            continue
+                    
+                    if json_content is None:
+                        raise Exception("Could not decode file with any supported encoding")
+                    
                     self._set_response(content_type='application/json')
                     self.wfile.write(json_content.encode('utf-8'))
                     logging.info(f"Sent {json_file_path} successfully via GET /simulation_data.")
@@ -2403,8 +2605,19 @@ class Server(BaseHTTPRequestHandler):
         # Check if the file exists
         if os.path.exists(json_file_path):
             try:
-                with open(json_file_path, 'r', encoding='utf-8') as f:
-                    json_content = f.read()
+                # Intentar múltiples encodings como fallback
+                json_content = None
+                for encoding in ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']:
+                    try:
+                        with open(json_file_path, 'r', encoding=encoding) as f:
+                            json_content = f.read()
+                        logging.info(f"Successfully read {json_file_path} with encoding: {encoding}")
+                        break
+                    except (UnicodeDecodeError, UnicodeError):
+                        continue
+                
+                if json_content is None:
+                    raise Exception("Could not decode file with any supported encoding")
                 
                 self._set_response(content_type='application/json')
                 self.wfile.write(json_content.encode('utf-8'))

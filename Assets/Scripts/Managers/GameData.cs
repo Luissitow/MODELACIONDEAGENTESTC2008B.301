@@ -89,10 +89,22 @@ public class EntradaData
 public class TurnoData
 {
     public int numero_turno;
+    public SecuenciaData[] secuencia;  // Nueva estructura intercalada
+    public EstadoJuegoData estado_juego;
+    
+    // DEPRECATED: Mantenidos por compatibilidad con JSONs antiguos
     public FaseDadosData fase_dados;
     public FaseAccionData fase_accion;
     public CambiosMapaData cambios_mapa;
-    public EstadoJuegoData estado_juego;
+}
+
+[System.Serializable]
+public class SecuenciaData
+{
+    public string tipo;  // "acciones_jugador" o "tirada_dado"
+    public int jugador_id;  // Para tipo "acciones_jugador"
+    public AccionData[] acciones;  // Para tipo "acciones_jugador"
+    public TiradaDadoData tirada;  // Para tipo "tirada_dado"
 }
 
 [System.Serializable]

@@ -48,24 +48,45 @@ public class SimulacionRunner : MonoBehaviour
     
     private IEnumerator EjecutarTurno(TurnoData turno)
     {
-        Debug.Log($"--- TURNO {turno.numero_turno} ---");
+        Debug.Log($"================================================================================");
+        Debug.Log($"TURNO {turno.numero_turno} - INICIO");
+        Debug.Log($"================================================================================");
         
-        // Fase 1: Dados (propagación)
-        if (turno.fase_dados != null)
+        // Contar estado actual
+        ContarEstadoActual($"ANTES del turno {turno.numero_turno}");
+        
+        // Verificar si usa la nueva estructura intercalada
+        if (turno.secuencia != null && turno.secuencia.Length > 0)
         {
-            yield return StartCoroutine(EjecutarFaseDados(turno.fase_dados));
+            Debug.Log($"📋 Ejecutando turno con secuencia intercalada ({turno.secuencia.Length} elementos)");
+            yield return StartCoroutine(EjecutarSecuenciaIntercalada(turno.secuencia));
         }
-        
-        // Fase 2: Acciones de jugadores
-        if (turno.fase_accion != null)
+        else
         {
-            yield return StartCoroutine(EjecutarFaseAccion(turno.fase_accion));
-        }
-        
-        // Fase 3: Aplicar cambios del mapa
-        if (turno.cambios_mapa != null)
-        {
-            yield return StartCoroutine(AplicarCambiosMapa(turno.cambios_mapa));
+            // Compatibilidad con JSONs antiguos (estructura separada)
+            Debug.LogWarning("⚠️ Usando estructura antigua (fase_dados + fase_accion separadas)");
+            
+            // Fase 1: Dados (propagación)
+            if (turno.fase_dados != null)
+            {
+                Debug.Log($"🎲 FASE DE DADOS - {turno.fase_dados.tiradas.Length} tiradas");
+                yield return StartCoroutine(EjecutarFaseDados(turno.fase_dados));
+                ContarEstadoActual($"DESPUÉS de fase de dados");
+            }
+            
+            // Fase 2: Acciones de jugadores
+            if (turno.fase_accion != null)
+            {
+                Debug.Log($"⚡ FASE DE ACCIÓN - {turno.fase_accion.acciones.Length} acciones");
+                yield return StartCoroutine(EjecutarFaseAccion(turno.fase_accion));
+                ContarEstadoActual($"DESPUÉS de fase de acción");
+            }
+            
+            // Fase 3: Aplicar cambios del mapa
+            if (turno.cambios_mapa != null)
+            {
+                yield return StartCoroutine(AplicarCambiosMapa(turno.cambios_mapa));
+            }
         }
         
         // Mostrar estado del juego
@@ -73,6 +94,88 @@ public class SimulacionRunner : MonoBehaviour
         {
             MostrarEstadoJuego(turno.estado_juego);
         }
+        
+        Debug.Log($"================================================================================");
+        Debug.Log($"TURNO {turno.numero_turno} - FIN");
+        Debug.Log($"================================================================================\n");
+    }
+    
+    private IEnumerator EjecutarSecuenciaIntercalada(SecuenciaData[] secuencia)
+    {
+        foreach (var elemento in secuencia)
+        {
+            if (elemento.tipo == "acciones_jugador")
+            {
+                Debug.Log($"👤 Jugador {elemento.jugador_id} - {elemento.acciones.Length} acciones");
+                foreach (var accion in elemento.acciones)
+                {
+                    yield return StartCoroutine(EjecutarAccion(accion));
+                    yield return new WaitForSeconds(tiempoEntreAcciones);
+                }
+            }
+            else if (elemento.tipo == "tirada_dado")
+            {
+                Debug.Log($"🎲 Tirada de dado en ({elemento.tirada.fila},{elemento.tirada.columna})");
+                yield return StartCoroutine(EjecutarTiradaDado(elemento.tirada));
+            }
+            else
+            {
+                Debug.LogWarning($"⚠️ Tipo de secuencia desconocido: {elemento.tipo}");
+            }
+            
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+    
+    private IEnumerator EjecutarTiradaDado(TiradaDadoData tirada)
+    {
+        Debug.Log($"Dado en ({tirada.fila},{tirada.columna}): {tirada.estado_anterior} → {tirada.estado_nuevo}");
+        
+        // Procesar según el tipo de evento
+        switch (tirada.estado_nuevo.ToLower())
+        {
+            case "huevo":
+                yield return StartCoroutine(AparecerHuevo(tirada.fila, tirada.columna));
+                break;
+                
+            case "araña":
+            case "arana":
+                yield return StartCoroutine(EvolucionarHuevo(tirada.fila, tirada.columna));
+                break;
+                
+            case "explosion":
+            case "explosión":
+                yield return StartCoroutine(ExplotarSpider(tirada.fila, tirada.columna));
+                break;
+                
+            default:
+                Debug.LogWarning($"⚠️ Estado de dado desconocido: {tirada.estado_nuevo}");
+                break;
+        }
+        
+        // Aplicar cambios de esta tirada
+        if (tirada.cambios != null)
+        {
+            yield return StartCoroutine(AplicarCambiosMapa(tirada.cambios));
+        }
+        
+        yield return new WaitForSeconds(0.1f);
+    }
+    
+    private void ContarEstadoActual(string momento)
+    {
+        int numAranas = 0;
+        int numHuevos = 0;
+        
+        // Contar todas las arañas en la escena
+        Spider[] spiders = FindObjectsByType<Spider>(FindObjectsSortMode.None);
+        numAranas = spiders.Length;
+        
+        // Contar todos los huevos en la escena
+        Egg[] eggs = FindObjectsByType<Egg>(FindObjectsSortMode.None);
+        numHuevos = eggs.Length;
+        
+        Debug.Log($"📊 {momento}: {numAranas} arañas, {numHuevos} huevos");
     }
     
     private IEnumerator EjecutarFaseDados(FaseDadosData fase)
@@ -214,6 +317,69 @@ public class SimulacionRunner : MonoBehaviour
             }
         }
         
+        // Crear huevos nuevos (de tiradas de dados)
+        if (cambios.huevos_nuevos != null)
+        {
+            TableroBuilder builder = FindFirstObjectByType<TableroBuilder>();
+            if (builder != null)
+            {
+                foreach (var pos in cambios.huevos_nuevos)
+                {
+                    // Verificar que no haya ya un huevo en esa posición
+                    GameObject huevoExistente = TableroBuilder.ObtenerHuevo(pos.fila, pos.columna);
+                    if (huevoExistente == null)
+                    {
+                        builder.CrearHuevoDinamico(pos.fila, pos.columna);
+                        Debug.Log($"🥚 Huevo nuevo creado en ({pos.fila},{pos.columna})");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"⚠️ Ya existe huevo en ({pos.fila},{pos.columna}), no se crea duplicado");
+                    }
+                }
+            }
+        }
+        
+        // Remover huevos (evolucionan a arañas o se apagan)
+        if (cambios.huevos_removidos != null)
+        {
+            foreach (var pos in cambios.huevos_removidos)
+            {
+                GameObject huevo = TableroBuilder.ObtenerHuevo(pos.fila, pos.columna);
+                if (huevo != null)
+                {
+                    Destroy(huevo);
+                    TableroBuilder.RemoverHuevoDelDiccionario(pos.fila, pos.columna);
+                    Debug.Log($"🥚💀 Huevo removido en ({pos.fila},{pos.columna})");
+                }
+            }
+        }
+        
+        // Crear arañas nuevas (de explosiones u otras propagaciones)
+        if (cambios.arañas_nuevas != null && cambios.arañas_nuevas.Length > 0)
+        {
+            Debug.Log($"🕷️ Creando {cambios.arañas_nuevas.Length} arañas nuevas por explosión...");
+            TableroBuilder builder = FindFirstObjectByType<TableroBuilder>();
+            if (builder != null)
+            {
+                foreach (var pos in cambios.arañas_nuevas)
+                {
+                    // Verificar que no haya ya una araña en esa posición
+                    GameObject spiderExistente = TableroBuilder.ObtenerSpider(pos.fila, pos.columna);
+                    if (spiderExistente == null)
+                    {
+                        builder.CrearSpiderDinamica(pos.fila, pos.columna);
+                        Debug.Log($"  ✓ Araña nueva creada en ({pos.fila},{pos.columna})");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"  ⚠️ Ya existe araña en ({pos.fila},{pos.columna}), no se crea duplicada");
+                    }
+                }
+            }
+            Debug.Log($"✓ {cambios.arañas_nuevas.Length} arañas nuevas procesadas");
+        }
+        
         // Remover spiders apagadas
         if (cambios.arañas_removidas != null)
         {
@@ -223,7 +389,8 @@ public class SimulacionRunner : MonoBehaviour
                 if (spider != null)
                 {
                     Destroy(spider);
-                    Debug.Log($"Spider apagada en ({pos.fila},{pos.columna})");
+                    TableroBuilder.RemoverSpiderDelDiccionario(pos.fila, pos.columna);
+                    Debug.Log($"🕷️💀 Spider apagada en ({pos.fila},{pos.columna})");
                 }
             }
         }
@@ -429,6 +596,14 @@ public class SimulacionRunner : MonoBehaviour
     {
         Debug.Log($"🥚 Apareciendo nuevo huevo en ({fila},{columna})");
         
+        // Verificar que no haya ya un huevo en esa posición
+        GameObject huevoExistente = TableroBuilder.ObtenerHuevo(fila, columna);
+        if (huevoExistente != null)
+        {
+            Debug.LogWarning($"⚠️ Ya existe huevo en ({fila},{columna}), no se crea duplicado");
+            yield break;
+        }
+        
         TableroBuilder builder = FindFirstObjectByType<TableroBuilder>();
         if (builder != null)
         {
@@ -480,35 +655,42 @@ public class SimulacionRunner : MonoBehaviour
     
     private IEnumerator ExplotarSpider(int fila, int columna)
     {
-        Debug.Log($"💥 Araña explotando en ({fila},{columna})");
+        Debug.Log($"💥💥💥 EXPLOSIÓN en ({fila},{columna}) 💥💥💥");
         
         GameObject spider = TableroBuilder.ObtenerSpider(fila, columna);
+        
+        if (spider == null)
+        {
+            Debug.LogError($"❌ ERROR: No hay araña en ({fila},{columna}) para explotar!");
+            yield break;
+        }
+        
+        Debug.Log($"✓ Araña encontrada en ({fila},{columna}), eliminándola...");
+        
         Vector3 posicionExplosion = CoordenadasHelper.JSONaPosicionUnity(fila, columna);
         
         // Crear efecto visual de explosión
         GameObject explosionVisual = Explosion.Crear(posicionExplosion + Vector3.up * 1.5f, explosionPrefab);
         
-        if (spider != null)
+        Spider spiderComponent = spider.GetComponent<Spider>();
+        
+        if (spiderComponent != null)
         {
-            Spider spiderComponent = spider.GetComponent<Spider>();
-            
-            if (spiderComponent != null)
-            {
-                spiderComponent.Eliminar();
-                yield return new WaitForSeconds(0.3f);
-            }
-            else
-            {
-                Destroy(spider);
-            }
-            
-            TableroBuilder.RemoverSpiderDelDiccionario(fila, columna);
+            spiderComponent.Eliminar();
+            yield return new WaitForSeconds(0.3f);
         }
+        else
+        {
+            Destroy(spider);
+        }
+        
+        TableroBuilder.RemoverSpiderDelDiccionario(fila, columna);
+        Debug.Log($"✓ Araña en ({fila},{columna}) eliminada del diccionario");
         
         // Procesar efectos de explosión en celdas adyacentes
         ProcesarEfectosExplosion(fila, columna);
         
-        Debug.Log($"💥 ¡EXPLOSIÓN en ({fila},{columna})! Efectos aplicados a celdas adyacentes");
+        Debug.Log($"💥 Explosión completada en ({fila},{columna})");
         
         // Esperar un momento para que se vea la explosión
         yield return new WaitForSeconds(0.5f);
