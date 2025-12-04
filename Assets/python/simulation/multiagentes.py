@@ -1061,11 +1061,7 @@ class Nave(Model):
 
         c = self.cells[(x, y)]
         if c.fire:
-            # IMPORTANTE: La araña (fuego) permanece después de la explosión
-            # Solo registramos que hubo una explosión en los cambios
-            explosion_cambios = self._explosion(x, y)
-            explosion_cambios["es_explosion"] = True  # Marcador para Unity
-            tirada.update({"estado_anterior": "araña", "estado_nuevo": "araña", "cambios": explosion_cambios})
+            tirada.update({"estado_anterior": "araña", "estado_nuevo": "explosion", "cambios": self._explosion(x, y)})
         elif c.smoke:
             c.smoke, c.fire = False, True
             tirada.update({"estado_anterior": "huevo", "estado_nuevo": "araña", "cambios": {}})
@@ -1088,7 +1084,7 @@ class Nave(Model):
         for a in c.agents[:]:
             if a.alive:
                 self.log(f"  Agente {a.unique_id} alcanzado por explosion!")
-                cambios["knockdowns"].append(a.unique_id)
+                cambios["knockdowns"].append(a.unique_id + 1)  # +1 para tripulacion_id
                 a.recibir_dano()
 
         for d, (dx, dy) in dirs.items():
@@ -1111,7 +1107,7 @@ class Nave(Model):
                     for a in v.agents[:]:
                         if a.alive:
                             self.log(f"  Agente {a.unique_id} alcanzado por fuego de explosion!")
-                            cambios["knockdowns"].append(a.unique_id)
+                            cambios["knockdowns"].append(a.unique_id + 1)  # +1 para tripulacion_id
                             a.recibir_dano()
                 if v.fire:
                     self._shockwave(nx, ny, dx, dy, cambios)
@@ -1387,12 +1383,7 @@ class Nave(Model):
     def _construir_turno(self, turno_data):
         """
         Construye un turno completo intercalando acciones y dados.
-        Formato CORRECTO: [acción jugador 0, dado 0, acción jugador 1, dado 1, ...]
-        
-        Orden REAL de ejecución en Python:
-        - Jugador 0 actúa → Dado 0 se lanza
-        - Jugador 1 actúa → Dado 1 se lanza
-        - ...
+        Formato: [acción jugador 1, dado 1, acción jugador 2, dado 2, ...]
         """
         estado = turno_data.get("estado", {})
         es_final = turno_data["turno"] == self.turn
@@ -1418,32 +1409,31 @@ class Nave(Model):
         if grupo_actual:
             acciones_por_jugador.append(grupo_actual)
         
-        # Crear secuencia intercalada en el ORDEN CORRECTO
-        # IMPORTANTE: Cada agente actúa ANTES de que se lance su dado correspondiente
+        # Crear secuencia intercalada para Unity: dado N → acciones de jugador N
+        # (Aunque en la simulación real es: acciones N → dado N)
         secuencias = []
         num_jugadores = len(acciones_por_jugador)
         num_dados = len(dados_raw)
         
-        for i in range(num_jugadores):
-            # PRIMERO: Agregar acciones del jugador i (si existen)
+        for i in range(max(num_jugadores, num_dados)):
+            # PRIMERO en JSON: Agregar tirada de dado i (si existe)
+            if i < num_dados:
+                secuencias.append({
+                    "tipo": "tirada_dado",
+                    "tirada": self._convertir_tirada(dados_raw[i])
+                })
+            
+            # DESPUÉS en JSON: Agregar acciones del jugador i (si existen)
             if i < num_jugadores:
                 secuencias.append({
                     "tipo": "acciones_jugador",
                     "jugador_id": acciones_por_jugador[i][0].get("agente_id"),
                     "acciones": [self._convertir_accion(a) for a in acciones_por_jugador[i]]
                 })
-            
-            # DESPUÉS: Agregar tirada de dado i (si existe)
-            # Nota: Puede haber menos dados que jugadores si el juego termina anticipadamente
-            if i < num_dados:
-                secuencias.append({
-                    "tipo": "tirada_dado",
-                    "tirada": self._convertir_tirada(dados_raw[i])
-                })
         
         return {
             "numero_turno": turno_data["turno"],
-            "secuencia": secuencias,  # Secuencia CORRECTA: acciones → dados
+            "secuencia": secuencias,  # Secuencia para Unity: dados → acciones
             "estado_juego": {
                 "victimas_rescatadas": estado.get("rescatadas", 0),
                 "victimas_perdidas": estado.get("perdidas", 0),
@@ -1460,7 +1450,7 @@ class Nave(Model):
         """Convierte una tirada de dados"""
         # Mapeo de estados: fuego->araña, humo->huevo
         ESTADO = {"fuego": "araña", "humo": "huevo", "vacio": "vacio",
-                  "fuera": "fuera", "explosion": "explosion", "araña": "araña"}
+                  "fuera": "fuera", "explosion": "explosion"}
         DIR = {'N': 'norte', 'S': 'sur', 'E': 'este', 'O': 'oeste'}
 
         cambios_orig = dado.get("cambios", {})
@@ -1470,9 +1460,6 @@ class Nave(Model):
         fila_explosion = dado.get("fila", 0)
         columna_explosion = dado.get("columna", 0)
 
-        # Detectar si es una explosión (araña -> araña con cambios de explosión)
-        es_explosion = cambios_orig.get("es_explosion", False)
-        
         # Convertir paredes dañadas - INCLUIR fila y columna de la explosión
         if cambios_orig.get("paredes_danadas"):
             cambios["paredes_dañadas"] = [{
@@ -1489,21 +1476,19 @@ class Nave(Model):
                 for pos in cambios_orig["fuego_propagado"]
             ]
 
-        # Marcar si es explosión para que Unity sepa mostrar el efecto
-        if es_explosion:
-            cambios["tipo_evento"] = "explosion"
+        # Knockdowns de tripulantes afectados por explosión
+        if cambios_orig.get("knockdowns"):
+            cambios["knockdowns"] = cambios_orig["knockdowns"]
 
         # Huevos removidos (humo que se volvió fuego)
         ant = dado.get("estado_anterior", "")
         nuevo = dado.get("estado_nuevo", "")
-        if ant == "humo" and nuevo == "araña":
+        if ant == "humo" and nuevo == "fuego":
             cambios["huevos_removidos"] = [{"fila": dado["fila"], "columna": dado["columna"]}]
-            if "arañas_nuevas" not in cambios:
-                cambios["arañas_nuevas"] = []
-            cambios["arañas_nuevas"].append({"fila": dado["fila"], "columna": dado["columna"]})
+            cambios["arañas_nuevas"] = [{"fila": dado["fila"], "columna": dado["columna"]}]
 
         # Huevos nuevos (vacio que se volvió humo)
-        if ant == "vacio" and nuevo == "huevo":
+        if ant == "vacio" and nuevo == "humo":
             cambios["huevos_nuevos"] = [{"fila": dado["fila"], "columna": dado["columna"]}]
 
         return {

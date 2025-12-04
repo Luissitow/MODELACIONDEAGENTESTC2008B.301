@@ -42,6 +42,7 @@ public class TripulacionData
     public int columna;
     public int puntos_accion;
     public bool cargando_victima;
+    public int knockdown_count;  // 0 = ok, 1 = primer knockdown, 2 = muerto
 }
 
 [System.Serializable]
@@ -163,6 +164,7 @@ public class CambiosMapaData
     public ParedDestruidaData[] paredes_destruidas;
     public PuertaAbiertaData[] puertas_abiertas;
     public PoiReveladoData[] pois_revelados;
+    public int[] knockdowns;  // IDs de tripulantes derribados en explosión
 }
 
 [System.Serializable]
@@ -201,12 +203,7 @@ public class PuertaAbiertaData
 [System.Serializable]
 public class PoiReveladoData
 {
-    public int id;           // El JSON usa "id" no "poi_id"
-    public string tipo;      // El JSON usa "tipo" no "tipo_revelado"
-    
-    // Propiedades compatibles con código anterior
-    public int poi_id => id;
-    public string tipo_revelado => tipo;
+    public string tipo;      // victima o falsa_alarma
 }
 
 [System.Serializable]

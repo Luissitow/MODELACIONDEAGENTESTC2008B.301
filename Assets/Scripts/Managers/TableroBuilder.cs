@@ -21,6 +21,9 @@ public class TableroBuilder : MonoBehaviour
     private static Dictionary<string, GameObject> spiders = new Dictionary<string, GameObject>();
     private static Dictionary<string, GameObject> huevos = new Dictionary<string, GameObject>();
     
+    // Instancia singleton para acceso a prefabs desde métodos estáticos
+    private static TableroBuilder instancia;
+    
     // HashSet para trackear posiciones con puertas/entradas
     private HashSet<string> posicionesBloqueadas = new HashSet<string>();
     
@@ -35,6 +38,7 @@ public class TableroBuilder : MonoBehaviour
             return;
         }
         
+        instancia = this;
         LimpiarDiccionarios();
         posicionesBloqueadas.Clear();
         
@@ -343,6 +347,12 @@ public class TableroBuilder : MonoBehaviour
         return tripulacion.ContainsKey(id) ? tripulacion[id] : null;
     }
     
+    // Alias para compatibilidad
+    public static GameObject ObtenerCrew(int id)
+    {
+        return ObtenerTripulacion(id);
+    }
+    
     public static GameObject ObtenerPOI(int id)
     {
         return puntosInteres.ContainsKey(id) ? puntosInteres[id] : null;
@@ -422,6 +432,28 @@ public class TableroBuilder : MonoBehaviour
         
         Debug.Log($"🕷️ Araña creada dinámicamente en ({fila},{columna})");
         return spider;
+    }
+    
+    public static GameObject CrearPOIDinamico(int fila, int columna)
+    {
+        if (instancia == null || instancia.poiPrefab == null)
+        {
+            Debug.LogWarning("⚠️ No se puede crear POI: instancia o poiPrefab no disponible");
+            return null;
+        }
+        
+        Vector3 posicion = CoordenadasHelper.JSONaPosicionUnity(fila, columna);
+        posicion.y = 0.5f;
+        
+        GameObject poiObj = Instantiate(instancia.poiPrefab, posicion, Quaternion.identity, instancia.transform);
+        poiObj.name = $"POI_{fila}_{columna}_dinamico";
+        
+        // Asignar un ID único basado en la posición
+        int uniqueId = fila * 100 + columna;
+        puntosInteres[uniqueId] = poiObj;
+        
+        Debug.Log($"🆕 POI creado dinámicamente en ({fila},{columna}) con ID temporal {uniqueId}");
+        return poiObj;
     }
     
     public static void RemoverHuevoDelDiccionario(int fila, int columna)

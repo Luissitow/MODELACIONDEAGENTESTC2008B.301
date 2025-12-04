@@ -16,9 +16,18 @@ public class Crew : MonoBehaviour
     [Tooltip("Escala del indicador cuando está visible")]
     public float escalaIndicador = 0.5f;
     
+    [Header("Knockdown Materials")]
+    [Tooltip("Material ROJO para primer knockdown")]
+    public Material materialKnockdown1;
+    
+    [Tooltip("Material NEGRO para segundo knockdown (muerte)")]
+    public Material materialKnockdown2;
+    
     private bool cargandoVictima = false;
     private Renderer rendererCrew;
-    private Color colorOriginal;
+    private Material materialOriginal;
+    private int knockdownCount = 0;
+    private Vector3 escalaOriginal;
     
     void Start()
     {
@@ -29,10 +38,30 @@ public class Crew : MonoBehaviour
             rendererCrew = GetComponentInChildren<Renderer>();
         }
         
-        // Guardar color original
+        // Guardar material y escala original
+        escalaOriginal = transform.localScale;
         if (rendererCrew != null)
         {
-            colorOriginal = rendererCrew.material.color;
+            materialOriginal = rendererCrew.material;
+        }
+        
+        // Cargar materiales knockdown si no están asignados
+        if (materialKnockdown1 == null)
+        {
+            materialKnockdown1 = Resources.Load<Material>("Materials/Crew_Knockdown1");
+            if (materialKnockdown1 == null)
+            {
+                Debug.LogWarning($"⚠️ No se encontró material Crew_Knockdown1 en Resources");
+            }
+        }
+        
+        if (materialKnockdown2 == null)
+        {
+            materialKnockdown2 = Resources.Load<Material>("Materials/Crew_Knockdown2");
+            if (materialKnockdown2 == null)
+            {
+                Debug.LogWarning($"⚠️ No se encontró material Crew_Knockdown2 en Resources");
+            }
         }
         
         // Si no hay indicador asignado, intentar crear uno simple
@@ -106,10 +135,26 @@ public class Crew : MonoBehaviour
     {
         cargandoVictima = false;
         
-        // Restaurar color original
+        // Restaurar color (pero mantener color de knockdown si aplica) - crear instancia de material
         if (rendererCrew != null)
         {
-            rendererCrew.material.color = colorOriginal;
+            if (knockdownCount == 0)
+            {
+                // Restaurar material original si no tiene knockdowns
+                rendererCrew.material = materialOriginal;
+            }
+            else if (knockdownCount == 1)
+            {
+                // Mantener material rojo si tiene 1 knockdown
+                if (materialKnockdown1 != null)
+                    rendererCrew.material = materialKnockdown1;
+            }
+            else
+            {
+                // Mantener material negro si está muerto
+                if (materialKnockdown2 != null)
+                    rendererCrew.material = materialKnockdown2;
+            }
         }
         
         if (indicadorVictima != null)
@@ -171,5 +216,76 @@ public class Crew : MonoBehaviour
     public bool EstaCargandoVictima()
     {
         return cargandoVictima;
+    }
+    
+    /// <summary>
+    /// Aplica un knockdown al tripulante (cambio visual)
+    /// </summary>
+    public void AplicarKnockdown()
+    {
+        knockdownCount++;
+        
+        if (knockdownCount == 1)
+        {
+            // Primer knockdown - Material ROJO + 80% tamaño
+            if (rendererCrew != null && materialKnockdown1 != null)
+            {
+                rendererCrew.material = materialKnockdown1;
+                Debug.Log($"🎨 {gameObject.name} → Material ROJO aplicado");
+            }
+            else if (rendererCrew != null)
+            {
+                // Fallback: usar color directo si no hay material
+                Material matInstancia = new Material(rendererCrew.material);
+                matInstancia.color = Color.red;
+                rendererCrew.material = matInstancia;
+                Debug.Log($"🎨 {gameObject.name} → Color ROJO aplicado (fallback)");
+            }
+            else
+            {
+                Debug.LogWarning($"⚠️ {gameObject.name} no tiene Renderer para aplicar color");
+            }
+            transform.localScale = escalaOriginal * 0.8f;
+            Debug.Log($"⚠️ {gameObject.name} recibe PRIMER KNOCKDOWN (1/2) - Color ROJO, escala 80%");
+        }
+        else if (knockdownCount >= 2)
+        {
+            // Segundo knockdown - Material NEGRO + muy pequeño
+            if (rendererCrew != null && materialKnockdown2 != null)
+            {
+                rendererCrew.material = materialKnockdown2;
+                Debug.Log($"🎨 {gameObject.name} → Material NEGRO aplicado");
+            }
+            else if (rendererCrew != null)
+            {
+                // Fallback: usar color directo si no hay material
+                Material matInstancia = new Material(rendererCrew.material);
+                matInstancia.color = Color.black;
+                rendererCrew.material = matInstancia;
+                Debug.Log($"🎨 {gameObject.name} → Color NEGRO aplicado (fallback)");
+            }
+            else
+            {
+                Debug.LogWarning($"⚠️ {gameObject.name} no tiene Renderer para aplicar color");
+            }
+            transform.localScale = escalaOriginal * 0.5f;
+            Debug.Log($"💀 {gameObject.name} ELIMINADO (2/2 knockdowns) - Color NEGRO, escala 50%");
+        }
+    }
+    
+    /// <summary>
+    /// Verifica si el tripulante está muerto (2+ knockdowns)
+    /// </summary>
+    public bool EstaMuerto()
+    {
+        return knockdownCount >= 2;
+    }
+    
+    /// <summary>
+    /// Obtiene el contador de knockdowns actual
+    /// </summary>
+    public int GetKnockdownCount()
+    {
+        return knockdownCount;
     }
 }

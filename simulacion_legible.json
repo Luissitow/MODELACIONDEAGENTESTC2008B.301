@@ -249,6 +249,16 @@
       "numero_turno": 1,
       "secuencia": [
         {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 6,
+            "columna": 2,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
           "tipo": "acciones_jugador",
           "jugador_id": 0,
           "acciones": [
@@ -313,18 +323,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 6,
-            "columna": 2,
+            "fila": 1,
+            "columna": 5,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 6,
-                  "columna": 2
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -421,18 +424,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 1,
-            "columna": 5,
+            "fila": 2,
+            "columna": 4,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 1,
-                  "columna": 5
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -509,15 +505,26 @@
           "tipo": "tirada_dado",
           "tirada": {
             "fila": 2,
-            "columna": 4,
-            "estado_anterior": "vacio",
-            "estado_nuevo": "huevo",
+            "columna": 2,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
             "cambios": {
-              "huevos_nuevos": [
+              "arañas_nuevas": [
+                {
+                  "fila": 1,
+                  "columna": 2
+                },
+                {
+                  "fila": 3,
+                  "columna": 2
+                },
                 {
                   "fila": 2,
-                  "columna": 4
+                  "columna": 1
                 }
+              ],
+              "knockdowns": [
+                1
               ]
             }
           }
@@ -629,27 +636,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 2,
+            "fila": 6,
             "columna": 2,
-            "estado_anterior": "araña",
-            "estado_nuevo": "araña",
-            "cambios": {
-              "arañas_nuevas": [
-                {
-                  "fila": 1,
-                  "columna": 2
-                },
-                {
-                  "fila": 3,
-                  "columna": 2
-                },
-                {
-                  "fila": 2,
-                  "columna": 1
-                }
-              ],
-              "tipo_evento": "explosion"
-            }
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
           }
         },
         {
@@ -717,15 +708,29 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 6,
-            "columna": 2,
-            "estado_anterior": "vacio",
-            "estado_nuevo": "huevo",
+            "fila": 5,
+            "columna": 7,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
             "cambios": {
-              "huevos_nuevos": [
+              "paredes_dañadas": [
+                {
+                  "fila": 5,
+                  "columna": 7,
+                  "direccion": "norte",
+                  "nivel_dano": 1
+                },
+                {
+                  "fila": 5,
+                  "columna": 7,
+                  "direccion": "este",
+                  "nivel_dano": 1
+                }
+              ],
+              "arañas_nuevas": [
                 {
                   "fila": 6,
-                  "columna": 2
+                  "columna": 7
                 }
               ]
             }
@@ -806,38 +811,6 @@
               }
             }
           ]
-        },
-        {
-          "tipo": "tirada_dado",
-          "tirada": {
-            "fila": 5,
-            "columna": 7,
-            "estado_anterior": "araña",
-            "estado_nuevo": "araña",
-            "cambios": {
-              "paredes_dañadas": [
-                {
-                  "fila": 5,
-                  "columna": 7,
-                  "direccion": "norte",
-                  "nivel_dano": 1
-                },
-                {
-                  "fila": 5,
-                  "columna": 7,
-                  "direccion": "este",
-                  "nivel_dano": 1
-                }
-              ],
-              "arañas_nuevas": [
-                {
-                  "fila": 6,
-                  "columna": 7
-                }
-              ],
-              "tipo_evento": "explosion"
-            }
-          }
         }
       ],
       "estado_juego": {
@@ -853,6 +826,16 @@
     {
       "numero_turno": 2,
       "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 5,
+            "columna": 4,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
         {
           "tipo": "acciones_jugador",
           "jugador_id": 0,
@@ -918,15 +901,23 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 5,
-            "columna": 4,
-            "estado_anterior": "vacio",
-            "estado_nuevo": "huevo",
+            "fila": 6,
+            "columna": 7,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
             "cambios": {
-              "huevos_nuevos": [
+              "paredes_dañadas": [
                 {
-                  "fila": 5,
-                  "columna": 4
+                  "fila": 6,
+                  "columna": 7,
+                  "direccion": "sur",
+                  "nivel_dano": 1
+                },
+                {
+                  "fila": 6,
+                  "columna": 7,
+                  "direccion": "este",
+                  "nivel_dano": "destruida"
                 }
               ]
             }
@@ -991,27 +982,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 6,
-            "columna": 7,
-            "estado_anterior": "araña",
-            "estado_nuevo": "araña",
-            "cambios": {
-              "paredes_dañadas": [
-                {
-                  "fila": 6,
-                  "columna": 7,
-                  "direccion": "sur",
-                  "nivel_dano": 1
-                },
-                {
-                  "fila": 6,
-                  "columna": 7,
-                  "direccion": "este",
-                  "nivel_dano": "destruida"
-                }
-              ],
-              "tipo_evento": "explosion"
-            }
+            "fila": 2,
+            "columna": 8,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
           }
         },
         {
@@ -1065,18 +1040,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 2,
-            "columna": 8,
+            "fila": 5,
+            "columna": 5,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 2,
-                  "columna": 8
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -1116,18 +1084,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 5,
-            "columna": 5,
+            "fila": 1,
+            "columna": 3,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 5,
-                  "columna": 5
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -1230,15 +1191,23 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 1,
-            "columna": 3,
-            "estado_anterior": "vacio",
-            "estado_nuevo": "huevo",
+            "fila": 6,
+            "columna": 7,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
             "cambios": {
-              "huevos_nuevos": [
+              "paredes_dañadas": [
                 {
-                  "fila": 1,
-                  "columna": 3
+                  "fila": 6,
+                  "columna": 7,
+                  "direccion": "sur",
+                  "nivel_dano": 2
+                }
+              ],
+              "arañas_nuevas": [
+                {
+                  "fila": 6,
+                  "columna": 8
                 }
               ]
             }
@@ -1312,32 +1281,6 @@
               "cambios": {}
             }
           ]
-        },
-        {
-          "tipo": "tirada_dado",
-          "tirada": {
-            "fila": 6,
-            "columna": 7,
-            "estado_anterior": "araña",
-            "estado_nuevo": "araña",
-            "cambios": {
-              "paredes_dañadas": [
-                {
-                  "fila": 6,
-                  "columna": 7,
-                  "direccion": "sur",
-                  "nivel_dano": 2
-                }
-              ],
-              "arañas_nuevas": [
-                {
-                  "fila": 6,
-                  "columna": 8
-                }
-              ],
-              "tipo_evento": "explosion"
-            }
-          }
         }
       ],
       "estado_juego": {
@@ -1353,6 +1296,16 @@
     {
       "numero_turno": 3,
       "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 3,
+            "columna": 2,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
         {
           "tipo": "acciones_jugador",
           "jugador_id": 0,
@@ -1418,18 +1371,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 3,
-            "columna": 2,
+            "fila": 1,
+            "columna": 7,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 3,
-                  "columna": 2
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -1505,17 +1451,10 @@
           "tipo": "tirada_dado",
           "tirada": {
             "fila": 1,
-            "columna": 7,
+            "columna": 6,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 1,
-                  "columna": 7
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -1632,18 +1571,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 1,
-            "columna": 6,
+            "fila": 3,
+            "columna": 5,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 1,
-                  "columna": 6
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -1719,18 +1651,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 3,
-            "columna": 5,
+            "fila": 1,
+            "columna": 8,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 3,
-                  "columna": 5
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -1770,18 +1695,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 1,
-            "columna": 8,
+            "fila": 5,
+            "columna": 2,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 1,
-                  "columna": 8
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -1860,23 +1778,6 @@
               "cambios": {}
             }
           ]
-        },
-        {
-          "tipo": "tirada_dado",
-          "tirada": {
-            "fila": 5,
-            "columna": 2,
-            "estado_anterior": "vacio",
-            "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 5,
-                  "columna": 2
-                }
-              ]
-            }
-          }
         }
       ],
       "estado_juego": {
@@ -1892,6 +1793,35 @@
     {
       "numero_turno": 4,
       "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 3,
+            "columna": 4,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "paredes_dañadas": [
+                {
+                  "fila": 3,
+                  "columna": 4,
+                  "direccion": "norte",
+                  "nivel_dano": 1
+                }
+              ],
+              "arañas_nuevas": [
+                {
+                  "fila": 4,
+                  "columna": 4
+                },
+                {
+                  "fila": 3,
+                  "columna": 6
+                }
+              ]
+            }
+          }
+        },
         {
           "tipo": "acciones_jugador",
           "jugador_id": 0,
@@ -1957,31 +1887,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 3,
-            "columna": 4,
-            "estado_anterior": "araña",
-            "estado_nuevo": "araña",
-            "cambios": {
-              "paredes_dañadas": [
-                {
-                  "fila": 3,
-                  "columna": 4,
-                  "direccion": "norte",
-                  "nivel_dano": 1
-                }
-              ],
-              "arañas_nuevas": [
-                {
-                  "fila": 4,
-                  "columna": 4
-                },
-                {
-                  "fila": 3,
-                  "columna": 6
-                }
-              ],
-              "tipo_evento": "explosion"
-            }
+            "fila": 6,
+            "columna": 2,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
           }
         },
         {
@@ -2049,18 +1959,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 6,
-            "columna": 2,
+            "fila": 1,
+            "columna": 4,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 6,
-                  "columna": 2
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -2100,18 +2003,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 1,
-            "columna": 4,
+            "fila": 3,
+            "columna": 2,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 1,
-                  "columna": 4
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -2214,18 +2110,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 3,
+            "fila": 2,
             "columna": 2,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 3,
-                  "columna": 2
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -2315,18 +2204,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 2,
-            "columna": 2,
+            "fila": 4,
+            "columna": 5,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 2,
-                  "columna": 2
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -2383,23 +2265,6 @@
               }
             }
           ]
-        },
-        {
-          "tipo": "tirada_dado",
-          "tirada": {
-            "fila": 4,
-            "columna": 5,
-            "estado_anterior": "vacio",
-            "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 4,
-                  "columna": 5
-                }
-              ]
-            }
-          }
         }
       ],
       "estado_juego": {
@@ -2415,6 +2280,16 @@
     {
       "numero_turno": 5,
       "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 2,
+            "columna": 5,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
         {
           "tipo": "acciones_jugador",
           "jugador_id": 0,
@@ -2502,18 +2377,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 2,
-            "columna": 5,
-            "estado_anterior": "vacio",
-            "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 2,
-                  "columna": 5
-                }
-              ]
-            }
+            "fila": 6,
+            "columna": 2,
+            "estado_anterior": "huevo",
+            "estado_nuevo": "araña",
+            "cambios": {}
           }
         },
         {
@@ -2631,10 +2499,10 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 6,
-            "columna": 2,
-            "estado_anterior": "huevo",
-            "estado_nuevo": "araña",
+            "fila": 5,
+            "columna": 3,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
             "cambios": {}
           }
         },
@@ -2705,17 +2573,10 @@
           "tipo": "tirada_dado",
           "tirada": {
             "fila": 5,
-            "columna": 3,
+            "columna": 4,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 5,
-                  "columna": 3
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -2791,18 +2652,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 5,
-            "columna": 4,
+            "fila": 2,
+            "columna": 8,
             "estado_anterior": "vacio",
             "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 5,
-                  "columna": 4
-                }
-              ]
-            }
+            "cambios": {}
           }
         },
         {
@@ -2863,16 +2717,32 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 2,
-            "columna": 8,
-            "estado_anterior": "vacio",
-            "estado_nuevo": "huevo",
+            "fila": 4,
+            "columna": 5,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
             "cambios": {
-              "huevos_nuevos": [
+              "paredes_dañadas": [
                 {
-                  "fila": 2,
-                  "columna": 8
+                  "fila": 4,
+                  "columna": 5,
+                  "direccion": "sur",
+                  "nivel_dano": 1
                 }
+              ],
+              "arañas_nuevas": [
+                {
+                  "fila": 4,
+                  "columna": 6
+                },
+                {
+                  "fila": 4,
+                  "columna": 3
+                }
+              ],
+              "knockdowns": [
+                6,
+                3
               ]
             }
           }
@@ -2924,36 +2794,6 @@
               }
             }
           ]
-        },
-        {
-          "tipo": "tirada_dado",
-          "tirada": {
-            "fila": 4,
-            "columna": 5,
-            "estado_anterior": "araña",
-            "estado_nuevo": "araña",
-            "cambios": {
-              "paredes_dañadas": [
-                {
-                  "fila": 4,
-                  "columna": 5,
-                  "direccion": "sur",
-                  "nivel_dano": 1
-                }
-              ],
-              "arañas_nuevas": [
-                {
-                  "fila": 4,
-                  "columna": 6
-                },
-                {
-                  "fila": 4,
-                  "columna": 3
-                }
-              ],
-              "tipo_evento": "explosion"
-            }
-          }
         }
       ],
       "estado_juego": {
@@ -2969,6 +2809,16 @@
     {
       "numero_turno": 6,
       "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 1,
+            "columna": 4,
+            "estado_anterior": "huevo",
+            "estado_nuevo": "araña",
+            "cambios": {}
+          }
+        },
         {
           "tipo": "acciones_jugador",
           "jugador_id": 0,
@@ -3021,9 +2871,9 @@
           "tipo": "tirada_dado",
           "tirada": {
             "fila": 1,
-            "columna": 4,
-            "estado_anterior": "huevo",
-            "estado_nuevo": "araña",
+            "columna": 6,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
             "cambios": {}
           }
         },
@@ -3106,15 +2956,23 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 1,
-            "columna": 6,
-            "estado_anterior": "vacio",
-            "estado_nuevo": "huevo",
+            "fila": 4,
+            "columna": 5,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
             "cambios": {
-              "huevos_nuevos": [
+              "paredes_dañadas": [
                 {
-                  "fila": 1,
-                  "columna": 6
+                  "fila": 4,
+                  "columna": 5,
+                  "direccion": "sur",
+                  "nivel_dano": 2
+                }
+              ],
+              "arañas_nuevas": [
+                {
+                  "fila": 4,
+                  "columna": 7
                 }
               ]
             }
@@ -3185,26 +3043,35 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 4,
-            "columna": 5,
+            "fila": 1,
+            "columna": 4,
             "estado_anterior": "araña",
-            "estado_nuevo": "araña",
+            "estado_nuevo": "explosion",
             "cambios": {
               "paredes_dañadas": [
                 {
-                  "fila": 4,
-                  "columna": 5,
-                  "direccion": "sur",
-                  "nivel_dano": 2
+                  "fila": 1,
+                  "columna": 4,
+                  "direccion": "norte",
+                  "nivel_dano": 1
+                },
+                {
+                  "fila": 1,
+                  "columna": 4,
+                  "direccion": "oeste",
+                  "nivel_dano": 1
                 }
               ],
               "arañas_nuevas": [
                 {
-                  "fila": 4,
-                  "columna": 7
+                  "fila": 2,
+                  "columna": 4
+                },
+                {
+                  "fila": 1,
+                  "columna": 5
                 }
-              ],
-              "tipo_evento": "explosion"
+              ]
             }
           }
         },
@@ -3308,36 +3175,25 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 1,
-            "columna": 4,
+            "fila": 5,
+            "columna": 6,
             "estado_anterior": "araña",
-            "estado_nuevo": "araña",
+            "estado_nuevo": "explosion",
             "cambios": {
               "paredes_dañadas": [
                 {
-                  "fila": 1,
-                  "columna": 4,
+                  "fila": 5,
+                  "columna": 6,
                   "direccion": "norte",
                   "nivel_dano": 1
                 },
                 {
-                  "fila": 1,
-                  "columna": 4,
+                  "fila": 5,
+                  "columna": 6,
                   "direccion": "oeste",
                   "nivel_dano": 1
                 }
-              ],
-              "arañas_nuevas": [
-                {
-                  "fila": 2,
-                  "columna": 4
-                },
-                {
-                  "fila": 1,
-                  "columna": 5
-                }
-              ],
-              "tipo_evento": "explosion"
+              ]
             }
           }
         },
@@ -3406,27 +3262,11 @@
         {
           "tipo": "tirada_dado",
           "tirada": {
-            "fila": 5,
-            "columna": 6,
-            "estado_anterior": "araña",
-            "estado_nuevo": "araña",
-            "cambios": {
-              "paredes_dañadas": [
-                {
-                  "fila": 5,
-                  "columna": 6,
-                  "direccion": "norte",
-                  "nivel_dano": 1
-                },
-                {
-                  "fila": 5,
-                  "columna": 6,
-                  "direccion": "oeste",
-                  "nivel_dano": 1
-                }
-              ],
-              "tipo_evento": "explosion"
-            }
+            "fila": 2,
+            "columna": 8,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
           }
         },
         {
@@ -3490,23 +3330,6 @@
               "cambios": {}
             }
           ]
-        },
-        {
-          "tipo": "tirada_dado",
-          "tirada": {
-            "fila": 2,
-            "columna": 8,
-            "estado_anterior": "vacio",
-            "estado_nuevo": "huevo",
-            "cambios": {
-              "huevos_nuevos": [
-                {
-                  "fila": 2,
-                  "columna": 8
-                }
-              ]
-            }
-          }
         }
       ],
       "estado_juego": {
@@ -3522,6 +3345,35 @@
     {
       "numero_turno": 7,
       "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 5,
+            "columna": 5,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "paredes_dañadas": [
+                {
+                  "fila": 5,
+                  "columna": 5,
+                  "direccion": "este",
+                  "nivel_dano": 2
+                }
+              ],
+              "arañas_nuevas": [
+                {
+                  "fila": 6,
+                  "columna": 5
+                },
+                {
+                  "fila": 5,
+                  "columna": 3
+                }
+              ]
+            }
+          }
+        },
         {
           "tipo": "acciones_jugador",
           "jugador_id": 0,
@@ -3583,36 +3435,6 @@
               "cambios": {}
             }
           ]
-        },
-        {
-          "tipo": "tirada_dado",
-          "tirada": {
-            "fila": 5,
-            "columna": 5,
-            "estado_anterior": "araña",
-            "estado_nuevo": "araña",
-            "cambios": {
-              "paredes_dañadas": [
-                {
-                  "fila": 5,
-                  "columna": 5,
-                  "direccion": "este",
-                  "nivel_dano": 2
-                }
-              ],
-              "arañas_nuevas": [
-                {
-                  "fila": 6,
-                  "columna": 5
-                },
-                {
-                  "fila": 5,
-                  "columna": 3
-                }
-              ],
-              "tipo_evento": "explosion"
-            }
-          }
         }
       ],
       "estado_juego": {

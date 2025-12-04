@@ -132,16 +132,13 @@ public class SimulacionRunner : MonoBehaviour
         Debug.Log($"Dado en ({tirada.fila},{tirada.columna}): {tirada.estado_anterior} → {tirada.estado_nuevo}");
         
         // Detectar si es una explosión (araña que explota pero permanece)
-        bool esExplosion = false;
-        if (tirada.cambios != null && tirada.cambios.tipo_evento == "explosion")
-        {
-            esExplosion = true;
-            Debug.Log($"💥 EXPLOSIÓN detectada en ({tirada.fila},{tirada.columna}) - La araña permanece");
-        }
+        // Una explosión ocurre cuando el estado cambia de "araña" a "explosion"
+        bool esExplosion = tirada.estado_anterior.ToLower().Contains("ara") && 
+                          tirada.estado_nuevo.ToLower() == "explosion";
         
-        // Si es explosión, mostrar efecto PERO NO eliminar la araña
         if (esExplosion)
         {
+            Debug.Log($"💥 EXPLOSIÓN detectada en ({tirada.fila},{tirada.columna}) - La araña permanece");
             yield return StartCoroutine(MostrarEfectoExplosion(tirada.fila, tirada.columna));
         }
         // Si NO es explosión, procesar normalmente
@@ -162,10 +159,11 @@ public class SimulacionRunner : MonoBehaviour
                     }
                     break;
                     
+                // Las explosiones ya se manejan arriba con el flag esExplosion
+                // Este caso queda por compatibilidad legacy pero no debería usarse
                 case "explosion":
                 case "explosión":
-                    // Caso legacy - mantener compatibilidad
-                    yield return StartCoroutine(ExplotarSpider(tirada.fila, tirada.columna));
+                    Debug.LogWarning($"⚠️ Explosión detectada en switch - Esto no debería ocurrir");
                     break;
                     
                 default:
@@ -317,11 +315,11 @@ public class SimulacionRunner : MonoBehaviour
         // Aplicar cambios de esta acción específica
         if (accion.cambios != null)
         {
-            yield return StartCoroutine(AplicarCambiosMapa(accion.cambios));
+            yield return StartCoroutine(AplicarCambiosMapa(accion.cambios, accion.hacia));
         }
     }
     
-    private IEnumerator AplicarCambiosMapa(CambiosMapaData cambios)
+    private IEnumerator AplicarCambiosMapa(CambiosMapaData cambios, PosicionData posicion = null)
     {
         Debug.Log("🗺️ Aplicando cambios al mapa");
         
@@ -559,20 +557,88 @@ public class SimulacionRunner : MonoBehaviour
             }
         }
         
-        // Revelar POIs
-        if (cambios.pois_revelados != null)
+        // Revelar POIs - los POIs se revelan por POSICIÓN, no por ID
+        // La posición viene del parámetro 'posicion' que se pasa a AplicarCambiosMapa
+        if (cambios.pois_revelados != null && cambios.pois_revelados.Length > 0)
         {
-            foreach (var poi in cambios.pois_revelados)
+            if (posicion == null)
             {
-                GameObject poiObj = TableroBuilder.ObtenerPOI(poi.poi_id);
-                if (poiObj != null)
+                Debug.LogWarning("⚠️ Se intentó revelar POI sin posición especificada");
+            }
+            else
+            {
+                Debug.Log($"📋 Aplicando revelación de {cambios.pois_revelados.Length} POI(s) en posición ({posicion.fila},{posicion.columna})");
+                foreach (var poi in cambios.pois_revelados)
                 {
+                    Debug.Log($"🔍 Buscando o creando POI en ({posicion.fila},{posicion.columna})");
+                    
+                    // Primero intentar obtener POI existente por posición
+                    GameObject poiObj = TableroBuilder.ObtenerPOIPorPosicion(posicion.fila, posicion.columna);
+                    
+                    // Si no existe, crear uno nuevo dinámicamente
+                    if (poiObj == null)
+                    {
+                        Debug.Log($"🆕 POI no existe, creando dinámicamente en ({posicion.fila},{posicion.columna})");
+                        poiObj = TableroBuilder.CrearPOIDinamico(posicion.fila, posicion.columna);
+                    }
+                    
+                    if (poiObj == null)
+                    {
+                        Debug.LogWarning($"⚠️ No se pudo crear/obtener POI en ({posicion.fila},{posicion.columna})");
+                        continue;
+                    }
+                    
+                    Debug.Log($"✓ POI GameObject encontrado/creado: {poiObj.name}");
+                    
                     var poiComponent = poiObj.GetComponent<POI>();
                     if (poiComponent != null)
                     {
-                        poiComponent.Revelar(poi.tipo_revelado);
-                        Debug.Log($"POI {poi.poi_id} revelado como {poi.tipo_revelado}");
+                        Debug.Log($"✓ Componente POI encontrado, llamando Revelar('{poi.tipo}')");
+                        poiComponent.Revelar(poi.tipo);
+                        Debug.Log($"✅ POI en ({posicion.fila},{posicion.columna}) revelado como {poi.tipo}");
                     }
+                    else
+                    {
+                        Debug.LogWarning($"⚠️ GameObject {poiObj.name} no tiene componente POI");
+                    }
+                }
+            }
+        }
+        
+        // Procesar knockdowns de explosiones
+        if (cambios.knockdowns != null && cambios.knockdowns.Length > 0)
+        {
+            Debug.Log($"💥 {cambios.knockdowns.Length} tripulante(s) afectado(s) por explosión");
+            
+            foreach (int tripId in cambios.knockdowns)
+            {
+                GameObject crewObj = TableroBuilder.ObtenerCrew(tripId);
+                if (crewObj != null)
+                {
+                    Crew crew = crewObj.GetComponent<Crew>();
+                    if (crew != null)
+                    {
+                        crew.AplicarKnockdown();
+                        
+                        if (crew.EstaMuerto())
+                        {
+                            // Animar muerte
+                            yield return StartCoroutine(AnimarMuerteCrew(crewObj));
+                        }
+                        else
+                        {
+                            // Animar knockdown (sacudida)
+                            yield return StartCoroutine(AnimarKnockdown(crewObj));
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"⚠️ Crew {tripId} no tiene componente Crew");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"⚠️ No se encontró crew con ID {tripId}");
                 }
             }
         }
@@ -1067,6 +1133,74 @@ public class SimulacionRunner : MonoBehaviour
         Debug.Log($"✅ Crew {crewId} depositó víctima en ({posicion.fila},{posicion.columna}) - ¡RESCATADA!");
         
         yield return new WaitForSeconds(0.1f);
+    }
+    
+    /// <summary>
+    /// Anima un knockdown con sacudida
+    /// </summary>
+    private IEnumerator AnimarKnockdown(GameObject crew)
+    {
+        Vector3 posInicial = crew.transform.position;
+        
+        Debug.Log($"⚠️ Animando knockdown para {crew.name}");
+        
+        // Sacudida rápida
+        for (int i = 0; i < 8; i++)
+        {
+            crew.transform.position = posInicial + new Vector3(
+                Random.Range(-0.15f, 0.15f),
+                Random.Range(-0.1f, 0.1f),
+                Random.Range(-0.15f, 0.15f)
+            );
+            yield return new WaitForSeconds(0.05f);
+        }
+        
+        crew.transform.position = posInicial;
+        yield return new WaitForSeconds(0.2f);
+    }
+    
+    /// <summary>
+    /// Anima la muerte de un tripulante (caída y desvanecimiento)
+    /// </summary>
+    private IEnumerator AnimarMuerteCrew(GameObject crew)
+    {
+        Debug.Log($"💀 Animando muerte de {crew.name}");
+        
+        float duracion = 1.5f;
+        float tiempo = 0f;
+        Vector3 posInicial = crew.transform.position;
+        Vector3 escalaInicial = crew.transform.localScale;
+        Renderer renderer = crew.GetComponent<Renderer>();
+        if (renderer == null)
+        {
+            renderer = crew.GetComponentInChildren<Renderer>();
+        }
+        
+        while (tiempo < duracion)
+        {
+            tiempo += Time.deltaTime;
+            float t = tiempo / duracion;
+            
+            // Caer lentamente
+            crew.transform.position = posInicial + Vector3.down * (t * 2f);
+            
+            // Reducir tamaño gradualmente
+            crew.transform.localScale = escalaInicial * (1f - t * 0.5f);
+            
+            // Hacer transparente gradualmente (si es posible)
+            if (renderer != null)
+            {
+                Color color = renderer.material.color;
+                color.a = 1f - t;
+                renderer.material.color = color;
+            }
+            
+            yield return null;
+        }
+        
+        // Desactivar el crew
+        crew.SetActive(false);
+        Debug.Log($"💀 {crew.name} eliminado de la simulación");
     }
     
     /// <summary>
