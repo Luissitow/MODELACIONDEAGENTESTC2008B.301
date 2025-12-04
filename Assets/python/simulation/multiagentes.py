@@ -285,12 +285,14 @@ class AstronautAgent(Agent):
                     self.ap -= 2
                     self.fires_extinguished += 1 # Increment tracking attribute
                     self.log(f"Apago arana adyacente ({nx},{ny}) [-2 AP]")
+                    self.model._registrar_accion(self.unique_id, "extinguir_fuego", (self.x, self.y), (nx, ny), 2)
                     return True
                 elif vecino.smoke and self.ap >= 1:
                     vecino.smoke = False
                     self.ap -= 1
                     self.smoke_extinguished += 1 # Increment tracking attribute
                     self.log(f"Apago huevo adyacente ({nx},{ny}) [-1 AP]")
+                    self.model._registrar_accion(self.unique_id, "extinguir_humo", (self.x, self.y), (nx, ny), 1)
                     return True
 
         # P7: Seguir tarea asignada
@@ -432,6 +434,7 @@ class AstronautAgent(Agent):
                 self.ap -= 1
                 self.smoke_extinguished += 1 # Increment tracking attribute
                 self.log(f"Apago huevo en destino ({sig_pos[0]},{sig_pos[1]}) [-1 AP]")
+                self.model._registrar_accion(self.unique_id, "extinguir_humo", (self.x, self.y), sig_pos, 1)
                 return True
 
         # Moverse
@@ -1058,7 +1061,11 @@ class Nave(Model):
 
         c = self.cells[(x, y)]
         if c.fire:
-            tirada.update({"estado_anterior": "araña", "estado_nuevo": "explosion", "cambios": self._explosion(x, y)})
+            # IMPORTANTE: La araña (fuego) permanece después de la explosión
+            # Solo registramos que hubo una explosión en los cambios
+            explosion_cambios = self._explosion(x, y)
+            explosion_cambios["es_explosion"] = True  # Marcador para Unity
+            tirada.update({"estado_anterior": "araña", "estado_nuevo": "araña", "cambios": explosion_cambios})
         elif c.smoke:
             c.smoke, c.fire = False, True
             tirada.update({"estado_anterior": "huevo", "estado_nuevo": "araña", "cambios": {}})
@@ -1380,12 +1387,16 @@ class Nave(Model):
     def _construir_turno(self, turno_data):
         """
         Construye un turno completo intercalando acciones y dados.
-        Formato: [acción jugador 1, dado 1, acción jugador 2, dado 2, ...]
+        Formato CORRECTO: [acción jugador 0, dado 0, acción jugador 1, dado 1, ...]
+        
+        Orden REAL de ejecución en Python:
+        - Jugador 0 actúa → Dado 0 se lanza
+        - Jugador 1 actúa → Dado 1 se lanza
+        - ...
         """
         estado = turno_data.get("estado", {})
         es_final = turno_data["turno"] == self.turn
         
-        # Obtener listas de acciones y dados
         acciones_raw = turno_data.get("acciones", [])
         dados_raw = turno_data.get("dados", [])
         
@@ -1407,13 +1418,14 @@ class Nave(Model):
         if grupo_actual:
             acciones_por_jugador.append(grupo_actual)
         
-        # Crear secuencia intercalada: acciones de jugador N → dado N
+        # Crear secuencia intercalada en el ORDEN CORRECTO
+        # IMPORTANTE: Cada agente actúa ANTES de que se lance su dado correspondiente
         secuencias = []
         num_jugadores = len(acciones_por_jugador)
         num_dados = len(dados_raw)
         
-        for i in range(max(num_jugadores, num_dados)):
-            # Agregar acciones del jugador i (si existen)
+        for i in range(num_jugadores):
+            # PRIMERO: Agregar acciones del jugador i (si existen)
             if i < num_jugadores:
                 secuencias.append({
                     "tipo": "acciones_jugador",
@@ -1421,7 +1433,8 @@ class Nave(Model):
                     "acciones": [self._convertir_accion(a) for a in acciones_por_jugador[i]]
                 })
             
-            # Agregar tirada de dado i (si existe)
+            # DESPUÉS: Agregar tirada de dado i (si existe)
+            # Nota: Puede haber menos dados que jugadores si el juego termina anticipadamente
             if i < num_dados:
                 secuencias.append({
                     "tipo": "tirada_dado",
@@ -1430,7 +1443,7 @@ class Nave(Model):
         
         return {
             "numero_turno": turno_data["turno"],
-            "secuencia": secuencias,  # Nueva estructura intercalada
+            "secuencia": secuencias,  # Secuencia CORRECTA: acciones → dados
             "estado_juego": {
                 "victimas_rescatadas": estado.get("rescatadas", 0),
                 "victimas_perdidas": estado.get("perdidas", 0),
@@ -1447,15 +1460,24 @@ class Nave(Model):
         """Convierte una tirada de dados"""
         # Mapeo de estados: fuego->araña, humo->huevo
         ESTADO = {"fuego": "araña", "humo": "huevo", "vacio": "vacio",
-                  "fuera": "fuera", "explosion": "explosion"}
+                  "fuera": "fuera", "explosion": "explosion", "araña": "araña"}
         DIR = {'N': 'norte', 'S': 'sur', 'E': 'este', 'O': 'oeste'}
 
         cambios_orig = dado.get("cambios", {})
         cambios = {}
+        
+        # Obtener la posición de la tirada (donde ocurre la explosión)
+        fila_explosion = dado.get("fila", 0)
+        columna_explosion = dado.get("columna", 0)
 
-        # Convertir paredes dañadas
+        # Detectar si es una explosión (araña -> araña con cambios de explosión)
+        es_explosion = cambios_orig.get("es_explosion", False)
+        
+        # Convertir paredes dañadas - INCLUIR fila y columna de la explosión
         if cambios_orig.get("paredes_danadas"):
             cambios["paredes_dañadas"] = [{
+                "fila": fila_explosion,
+                "columna": columna_explosion,
                 "direccion": DIR.get(p.get("dir"), p.get("dir")),
                 "nivel_dano": p.get("dano", p.get("estado", 1))
             } for p in cambios_orig["paredes_danadas"]]
@@ -1467,15 +1489,21 @@ class Nave(Model):
                 for pos in cambios_orig["fuego_propagado"]
             ]
 
+        # Marcar si es explosión para que Unity sepa mostrar el efecto
+        if es_explosion:
+            cambios["tipo_evento"] = "explosion"
+
         # Huevos removidos (humo que se volvió fuego)
         ant = dado.get("estado_anterior", "")
         nuevo = dado.get("estado_nuevo", "")
-        if ant == "humo" and nuevo == "fuego":
+        if ant == "humo" and nuevo == "araña":
             cambios["huevos_removidos"] = [{"fila": dado["fila"], "columna": dado["columna"]}]
-            cambios["arañas_nuevas"] = [{"fila": dado["fila"], "columna": dado["columna"]}]
+            if "arañas_nuevas" not in cambios:
+                cambios["arañas_nuevas"] = []
+            cambios["arañas_nuevas"].append({"fila": dado["fila"], "columna": dado["columna"]})
 
         # Huevos nuevos (vacio que se volvió humo)
-        if ant == "vacio" and nuevo == "humo":
+        if ant == "vacio" and nuevo == "huevo":
             cambios["huevos_nuevos"] = [{"fila": dado["fila"], "columna": dado["columna"]}]
 
         return {
@@ -1710,9 +1738,9 @@ if __name__ == "__main__":
         json_data = json.loads(json_content)
         f.write(json.dumps(json_data, indent=2, ensure_ascii=False))
     
-    print(f"\n✓ JSON guardado (formato Unity) | Resultado: {model.resultado}")
-    print(f"✓ Log detallado guardado en: simulacion_detallada.txt")
-    print(f"✓ JSON legible guardado en: simulacion_legible.json")
+    print(f"\n[OK] JSON guardado (formato Unity) | Resultado: {model.resultado}")
+    print(f"[OK] Log detallado guardado en: simulacion_detallada.txt")
+    print(f"[OK] JSON legible guardado en: simulacion_legible.json")
 
     # Call the new export method
     model.exportar_stats_csv()
@@ -2099,8 +2127,8 @@ print("="*60)
 # Capturar todos los estados (esto ejecutará la simulación completa)
 estados, modelo_final = capturar_estados(num_turnos=20)
 
-print(f"\n✓ Capturados {len(estados)} estados/frames")
-print(f"✓ Resultado: {modelo_final.resultado if modelo_final.juego_terminado else 'Simulación completa'}")
+print(f"\n[OK] Capturados {len(estados)} estados/frames")
+print(f"[OK] Resultado: {modelo_final.resultado if modelo_final.juego_terminado else 'Simulación completa'}")
 
 print("\n" + "="*60)
 print("CREANDO ANIMACIÓN INTERACTIVA...")
@@ -2115,7 +2143,7 @@ display(HTML(anim.to_jshtml()))
 plt.close()
 
 print("\n" + "="*60)
-print("✓ ANIMACIÓN LISTA")
+print("[OK] ANIMACIÓN LISTA")
 print(f"  - Total de frames: {len(estados)}")
 print(f"  - Usa los controles para Play/Pause y navegar")
 print("="*60)
@@ -2520,8 +2548,8 @@ print("="*60)
 # Capturar todos los estados (esto ejecutará la simulación completa)
 estados, modelo_final = capturar_estados(num_turnos=20)
 
-print(f"\n\u2713 Capturados {len(estados)} estados/frames")
-print(f"\u2713 Resultado: {modelo_final.resultado if modelo_final.juego_terminado else 'Simulación completa'}")
+print(f"\n[OK] Capturados {len(estados)} estados/frames")
+print(f"[OK] Resultado: {modelo_final.resultado if modelo_final.juego_terminado else 'Simulacion completa'}")
 
 print("\n" + "="*60)
 print("CREANDO ANIMACIÓN INTERACTIVA...")
@@ -2536,7 +2564,7 @@ display(HTML(anim.to_jshtml()))
 plt.close()
 
 print("\n" + "="*60)
-print("\u2713 ANIMACIÓN LISTA")
+print("[OK] ANIMACION LISTA")
 print(f"  - Total de frames: {len(estados)}")
 print(f"  - Usa los controles para Play/Pause y navegar")
 print("="*60)

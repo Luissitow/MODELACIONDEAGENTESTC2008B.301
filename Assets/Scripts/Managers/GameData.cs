@@ -153,6 +153,7 @@ public class PosicionData
 [System.Serializable]
 public class CambiosMapaData
 {
+    public string tipo_evento;  // "explosion" si la araña explota (pero permanece)
     public PosicionData[] huevos_nuevos;
     public PosicionData[] huevos_removidos;
     public PosicionData[] arañas_nuevas;

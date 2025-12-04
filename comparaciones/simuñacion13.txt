@@ -1,0 +1,2529 @@
+{
+  "tablero": {
+    "fila": 6,
+    "columna": 8,
+    "celdas": [
+      "1100",
+      "1000",
+      "1001",
+      "1100",
+      "1001",
+      "1100",
+      "1000",
+      "1001",
+      "0100",
+      "0000",
+      "0011",
+      "0110",
+      "0011",
+      "0110",
+      "0010",
+      "0011",
+      "0100",
+      "0001",
+      "1100",
+      "1000",
+      "1000",
+      "1001",
+      "1100",
+      "1001",
+      "0110",
+      "0011",
+      "0110",
+      "0010",
+      "0010",
+      "0011",
+      "0110",
+      "0011",
+      "1100",
+      "1000",
+      "1000",
+      "1000",
+      "1001",
+      "1100",
+      "1001",
+      "1101",
+      "0110",
+      "0010",
+      "0010",
+      "0010",
+      "0011",
+      "0110",
+      "0011",
+      "0111"
+    ]
+  },
+  "estado_inicial": {
+    "tripulacion": [
+      {
+        "id": 1,
+        "tipo": "jugador",
+        "fila": 3,
+        "columna": 1,
+        "puntos_accion": 4,
+        "cargando_victima": false
+      },
+      {
+        "id": 2,
+        "tipo": "jugador",
+        "fila": 1,
+        "columna": 6,
+        "puntos_accion": 4,
+        "cargando_victima": false
+      },
+      {
+        "id": 3,
+        "tipo": "jugador",
+        "fila": 4,
+        "columna": 8,
+        "puntos_accion": 4,
+        "cargando_victima": false
+      },
+      {
+        "id": 4,
+        "tipo": "jugador",
+        "fila": 6,
+        "columna": 3,
+        "puntos_accion": 4,
+        "cargando_victima": false
+      },
+      {
+        "id": 5,
+        "tipo": "jugador",
+        "fila": 3,
+        "columna": 1,
+        "puntos_accion": 4,
+        "cargando_victima": false
+      },
+      {
+        "id": 6,
+        "tipo": "jugador",
+        "fila": 1,
+        "columna": 6,
+        "puntos_accion": 4,
+        "cargando_victima": false
+      }
+    ],
+    "puntosInteres": [
+      {
+        "id": 1,
+        "fila": 2,
+        "columna": 4,
+        "revelado": false,
+        "tipo": "falsa_alarma"
+      },
+      {
+        "id": 2,
+        "fila": 5,
+        "columna": 1,
+        "revelado": false,
+        "tipo": "victima"
+      },
+      {
+        "id": 3,
+        "fila": 5,
+        "columna": 8,
+        "revelado": false,
+        "tipo": "victima"
+      }
+    ],
+    "arañas": [
+      {
+        "fila": 2,
+        "columna": 2
+      },
+      {
+        "fila": 2,
+        "columna": 3
+      },
+      {
+        "fila": 3,
+        "columna": 2
+      },
+      {
+        "fila": 3,
+        "columna": 3
+      },
+      {
+        "fila": 3,
+        "columna": 4
+      },
+      {
+        "fila": 3,
+        "columna": 5
+      },
+      {
+        "fila": 4,
+        "columna": 4
+      },
+      {
+        "fila": 5,
+        "columna": 6
+      },
+      {
+        "fila": 5,
+        "columna": 7
+      },
+      {
+        "fila": 6,
+        "columna": 6
+      }
+    ],
+    "huevos": [],
+    "puertas": [
+      {
+        "fila": 1,
+        "columna": 3,
+        "direccion": "este",
+        "abierta": false
+      },
+      {
+        "fila": 2,
+        "columna": 5,
+        "direccion": "este",
+        "abierta": false
+      },
+      {
+        "fila": 2,
+        "columna": 8,
+        "direccion": "sur",
+        "abierta": false
+      },
+      {
+        "fila": 3,
+        "columna": 2,
+        "direccion": "este",
+        "abierta": false
+      },
+      {
+        "fila": 4,
+        "columna": 4,
+        "direccion": "sur",
+        "abierta": false
+      },
+      {
+        "fila": 4,
+        "columna": 6,
+        "direccion": "este",
+        "abierta": false
+      },
+      {
+        "fila": 6,
+        "columna": 5,
+        "direccion": "este",
+        "abierta": false
+      },
+      {
+        "fila": 6,
+        "columna": 7,
+        "direccion": "este",
+        "abierta": false
+      }
+    ],
+    "entradas": [
+      {
+        "fila": 3,
+        "columna": 1,
+        "direccion": "oeste"
+      },
+      {
+        "fila": 1,
+        "columna": 6,
+        "direccion": "norte"
+      },
+      {
+        "fila": 4,
+        "columna": 8,
+        "direccion": "este"
+      },
+      {
+        "fila": 6,
+        "columna": 3,
+        "direccion": "sur"
+      }
+    ],
+    "contador_colapso_edificio": 0
+  },
+  "turnos": [
+    {
+      "numero_turno": 1,
+      "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 6,
+            "columna": 2,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 0,
+          "acciones": [
+            {
+              "tripulacion_id": 1,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 2
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 1,
+            "columna": 5,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 1,
+          "acciones": [
+            {
+              "tripulacion_id": 2,
+              "tipo": "mover",
+              "desde": {
+                "fila": 1,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 6
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "abrir_puerta",
+              "desde": {
+                "fila": 2,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 5
+              },
+              "costo_ap": 1,
+              "cambios": {
+                "puertas_abiertas": [
+                  {
+                    "fila": 2,
+                    "columna": 6,
+                    "direccion": "oeste"
+                  }
+                ]
+              }
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 5
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 5
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 4
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "revelar_poi",
+              "desde": {
+                "fila": 2,
+                "columna": 4
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 4
+              },
+              "costo_ap": 0,
+              "cambios": {
+                "pois_revelados": [
+                  {
+                    "tipo": "falsa_alarma"
+                  }
+                ]
+              },
+              "resultado": "falsa_alarma"
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 2,
+            "columna": 4,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 2,
+          "acciones": [
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 4,
+                "columna": 8
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 7
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "abrir_puerta",
+              "desde": {
+                "fila": 4,
+                "columna": 7
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 6
+              },
+              "costo_ap": 1,
+              "cambios": {
+                "puertas_abiertas": [
+                  {
+                    "fila": 4,
+                    "columna": 7,
+                    "direccion": "oeste"
+                  }
+                ]
+              }
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 4,
+                "columna": 7
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 6
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 4,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 5
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 2,
+            "columna": 2,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "arañas_nuevas": [
+                {
+                  "fila": 1,
+                  "columna": 2
+                },
+                {
+                  "fila": 3,
+                  "columna": 2
+                },
+                {
+                  "fila": 2,
+                  "columna": 1
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 3,
+          "acciones": [
+            {
+              "tripulacion_id": 4,
+              "tipo": "mover",
+              "desde": {
+                "fila": 6,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 6,
+                "columna": 2
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "mover",
+              "desde": {
+                "fila": 6,
+                "columna": 2
+              },
+              "hacia": {
+                "fila": 6,
+                "columna": 1
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "mover",
+              "desde": {
+                "fila": 6,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 5,
+                "columna": 1
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "revelar_poi",
+              "desde": {
+                "fila": 5,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 5,
+                "columna": 1
+              },
+              "costo_ap": 0,
+              "cambios": {
+                "pois_revelados": [
+                  {
+                    "tipo": "victima"
+                  }
+                ]
+              },
+              "resultado": "victima"
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "recoger_victima",
+              "desde": {
+                "fila": 5,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 5,
+                "columna": 1
+              },
+              "costo_ap": 0,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 6,
+            "columna": 2,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 4,
+          "acciones": [
+            {
+              "tripulacion_id": 5,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 1
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 5,
+            "columna": 7,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "paredes_dañadas": [
+                {
+                  "fila": 5,
+                  "columna": 7,
+                  "direccion": "norte",
+                  "nivel_dano": 1
+                },
+                {
+                  "fila": 5,
+                  "columna": 7,
+                  "direccion": "este",
+                  "nivel_dano": 1
+                }
+              ],
+              "arañas_nuevas": [
+                {
+                  "fila": 6,
+                  "columna": 7
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 5,
+          "acciones": [
+            {
+              "tripulacion_id": 6,
+              "tipo": "mover",
+              "desde": {
+                "fila": 1,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 6
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 6,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 5
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        }
+      ],
+      "estado_juego": {
+        "victimas_rescatadas": 0,
+        "victimas_perdidas": 0,
+        "falsas_alarmas": 0,
+        "daño_edificio": 4,
+        "juego_terminado": false,
+        "resultado": "en_progreso",
+        "mensaje": "Turno 1: ¡EXPLOSIÓN!"
+      }
+    },
+    {
+      "numero_turno": 2,
+      "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 5,
+            "columna": 4,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 0,
+          "acciones": [
+            {
+              "tripulacion_id": 1,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 2
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 6,
+            "columna": 7,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "paredes_dañadas": [
+                {
+                  "fila": 6,
+                  "columna": 7,
+                  "direccion": "sur",
+                  "nivel_dano": 1
+                },
+                {
+                  "fila": 6,
+                  "columna": 7,
+                  "direccion": "este",
+                  "nivel_dano": "destruida"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 1,
+          "acciones": [
+            {
+              "tripulacion_id": 2,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 4
+              },
+              "hacia": {
+                "fila": 1,
+                "columna": 4
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "abrir_puerta",
+              "desde": {
+                "fila": 1,
+                "columna": 4
+              },
+              "hacia": {
+                "fila": 1,
+                "columna": 3
+              },
+              "costo_ap": 1,
+              "cambios": {
+                "puertas_abiertas": [
+                  {
+                    "fila": 1,
+                    "columna": 4,
+                    "direccion": "oeste"
+                  }
+                ]
+              }
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "mover",
+              "desde": {
+                "fila": 1,
+                "columna": 4
+              },
+              "hacia": {
+                "fila": 1,
+                "columna": 3
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 2,
+            "columna": 8,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 3,
+          "acciones": [
+            {
+              "tripulacion_id": 4,
+              "tipo": "mover",
+              "desde": {
+                "fila": 5,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 6,
+                "columna": 1
+              },
+              "costo_ap": 2,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "mover",
+              "desde": {
+                "fila": 6,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 6,
+                "columna": 2
+              },
+              "costo_ap": 2,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 5,
+            "columna": 5,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 4,
+          "acciones": [
+            {
+              "tripulacion_id": 5,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 1,
+                "columna": 1
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 5,
+              "tipo": "revelar_poi",
+              "desde": {
+                "fila": 1,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 1,
+                "columna": 1
+              },
+              "costo_ap": 0,
+              "cambios": {
+                "pois_revelados": [
+                  {
+                    "tipo": "victima"
+                  }
+                ]
+              },
+              "resultado": "victima"
+            },
+            {
+              "tripulacion_id": 5,
+              "tipo": "recoger_victima",
+              "desde": {
+                "fila": 1,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 1,
+                "columna": 1
+              },
+              "costo_ap": 0,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 1,
+            "columna": 3,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 5,
+          "acciones": [
+            {
+              "tripulacion_id": 6,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 5
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 6
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 6,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 7
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 6,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 7
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 8
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 6,
+            "columna": 7,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "paredes_dañadas": [
+                {
+                  "fila": 6,
+                  "columna": 7,
+                  "direccion": "sur",
+                  "nivel_dano": 2
+                }
+              ],
+              "arañas_nuevas": [
+                {
+                  "fila": 6,
+                  "columna": 8
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "estado_juego": {
+        "victimas_rescatadas": 0,
+        "victimas_perdidas": 0,
+        "falsas_alarmas": 0,
+        "daño_edificio": 10,
+        "juego_terminado": false,
+        "resultado": "en_progreso",
+        "mensaje": "Turno 2: ¡EXPLOSIÓN!"
+      }
+    },
+    {
+      "numero_turno": 3,
+      "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 3,
+            "columna": 2,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 0,
+          "acciones": [
+            {
+              "tripulacion_id": 1,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 2
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 2
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 1,
+            "columna": 7,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 1,
+          "acciones": [
+            {
+              "tripulacion_id": 2,
+              "tipo": "eliminar_araña",
+              "desde": {
+                "fila": 1,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 1,
+                "columna": 3
+              },
+              "costo_ap": 2,
+              "cambios": {
+                "arañas_removidas": [
+                  {
+                    "fila": 1,
+                    "columna": 3
+                  }
+                ]
+              }
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "eliminar_huevo",
+              "desde": {
+                "fila": 1,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 1,
+                "columna": 3
+              },
+              "costo_ap": 1,
+              "cambios": {
+                "huevos_removidos": [
+                  {
+                    "fila": 1,
+                    "columna": 3
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 1,
+            "columna": 6,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 2,
+          "acciones": [
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 4,
+                "columna": 5
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 5
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 5
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 6
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "revelar_poi",
+              "desde": {
+                "fila": 3,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 6
+              },
+              "costo_ap": 0,
+              "cambios": {
+                "pois_revelados": [
+                  {
+                    "tipo": "victima"
+                  }
+                ]
+              },
+              "resultado": "victima"
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "recoger_victima",
+              "desde": {
+                "fila": 3,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 6
+              },
+              "costo_ap": 0,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 3,
+            "columna": 5,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 3,
+          "acciones": [
+            {
+              "tripulacion_id": 4,
+              "tipo": "mover",
+              "desde": {
+                "fila": 6,
+                "columna": 2
+              },
+              "hacia": {
+                "fila": 6,
+                "columna": 3
+              },
+              "costo_ap": 2,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "depositar_victima",
+              "desde": {
+                "fila": 6,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 6,
+                "columna": 3
+              },
+              "costo_ap": 0,
+              "cambios": {},
+              "resultado": "rescatada"
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "mover",
+              "desde": {
+                "fila": 6,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 5,
+                "columna": 3
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 1,
+            "columna": 8,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 4,
+          "acciones": [
+            {
+              "tripulacion_id": 5,
+              "tipo": "mover",
+              "desde": {
+                "fila": 1,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 1
+              },
+              "costo_ap": 2,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 5,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 1
+              },
+              "costo_ap": 2,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 5,
+            "columna": 2,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 5,
+          "acciones": [
+            {
+              "tripulacion_id": 6,
+              "tipo": "abrir_puerta",
+              "desde": {
+                "fila": 2,
+                "columna": 8
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 8
+              },
+              "costo_ap": 1,
+              "cambios": {
+                "puertas_abiertas": [
+                  {
+                    "fila": 2,
+                    "columna": 8,
+                    "direccion": "sur"
+                  }
+                ]
+              }
+            },
+            {
+              "tripulacion_id": 6,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 8
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 8
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 6,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 8
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 7
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        }
+      ],
+      "estado_juego": {
+        "victimas_rescatadas": 1,
+        "victimas_perdidas": 0,
+        "falsas_alarmas": 0,
+        "daño_edificio": 10,
+        "juego_terminado": false,
+        "resultado": "en_progreso",
+        "mensaje": "Turno 3: Víctima rescatada"
+      }
+    },
+    {
+      "numero_turno": 4,
+      "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 3,
+            "columna": 4,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "paredes_dañadas": [
+                {
+                  "fila": 3,
+                  "columna": 4,
+                  "direccion": "norte",
+                  "nivel_dano": 1
+                }
+              ],
+              "arañas_nuevas": [
+                {
+                  "fila": 4,
+                  "columna": 4
+                },
+                {
+                  "fila": 3,
+                  "columna": 6
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 0,
+          "acciones": [
+            {
+              "tripulacion_id": 1,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 2
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 2
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 6,
+            "columna": 2,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 1,
+          "acciones": [
+            {
+              "tripulacion_id": 2,
+              "tipo": "mover",
+              "desde": {
+                "fila": 1,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 1,
+                "columna": 4
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "mover",
+              "desde": {
+                "fila": 1,
+                "columna": 4
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 4
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 4
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 5
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 5
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 6
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 1,
+            "columna": 4,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 2,
+          "acciones": [
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 6
+              },
+              "costo_ap": 2,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 4,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 7
+              },
+              "costo_ap": 2,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 3,
+            "columna": 2,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 3,
+          "acciones": [
+            {
+              "tripulacion_id": 4,
+              "tipo": "mover",
+              "desde": {
+                "fila": 5,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 5,
+                "columna": 4
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "revelar_poi",
+              "desde": {
+                "fila": 5,
+                "columna": 4
+              },
+              "hacia": {
+                "fila": 5,
+                "columna": 4
+              },
+              "costo_ap": 0,
+              "cambios": {
+                "pois_revelados": [
+                  {
+                    "tipo": "victima"
+                  }
+                ]
+              },
+              "resultado": "victima"
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "recoger_victima",
+              "desde": {
+                "fila": 5,
+                "columna": 4
+              },
+              "hacia": {
+                "fila": 5,
+                "columna": 4
+              },
+              "costo_ap": 0,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 2,
+            "columna": 2,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 4,
+          "acciones": [
+            {
+              "tripulacion_id": 5,
+              "tipo": "depositar_victima",
+              "desde": {
+                "fila": 3,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 1
+              },
+              "costo_ap": 0,
+              "cambios": {},
+              "resultado": "rescatada"
+            },
+            {
+              "tripulacion_id": 5,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 1
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 2
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 5,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 2
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 2
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 5,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 2
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 3
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 4,
+            "columna": 5,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 5,
+          "acciones": [
+            {
+              "tripulacion_id": 6,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 7
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 7
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 6,
+              "tipo": "mover",
+              "desde": {
+                "fila": 4,
+                "columna": 7
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 6
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        }
+      ],
+      "estado_juego": {
+        "victimas_rescatadas": 2,
+        "victimas_perdidas": 0,
+        "falsas_alarmas": 0,
+        "daño_edificio": 12,
+        "juego_terminado": false,
+        "resultado": "en_progreso",
+        "mensaje": "Turno 4: ¡EXPLOSIÓN!"
+      }
+    },
+    {
+      "numero_turno": 5,
+      "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 2,
+            "columna": 5,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 0,
+          "acciones": [
+            {
+              "tripulacion_id": 1,
+              "tipo": "eliminar_araña",
+              "desde": {
+                "fila": 3,
+                "columna": 2
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 3
+              },
+              "costo_ap": 2,
+              "cambios": {
+                "arañas_removidas": [
+                  {
+                    "fila": 3,
+                    "columna": 3
+                  }
+                ]
+              }
+            },
+            {
+              "tripulacion_id": 1,
+              "tipo": "abrir_puerta",
+              "desde": {
+                "fila": 3,
+                "columna": 2
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 3
+              },
+              "costo_ap": 1,
+              "cambios": {
+                "puertas_abiertas": [
+                  {
+                    "fila": 3,
+                    "columna": 2,
+                    "direccion": "este"
+                  }
+                ]
+              }
+            },
+            {
+              "tripulacion_id": 1,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 2
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 3
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 6,
+            "columna": 2,
+            "estado_anterior": "huevo",
+            "estado_nuevo": "araña",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 1,
+          "acciones": [
+            {
+              "tripulacion_id": 2,
+              "tipo": "revelar_poi",
+              "desde": {
+                "fila": 2,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 6
+              },
+              "costo_ap": 0,
+              "cambios": {
+                "pois_revelados": [
+                  {
+                    "tipo": "victima"
+                  }
+                ]
+              },
+              "resultado": "victima"
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "recoger_victima",
+              "desde": {
+                "fila": 2,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 6
+              },
+              "costo_ap": 0,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 1,
+                "columna": 6
+              },
+              "costo_ap": 2,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "depositar_victima",
+              "desde": {
+                "fila": 1,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 1,
+                "columna": 6
+              },
+              "costo_ap": 0,
+              "cambios": {},
+              "resultado": "rescatada"
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "eliminar_huevo",
+              "desde": {
+                "fila": 1,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 1,
+                "columna": 6
+              },
+              "costo_ap": 1,
+              "cambios": {
+                "huevos_removidos": [
+                  {
+                    "fila": 1,
+                    "columna": 6
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 5,
+            "columna": 3,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 2,
+          "acciones": [
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 4,
+                "columna": 7
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 8
+              },
+              "costo_ap": 2,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "depositar_victima",
+              "desde": {
+                "fila": 4,
+                "columna": 8
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 8
+              },
+              "costo_ap": 0,
+              "cambios": {},
+              "resultado": "rescatada"
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 4,
+                "columna": 8
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 7
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 4,
+                "columna": 7
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 6
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 5,
+            "columna": 4,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 3,
+          "acciones": [
+            {
+              "tripulacion_id": 4,
+              "tipo": "mover",
+              "desde": {
+                "fila": 5,
+                "columna": 4
+              },
+              "hacia": {
+                "fila": 5,
+                "columna": 3
+              },
+              "costo_ap": 2,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "mover",
+              "desde": {
+                "fila": 5,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 6,
+                "columna": 3
+              },
+              "costo_ap": 2,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "depositar_victima",
+              "desde": {
+                "fila": 6,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 6,
+                "columna": 3
+              },
+              "costo_ap": 0,
+              "cambios": {},
+              "resultado": "rescatada"
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 2,
+            "columna": 8,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 4,
+          "acciones": [
+            {
+              "tripulacion_id": 5,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 2
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 5,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 2
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 2
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 4,
+            "columna": 5,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "paredes_dañadas": [
+                {
+                  "fila": 4,
+                  "columna": 5,
+                  "direccion": "sur",
+                  "nivel_dano": 1
+                }
+              ],
+              "arañas_nuevas": [
+                {
+                  "fila": 4,
+                  "columna": 6
+                },
+                {
+                  "fila": 4,
+                  "columna": 3
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "estado_juego": {
+        "victimas_rescatadas": 5,
+        "victimas_perdidas": 0,
+        "falsas_alarmas": 0,
+        "daño_edificio": 14,
+        "juego_terminado": false,
+        "resultado": "en_progreso",
+        "mensaje": "Turno 5: Víctima rescatada"
+      }
+    },
+    {
+      "numero_turno": 6,
+      "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 1,
+            "columna": 4,
+            "estado_anterior": "huevo",
+            "estado_nuevo": "araña",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 0,
+          "acciones": [
+            {
+              "tripulacion_id": 1,
+              "tipo": "eliminar_araña",
+              "desde": {
+                "fila": 3,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 3
+              },
+              "costo_ap": 2,
+              "cambios": {
+                "arañas_removidas": [
+                  {
+                    "fila": 3,
+                    "columna": 3
+                  }
+                ]
+              }
+            },
+            {
+              "tripulacion_id": 1,
+              "tipo": "eliminar_huevo",
+              "desde": {
+                "fila": 3,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 3
+              },
+              "costo_ap": 1,
+              "cambios": {
+                "huevos_removidos": [
+                  {
+                    "fila": 3,
+                    "columna": 3
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 1,
+            "columna": 6,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 1,
+          "acciones": [
+            {
+              "tripulacion_id": 2,
+              "tipo": "mover",
+              "desde": {
+                "fila": 1,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 6
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 2,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 6
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 7
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 4,
+            "columna": 5,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "paredes_dañadas": [
+                {
+                  "fila": 4,
+                  "columna": 5,
+                  "direccion": "sur",
+                  "nivel_dano": 2
+                }
+              ],
+              "arañas_nuevas": [
+                {
+                  "fila": 4,
+                  "columna": 7
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 2,
+          "acciones": [
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 4,
+                "columna": 8
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 8
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 8
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 8
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 8
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 7
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 3,
+              "tipo": "mover",
+              "desde": {
+                "fila": 2,
+                "columna": 7
+              },
+              "hacia": {
+                "fila": 2,
+                "columna": 6
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 1,
+            "columna": 4,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "paredes_dañadas": [
+                {
+                  "fila": 1,
+                  "columna": 4,
+                  "direccion": "norte",
+                  "nivel_dano": 1
+                },
+                {
+                  "fila": 1,
+                  "columna": 4,
+                  "direccion": "oeste",
+                  "nivel_dano": 1
+                }
+              ],
+              "arañas_nuevas": [
+                {
+                  "fila": 2,
+                  "columna": 4
+                },
+                {
+                  "fila": 1,
+                  "columna": 5
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 3,
+          "acciones": [
+            {
+              "tripulacion_id": 4,
+              "tipo": "mover",
+              "desde": {
+                "fila": 6,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 6,
+                "columna": 4
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "revelar_poi",
+              "desde": {
+                "fila": 6,
+                "columna": 4
+              },
+              "hacia": {
+                "fila": 6,
+                "columna": 4
+              },
+              "costo_ap": 0,
+              "cambios": {
+                "pois_revelados": [
+                  {
+                    "tipo": "victima"
+                  }
+                ]
+              },
+              "resultado": "victima"
+            },
+            {
+              "tripulacion_id": 4,
+              "tipo": "recoger_victima",
+              "desde": {
+                "fila": 6,
+                "columna": 4
+              },
+              "hacia": {
+                "fila": 6,
+                "columna": 4
+              },
+              "costo_ap": 0,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 5,
+            "columna": 6,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "paredes_dañadas": [
+                {
+                  "fila": 5,
+                  "columna": 6,
+                  "direccion": "norte",
+                  "nivel_dano": 1
+                },
+                {
+                  "fila": 5,
+                  "columna": 6,
+                  "direccion": "oeste",
+                  "nivel_dano": 1
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 4,
+          "acciones": [
+            {
+              "tripulacion_id": 5,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 2
+              },
+              "hacia": {
+                "fila": 3,
+                "columna": 3
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        },
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 2,
+            "columna": 8,
+            "estado_anterior": "vacio",
+            "estado_nuevo": "huevo",
+            "cambios": {}
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 5,
+          "acciones": [
+            {
+              "tripulacion_id": 6,
+              "tipo": "mover",
+              "desde": {
+                "fila": 4,
+                "columna": 8
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 7
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        }
+      ],
+      "estado_juego": {
+        "victimas_rescatadas": 5,
+        "victimas_perdidas": 0,
+        "falsas_alarmas": 0,
+        "daño_edificio": 22,
+        "juego_terminado": false,
+        "resultado": "en_progreso",
+        "mensaje": "Turno 6: ¡EXPLOSIÓN!"
+      }
+    },
+    {
+      "numero_turno": 7,
+      "secuencia": [
+        {
+          "tipo": "tirada_dado",
+          "tirada": {
+            "fila": 5,
+            "columna": 5,
+            "estado_anterior": "araña",
+            "estado_nuevo": "explosion",
+            "cambios": {
+              "paredes_dañadas": [
+                {
+                  "fila": 5,
+                  "columna": 5,
+                  "direccion": "este",
+                  "nivel_dano": 2
+                }
+              ],
+              "arañas_nuevas": [
+                {
+                  "fila": 6,
+                  "columna": 5
+                },
+                {
+                  "fila": 5,
+                  "columna": 3
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tipo": "acciones_jugador",
+          "jugador_id": 0,
+          "acciones": [
+            {
+              "tripulacion_id": 1,
+              "tipo": "mover",
+              "desde": {
+                "fila": 3,
+                "columna": 3
+              },
+              "hacia": {
+                "fila": 4,
+                "columna": 3
+              },
+              "costo_ap": 1,
+              "cambios": {}
+            }
+          ]
+        }
+      ],
+      "estado_juego": {
+        "victimas_rescatadas": 5,
+        "victimas_perdidas": 1,
+        "falsas_alarmas": 0,
+        "daño_edificio": 24,
+        "juego_terminado": true,
+        "resultado": "derrota",
+        "mensaje": "Turno 7: ¡EXPLOSIÓN!"
+      }
+    }
+  ]
+}

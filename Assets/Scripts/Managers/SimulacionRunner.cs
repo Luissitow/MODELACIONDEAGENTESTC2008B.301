@@ -131,26 +131,47 @@ public class SimulacionRunner : MonoBehaviour
     {
         Debug.Log($"Dado en ({tirada.fila},{tirada.columna}): {tirada.estado_anterior} → {tirada.estado_nuevo}");
         
-        // Procesar según el tipo de evento
-        switch (tirada.estado_nuevo.ToLower())
+        // Detectar si es una explosión (araña que explota pero permanece)
+        bool esExplosion = false;
+        if (tirada.cambios != null && tirada.cambios.tipo_evento == "explosion")
         {
-            case "huevo":
-                yield return StartCoroutine(AparecerHuevo(tirada.fila, tirada.columna));
-                break;
-                
-            case "araña":
-            case "arana":
-                yield return StartCoroutine(EvolucionarHuevo(tirada.fila, tirada.columna));
-                break;
-                
-            case "explosion":
-            case "explosión":
-                yield return StartCoroutine(ExplotarSpider(tirada.fila, tirada.columna));
-                break;
-                
-            default:
-                Debug.LogWarning($"⚠️ Estado de dado desconocido: {tirada.estado_nuevo}");
-                break;
+            esExplosion = true;
+            Debug.Log($"💥 EXPLOSIÓN detectada en ({tirada.fila},{tirada.columna}) - La araña permanece");
+        }
+        
+        // Si es explosión, mostrar efecto PERO NO eliminar la araña
+        if (esExplosion)
+        {
+            yield return StartCoroutine(MostrarEfectoExplosion(tirada.fila, tirada.columna));
+        }
+        // Si NO es explosión, procesar normalmente
+        else
+        {
+            switch (tirada.estado_nuevo.ToLower())
+            {
+                case "huevo":
+                    yield return StartCoroutine(AparecerHuevo(tirada.fila, tirada.columna));
+                    break;
+                    
+                case "araña":
+                case "arana":
+                    // Solo evolucionar si el estado anterior era huevo
+                    if (tirada.estado_anterior.ToLower() == "huevo")
+                    {
+                        yield return StartCoroutine(EvolucionarHuevo(tirada.fila, tirada.columna));
+                    }
+                    break;
+                    
+                case "explosion":
+                case "explosión":
+                    // Caso legacy - mantener compatibilidad
+                    yield return StartCoroutine(ExplotarSpider(tirada.fila, tirada.columna));
+                    break;
+                    
+                default:
+                    Debug.LogWarning($"⚠️ Estado de dado desconocido: {tirada.estado_nuevo}");
+                    break;
+            }
         }
         
         // Aplicar cambios de esta tirada
@@ -255,7 +276,8 @@ public class SimulacionRunner : MonoBehaviour
                 break;
                 
             case "revelar_poi":
-                yield return StartCoroutine(AnimarRevelarPOI(accion.poi_id));
+                // Usar posición para buscar POI (más confiable que poi_id)
+                yield return StartCoroutine(AnimarRevelarPOIPorPosicion(accion.hacia));
                 break;
                 
             case "recoger_victima":
@@ -273,11 +295,11 @@ public class SimulacionRunner : MonoBehaviour
                 break;
                 
             case "eliminar_araña":
-                yield return StartCoroutine(AnimarEliminarSpider(accion.desde));
+                yield return StartCoroutine(AnimarEliminarSpider(accion.hacia));
                 break;
                 
             case "eliminar_huevo":
-                yield return StartCoroutine(AnimarEliminarHuevo(accion.desde));
+                yield return StartCoroutine(AnimarEliminarHuevo(accion.hacia));
                 break;
                 
             case "danar_pared":
@@ -400,7 +422,21 @@ public class SimulacionRunner : MonoBehaviour
         {
             foreach (var pared in cambios.paredes_dañadas)
             {
+                // Intentar encontrar la pared en la posición dada
                 GameObject paredObj = TableroBuilder.ObtenerPared(pared.fila, pared.columna, pared.direccion);
+                
+                // Si no se encuentra, buscar en el lado opuesto
+                if (paredObj == null)
+                {
+                    var (filaOpuesta, colOpuesta, dirOpuesta) = ObtenerLadoOpuesto(pared.fila, pared.columna, pared.direccion);
+                    paredObj = TableroBuilder.ObtenerPared(filaOpuesta, colOpuesta, dirOpuesta);
+                    
+                    if (paredObj != null)
+                    {
+                        Debug.Log($"🧱 Pared encontrada en lado opuesto ({filaOpuesta},{colOpuesta},{dirOpuesta})");
+                    }
+                }
+                
                 if (paredObj != null)
                 {
                     var wallComponent = paredObj.GetComponent<Wall>();
@@ -441,7 +477,7 @@ public class SimulacionRunner : MonoBehaviour
                 else
                 {
                     // La pared no existe en el tablero (probablemente la celda no tiene pared en esa dirección)
-                    Debug.Log($"ℹ️ No hay pared en ({pared.fila},{pared.columna},{pared.direccion}) - celda sin pared en esa dirección");
+                    Debug.Log($"ℹ️ No hay pared en ({pared.fila},{pared.columna},{pared.direccion}) ni en lado opuesto");
                 }
             }
         }
@@ -451,7 +487,21 @@ public class SimulacionRunner : MonoBehaviour
         {
             foreach (var pared in cambios.paredes_destruidas)
             {
+                // Intentar encontrar la pared en la posición dada
                 GameObject paredObj = TableroBuilder.ObtenerPared(pared.fila, pared.columna, pared.direccion);
+                
+                // Si no se encuentra, buscar en el lado opuesto
+                if (paredObj == null)
+                {
+                    var (filaOpuesta, colOpuesta, dirOpuesta) = ObtenerLadoOpuesto(pared.fila, pared.columna, pared.direccion);
+                    paredObj = TableroBuilder.ObtenerPared(filaOpuesta, colOpuesta, dirOpuesta);
+                    
+                    if (paredObj != null)
+                    {
+                        Debug.Log($"🧱 Pared encontrada en lado opuesto ({filaOpuesta},{colOpuesta},{dirOpuesta})");
+                    }
+                }
+                
                 if (paredObj != null)
                 {
                     var wallComponent = paredObj.GetComponent<Wall>();
@@ -474,15 +524,37 @@ public class SimulacionRunner : MonoBehaviour
         {
             foreach (var puerta in cambios.puertas_abiertas)
             {
+                // Intentar encontrar la puerta en la posición dada
                 GameObject puertaObj = TableroBuilder.ObtenerPuerta(puerta.fila, puerta.columna, puerta.direccion);
+                
+                // Si no se encuentra, buscar en el lado opuesto (la puerta puede estar registrada desde el otro lado)
+                if (puertaObj == null)
+                {
+                    var (filaOpuesta, colOpuesta, dirOpuesta) = ObtenerLadoOpuesto(puerta.fila, puerta.columna, puerta.direccion);
+                    puertaObj = TableroBuilder.ObtenerPuerta(filaOpuesta, colOpuesta, dirOpuesta);
+                    
+                    if (puertaObj != null)
+                    {
+                        Debug.Log($"🚪 Puerta encontrada en lado opuesto ({filaOpuesta},{colOpuesta},{dirOpuesta})");
+                    }
+                }
+                
                 if (puertaObj != null)
                 {
                     var doorComponent = puertaObj.GetComponent<Door>();
                     if (doorComponent != null)
                     {
                         doorComponent.Abrir();
-                        Debug.Log($"Puerta abierta en ({puerta.fila},{puerta.columna},{puerta.direccion})");
+                        Debug.Log($"🚪 Puerta abierta en ({puerta.fila},{puerta.columna},{puerta.direccion})");
                     }
+                    else
+                    {
+                        Debug.LogWarning($"⚠️ Puerta en ({puerta.fila},{puerta.columna}) no tiene componente Door");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"⚠️ No se encontró puerta en ({puerta.fila},{puerta.columna},{puerta.direccion}) ni en lado opuesto");
                 }
             }
         }
@@ -579,6 +651,56 @@ public class SimulacionRunner : MonoBehaviour
         else
         {
             Debug.LogWarning($"⚠️ POI {poiId} no tiene componente POI");
+        }
+    }
+    
+    private IEnumerator AnimarRevelarPOIPorPosicion(PosicionData pos)
+    {
+        if (pos == null)
+        {
+            Debug.LogWarning("⚠️ Posición nula para revelar POI");
+            yield break;
+        }
+        
+        GameObject poiObj = TableroBuilder.ObtenerPOIPorPosicion(pos.fila, pos.columna);
+        
+        if (poiObj == null)
+        {
+            Debug.LogWarning($"⚠️ No se encontró POI en posición ({pos.fila},{pos.columna})");
+            yield break;
+        }
+        
+        POI poiComponent = poiObj.GetComponent<POI>();
+        
+        if (poiComponent != null)
+        {
+            Debug.Log($"🔍 Revelando POI en ({pos.fila},{pos.columna})");
+            
+            // Animación visual simple: escalar y rotar
+            float duracion = 0.8f;
+            float tiempoTranscurrido = 0f;
+            Vector3 escalaOriginal = poiObj.transform.localScale;
+            
+            while (tiempoTranscurrido < duracion)
+            {
+                tiempoTranscurrido += Time.deltaTime;
+                float progreso = tiempoTranscurrido / duracion;
+                
+                // Pulsar
+                float pulso = 1f + Mathf.Sin(progreso * Mathf.PI * 4) * 0.2f;
+                poiObj.transform.localScale = escalaOriginal * pulso;
+                
+                // Rotar
+                poiObj.transform.Rotate(Vector3.up, Time.deltaTime * 180f);
+                
+                yield return null;
+            }
+            
+            poiObj.transform.localScale = escalaOriginal;
+        }
+        else
+        {
+            Debug.LogWarning($"⚠️ POI en ({pos.fila},{pos.columna}) no tiene componente POI");
         }
     }
     
@@ -696,6 +818,33 @@ public class SimulacionRunner : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
     }
     
+    /// <summary>
+    /// Muestra el efecto visual de explosión SIN eliminar la araña
+    /// (La araña permanece después de explotar)
+    /// </summary>
+    private IEnumerator MostrarEfectoExplosion(int fila, int columna)
+    {
+        Debug.Log($"💥💥💥 EXPLOSIÓN en ({fila},{columna}) - Araña permanece 💥💥💥");
+        
+        GameObject spider = TableroBuilder.ObtenerSpider(fila, columna);
+        
+        if (spider == null)
+        {
+            Debug.LogWarning($"⚠️ No hay araña en ({fila},{columna}) para mostrar explosión");
+            yield break;
+        }
+        
+        Vector3 posicionExplosion = CoordenadasHelper.JSONaPosicionUnity(fila, columna);
+        
+        // Crear efecto visual de explosión
+        GameObject explosionVisual = Explosion.Crear(posicionExplosion + Vector3.up * 1.5f, explosionPrefab);
+        
+        Debug.Log($"✓ Efecto de explosión mostrado en ({fila},{columna}) - Araña conservada");
+        
+        // Esperar un momento para que se vea la explosión
+        yield return new WaitForSeconds(0.5f);
+    }
+    
     private void ProcesarEfectosExplosion(int fila, int columna)
     {
         // Obtener referencia a TableroBuilder
@@ -784,6 +933,9 @@ public class SimulacionRunner : MonoBehaviour
             Debug.Log($"🕷️💀 Eliminando araña en ({pos.fila},{pos.columna})");
             spiderComponent.Eliminar();
             
+            // Remover del diccionario para evitar referencias obsoletas
+            TableroBuilder.RemoverSpiderDelDiccionario(pos.fila, pos.columna);
+            
             // Esperar a que termine la animación de eliminación
             yield return new WaitForSeconds(0.3f);
         }
@@ -791,6 +943,7 @@ public class SimulacionRunner : MonoBehaviour
         {
             Debug.LogWarning($"⚠️ Araña en ({pos.fila},{pos.columna}) no tiene componente Spider");
             Destroy(spider);
+            TableroBuilder.RemoverSpiderDelDiccionario(pos.fila, pos.columna);
         }
     }
     
@@ -811,6 +964,9 @@ public class SimulacionRunner : MonoBehaviour
             Debug.Log($"🥚💥 Eliminando huevo en ({pos.fila},{pos.columna})");
             eggComponent.Eliminar();
             
+            // Remover del diccionario para evitar referencias obsoletas
+            TableroBuilder.RemoverHuevoDelDiccionario(pos.fila, pos.columna);
+            
             // Esperar a que termine la animación de eliminación
             yield return new WaitForSeconds(0.2f);
         }
@@ -818,6 +974,7 @@ public class SimulacionRunner : MonoBehaviour
         {
             Debug.LogWarning($"⚠️ Huevo en ({pos.fila},{pos.columna}) no tiene componente Egg");
             Destroy(huevo);
+            TableroBuilder.RemoverHuevoDelDiccionario(pos.fila, pos.columna);
         }
     }
     
@@ -910,5 +1067,26 @@ public class SimulacionRunner : MonoBehaviour
         Debug.Log($"✅ Crew {crewId} depositó víctima en ({posicion.fila},{posicion.columna}) - ¡RESCATADA!");
         
         yield return new WaitForSeconds(0.1f);
+    }
+    
+    /// <summary>
+    /// Obtiene la celda y dirección opuesta a una pared/puerta
+    /// Ejemplo: (2,6,oeste) -> (2,5,este)
+    /// </summary>
+    private (int, int, string) ObtenerLadoOpuesto(int fila, int columna, string direccion)
+    {
+        switch (direccion.ToLower())
+        {
+            case "norte":
+                return (fila - 1, columna, "sur");
+            case "sur":
+                return (fila + 1, columna, "norte");
+            case "este":
+                return (fila, columna + 1, "oeste");
+            case "oeste":
+                return (fila, columna - 1, "este");
+            default:
+                return (0, 0, ""); // Inválido
+        }
     }
 }
