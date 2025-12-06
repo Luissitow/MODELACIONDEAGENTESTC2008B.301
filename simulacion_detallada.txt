@@ -84,8 +84,8 @@ Agent-5: Apago huevo adyacente (3,1) [-1 AP])
 Dados: 5,7 -> (6,4)
  EXPLOSION (6,4)
 Dano: 4/24
-Nuevo POI en (0,0)
-Nuevo POI en (3,4)
+Nuevo POI en (0,0) - tipo: Victima
+Nuevo POI en (3,4) - tipo: Victima
 
 --- ESTADO AL FINAL DEL TURNO ---
 Víctimas rescatadas: 0/7
@@ -148,7 +148,7 @@ Agent-5: Movio (6, 1) -> (7,1) [-1 AP])
 Dados: 6,7 -> (6,5)
  EXPLOSION (6,5)
 Dano: 10/24
-Nuevo POI en (5,2)
+Nuevo POI en (5,2) - tipo: Victima
 
 --- ESTADO AL FINAL DEL TURNO ---
 Víctimas rescatadas: 0/7
@@ -210,7 +210,7 @@ Agent-5: Abrio puerta [-1 AP])
 Agent-5: Movio (7, 1) -> (7,2) [-1 AP])
 Agent-5: Movio (7, 2) -> (6,2) [-1 AP])
 Dados: 5,2 -> (1,4)
-Nuevo POI en (4,5)
+Nuevo POI en (4,5) - tipo: Victima
 
 --- ESTADO AL FINAL DEL TURNO ---
 Víctimas rescatadas: 1/7
@@ -274,7 +274,7 @@ Agent-5: Movio (6, 2) -> (6,3) [-1 AP])
 Agent-5: Movio (6, 3) -> (5,3) [-1 AP])
 Agent-5: Apago arana adyacente (5,2) [-2 AP])
 Dados: 4,5 -> (4,3)
-Nuevo POI en (5,1)
+Nuevo POI en (5,1) - tipo: Victima
 
 --- ESTADO AL FINAL DEL TURNO ---
 Víctimas rescatadas: 2/7
@@ -345,7 +345,7 @@ Agent-5: Reubicado en salida (7,3))
 Agent-2: KNOCKDOWN! (1/2))
 Agent-2: Reubicado en salida (7,3))
 Dano: 14/24
-Nuevo POI en (3,5)
+Nuevo POI en (3,5) - tipo: Victima
 
 --- ESTADO AL FINAL DEL TURNO ---
 Víctimas rescatadas: 5/7
@@ -412,7 +412,7 @@ Agent-5: Apago arana adyacente (6,3) [-2 AP])
 Agent-5: Apago huevo adyacente (6,3) [-1 AP])
 Agent-5: Movio (7, 3) -> (6,3) [-1 AP])
 Dados: 2,8 -> (7,1)
-Nuevo POI en (4,1)
+Nuevo POI en (4,1) - tipo: Victima
 
 --- ESTADO AL FINAL DEL TURNO ---
 Víctimas rescatadas: 5/7

@@ -1163,15 +1163,35 @@ class Nave(Model):
 
     def reponer_poi(self):
         if self.juego_terminado: return
-        total = sum(1 for c in self.cells.values() if c.poi > 0 and not c.poi_revelado)
-        vict = sum(1 for c in self.cells.values() if c.poi == 1 and c.poi_revelado)
-        while total + vict < 3:
+        
+        # Contar POIs no revelados (ocultos en el tablero)
+        pois_ocultos = sum(1 for c in self.cells.values() if c.poi > 0 and not c.poi_revelado)
+        
+        # Contar POIs revelados y visibles (víctimas que aún no han sido recogidas)
+        pois_revelados = sum(1 for c in self.cells.values() if c.poi == 1 and c.poi_revelado)
+        
+        # TOTAL de POIs en el tablero (siempre debe ser 3)
+        total_pois = pois_ocultos + pois_revelados
+        
+        # DEBUG: Mostrar conteo actual
+        print(f"📊 Reponer POI - Ocultos: {pois_ocultos}, Revelados: {pois_revelados}, Total: {total_pois}")
+        
+        # Reponer POIs hasta tener 3 en total
+        intentos = 0
+        max_intentos = 100  # Evitar loop infinito
+        while total_pois < 3 and intentos < max_intentos:
+            intentos += 1
             x, y = random.randint(0, self.width - 1), random.randint(0, self.height - 1)
             c = self.cells.get((x, y))
             if c and not c.fire and not c.smoke and c.poi == 0:
+                # 67% víctima, 33% falsa alarma
                 c.poi = 1 if random.random() < 0.67 else 2
-                self.log(f"Nuevo POI en ({x},{y})")
-                total += 1
+                self.log(f"Nuevo POI en ({x},{y}) - tipo: {'Victima' if c.poi == 1 else 'Falsa alarma'}")
+                print(f"✅ Nuevo POI generado en ({x},{y}) - tipo: {'Victima' if c.poi == 1 else 'Falsa alarma'}")
+                total_pois += 1
+        
+        if intentos >= max_intentos and total_pois < 3:
+            print(f"⚠️ ADVERTENCIA: No se pudo generar POIs después de {max_intentos} intentos. POIs actuales: {total_pois}")
 
     def _capturar_estado(self):
         dn = {'N': 'norte', 'S': 'sur', 'E': 'este', 'O': 'oeste'}
@@ -2631,7 +2651,7 @@ class Server(BaseHTTPRequestHandler):
                 
                 if json_content is None:
                     raise Exception("Could not decode file with any supported encoding")
-                
+                g
                 self._set_response(content_type='application/json')
                 self.wfile.write(json_content.encode('utf-8'))
                 logging.info(f"Sent {json_file_path} successfully via POST to {self.path}.")

@@ -92,35 +92,28 @@ public class CameraManager : MonoBehaviour
         {
             ConfigurarCamarasDeAgentes();
             
-            // Iniciar en cámara aérea por defecto
-            if (camaraAerea != null)
+            // Iniciar en primera persona del primer agente por defecto
+            enCamaraAerea = false;
+            enPrimeraPersona = true;
+            ActivarCamara(0, enPrimeraPersona);
+            
+            if (mostrarInfo)
             {
-                enCamaraAerea = true;
-                DesactivarTodasLasCamaras();
-                camaraAerea.enabled = true;
-                
-                if (mostrarInfo)
-                {
-                    Debug.Log($"📹 CameraManager inicializado con {agentes.Count} agentes");
-                    Debug.Log($"📹 Iniciando en VISTA AÉREA");
-                    Debug.Log($"   Controles: ← → para cambiar agente | Tab para cambiar vista | F para vista aérea");
-                }
-            }
-            else
-            {
-                // Si no hay cámara aérea, iniciar con primer agente
-                ActivarCamara(0, enPrimeraPersona);
-                
-                if (mostrarInfo)
-                {
-                    Debug.Log($"📹 CameraManager inicializado con {agentes.Count} agentes");
-                    Debug.Log($"   Controles: ← → para cambiar agente | Tab para cambiar vista");
-                }
+                Debug.Log($"📹 CameraManager inicializado con {agentes.Count} agentes");
+                Debug.Log($"📹 Iniciando en PRIMERA PERSONA (Agente 1)");
+                Debug.Log($"   Controles: ← → para cambiar agente | Tab para cambiar vista | F para vista aérea");
             }
         }
         else
         {
+            // Fallback si no hay agentes - usar cámara aérea
             Debug.LogWarning("⚠️ CameraManager: No se encontraron agentes en la escena");
+            
+            if (camaraAerea != null)
+            {
+                enCamaraAerea = true;
+                camaraAerea.enabled = true;
+            }
         }
     }
     
