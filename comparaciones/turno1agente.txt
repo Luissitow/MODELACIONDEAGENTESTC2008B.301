@@ -1,0 +1,119 @@
+================================================================================
+FLASH POINT: FIRE RESCUE - SIMULACIÓN DETALLADA
+================================================================================
+
+
+================================================================================
+ESTADO INICIAL
+================================================================================
+Dimensiones: 8x6
+Agentes: 6
+Estrategia: inteligente
+Entradas: [(0, 2), (5, 0), (7, 3), (2, 5)]
+Salidas: [(0, 2), (5, 0), (7, 3), (2, 5)]
+
+POIs iniciales:
+  - Posición (3, 1): FALSA ALARMA
+  - Posición (0, 4): VICTIMA
+  - Posición (7, 4): VICTIMA
+
+Fuegos iniciales:
+  - Posición (1, 1)
+  - Posición (2, 1)
+  - Posición (1, 2)
+  - Posición (2, 2)
+  - Posición (3, 2)
+  - Posición (4, 2)
+  - Posición (3, 3)
+  - Posición (5, 4)
+  - Posición (6, 4)
+  - Posición (5, 5)
+
+
+================================================================================
+TURNO 1 - RESUMEN
+================================================================================
+SUBASTA  SUBASTA DE TAREAS
+SUBASTA Agente 3 -> investigar_poi en (0, 4) (oferta: 3 AP)
+SUBASTA Agente 1 -> investigar_poi en (3, 1) (oferta: 5 AP)
+SUBASTA Agente 2 -> investigar_poi en (7, 4) (oferta: 39 AP)
+SUBASTA Agente 0 -> apagar_fuego en (1, 2) (oferta: 11 AP)
+SUBASTA Agente 4 -> apagar_fuego en (1, 1) (oferta: 12 AP)
+SUBASTA Agente 5 -> apagar_fuego en (2, 1) (oferta: 20 AP)
+
+Agent-0: Turno | Pos: (0,2) | AP: 4 | Tarea: apagar_fuego))
+Agent-0: Apago arana adyacente (1,2) [-2 AP])
+Agent-0: Apago huevo adyacente (1,2) [-1 AP])
+Agent-0: Movio (0, 2) -> (1,2) [-1 AP])
+Dados: 6,2 -> (1,5)
+
+
+Agent-1: Turno | Pos: (5,0) | AP: 4 | Tarea: investigar_poi))
+Agent-1: Movio (5, 0) -> (5,1) [-1 AP])
+Agent-1: Abrio puerta [-1 AP])
+Agent-1: Movio (5, 1) -> (4,1) [-1 AP])
+Agent-1: Movio (4, 1) -> (3,1) [-1 AP])
+Agent-1: Revelo POI: Falsa alarma!)
+
+Dados: 1,5 -> (4,0)
+
+
+Agent-2: Turno | Pos: (7,3) | AP: 4 | Tarea: investigar_poi))
+Agent-2: Movio (7, 3) -> (6,3) [-1 AP])
+Agent-2: Abrio puerta [-1 AP])
+Agent-2: Movio (6, 3) -> (5,3) [-1 AP])
+Agent-2: Movio (5, 3) -> (4,3) [-1 AP])
+Dados: 2,4 -> (3,1)
+
+
+Agent-3: Turno | Pos: (2,5) | AP: 4 | Tarea: investigar_poi))
+Agent-3: Apago huevo adyacente (1,5) [-1 AP])
+Agent-3: Movio (2, 5) -> (1,5) [-1 AP])
+Agent-3: Movio (1, 5) -> (0,5) [-1 AP])
+Agent-3: Movio (0, 5) -> (0,4) [-1 AP])
+Agent-3: Revelo POI: VICTIMA!)
+Agent-3: Cargo victima)
+Dados: 2,2 -> (1,1)
+ EXPLOSION (1,1)
+  Agente 0 alcanzado por fuego de explosion!
+Agent-0: KNOCKDOWN! (1/2))
+Agent-0: Reubicado en salida (0,2))
+Dano: 1/24
+
+
+Agent-4: Turno | Pos: (0,2) | AP: 4 | Tarea: apagar_fuego))
+Agent-4: Apago arana adyacente (0,1) [-2 AP])
+Agent-4: Apago huevo adyacente (0,1) [-1 AP])
+Agent-4: Movio (0, 2) -> (0,1) [-1 AP])
+Dados: 6,2 -> (1,5)
+
+
+Agent-5: Turno | Pos: (5,0) | AP: 4 | Tarea: apagar_fuego))
+Agent-5: Movio (5, 0) -> (5,1) [-1 AP])
+Agent-5: Movio (5, 1) -> (4,1) [-1 AP])
+Agent-5: Apago huevo adyacente (4,0) [-1 AP])
+Agent-5: Apago huevo adyacente (3,1) [-1 AP])
+Dados: 5,7 -> (6,4)
+ EXPLOSION (6,4)
+Dano: 4/24
+Nuevo POI en (0,0)
+Nuevo POI en (3,4)
+
+--- ESTADO AL FINAL DEL TURNO ---
+Víctimas rescatadas: 0/7
+Víctimas perdidas: 0/4
+Daño estructural: 4/24
+Explosiones totales: 2
+Flashovers totales: 0
+
+Posición de agentes:
+  Agente 0: (0, 2) - AP: 0
+  Agente 1: (3, 1) - AP: 0
+  Agente 2: (4, 3) - AP: 0
+  Agente 3: (0, 4) - AP: 0 [CARGANDO VÍCTIMA]
+  Agente 4: (0, 1) - AP: 0
+  Agente 5: (4, 1) - AP: 0
+
+
+
+
